@@ -47,6 +47,13 @@ const getUserByEmail = async (email) => {
   return User.findOne({ email });
 };
 
+const checkEmailVerification = async (user) => {
+  const verifiedUser = User.findOne({ _id: user.id, isEmailVerified: true });
+  if (!verifiedUser) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Email not verified');
+  }
+};
+
 /**
  * Update user by id
  * @param {ObjectId} userId
@@ -87,4 +94,5 @@ module.exports = {
   getUserByEmail,
   updateUserById,
   deleteUserById,
+  checkEmailVerification,
 };
