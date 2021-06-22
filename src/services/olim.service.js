@@ -1,10 +1,8 @@
 const multer = require('multer');
 const path = require('path');
-const httpStatus = require('http-status');
 const { promisify } = require('util');
 const { unlink } = require('fs');
-const { User, Olim } = require('../models');
-const ApiError = require('../utils/ApiError');
+const { Olim } = require('../models');
 
 const unlinkAsync = promisify(unlink);
 
@@ -49,20 +47,7 @@ const multiUploads = upload.fields([
   { name: 'suratKeteranganSiswa', maxCount: 1 },
 ]);
 
-const isRegistered = async (user) => {
-  return !(await User.findOne({ _id: user.id, registeredComp: '' }));
-};
-
-const daftarOlim = async (olimBody) => {
-  const olim = new Olim(olimBody);
-  return olim;
-};
-
-const cekTerdaftar = async (user) => {
-  if (await isRegistered(user)) {
-    throw new ApiError(httpStatus.FORBIDDEN, 'User sudah terdaftar di salah satu cabang');
-  }
-};
+const daftarOlim = async (olimBody) => new Olim(olimBody);
 
 const simpanDataOlim = async (req) => {
   const { olim, user, files } = req;
@@ -98,6 +83,5 @@ module.exports = {
   daftarOlim,
   multiUploads,
   simpanDataOlim,
-  cekTerdaftar,
   removeFileErr,
 };

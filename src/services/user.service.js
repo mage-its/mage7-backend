@@ -47,10 +47,16 @@ const getUserByEmail = async (email) => {
   return User.findOne({ email });
 };
 
-const checkEmailVerification = async (user) => {
-  const verifiedUser = User.findOne({ _id: user.id, isEmailVerified: true });
+const checkEmailVerification = async (userId) => {
+  const verifiedUser = User.findOne({ _id: userId, isEmailVerified: true });
   if (!verifiedUser) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Email not verified');
+  }
+};
+
+const isRegistered = async (userId) => {
+  if (!(await User.findOne({ _id: userId, registeredComp: '' }))) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User sudah terdaftar di salah satu cabang');
   }
 };
 
@@ -95,4 +101,5 @@ module.exports = {
   updateUserById,
   deleteUserById,
   checkEmailVerification,
+  isRegistered,
 };
