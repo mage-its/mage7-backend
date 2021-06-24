@@ -6,10 +6,11 @@ const unlinkAsync = promisify(unlink);
 const cancelFileUpload = () => async (err, req, res, next) => {
   if (req.files) {
     const { files } = req;
-    const promises = Object.keys(files).map((key) => {
-      return unlinkAsync(files[key][0].path).then(() => {});
+    const cleanedKeys = Object.keys(files).filter((key) => {
+      return files[key]?.[0]?.path;
     });
-    Promise.all(promises).then(() => {});
+    const promises = cleanedKeys.map(async (key) => unlinkAsync(files[key][0].path));
+    await Promise.all(promises);
   }
   next(err);
 };

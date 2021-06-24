@@ -17,6 +17,14 @@ router.post(
   cancelFileUpload()
 );
 
+router.get('/', auth('manageUsers'), validate(olimValidation.getOlims), olimController.getOlims);
+
+router
+  .route('/:olimId')
+  .get(auth('getUsers'), validate(olimValidation.getOlim), olimController.getOlim)
+  .patch(auth('manageUsers'), validate(olimValidation.updateOlim), olimController.updateOlim)
+  .delete(auth('manageUsers'), validate(olimValidation.deleteOlim), olimController.deleteOlim);
+
 module.exports = router;
 
 /**
