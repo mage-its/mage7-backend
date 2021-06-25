@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
 const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
+const olimService = require('./olim.service');
 
 /**
  * Create a user
@@ -48,7 +49,7 @@ const getUserByEmail = async (email) => {
 };
 
 const checkEmailVerification = async (userId) => {
-  const verifiedUser = User.findOne({ _id: userId, isEmailVerified: true });
+  const verifiedUser = await User.findOne({ _id: userId, isEmailVerified: true });
   if (!verifiedUser) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Email not verified');
   }
@@ -88,6 +89,17 @@ const deleteUserById = async (userId) => {
   const user = await getUserById(userId);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  switch (user.registeredComp) {
+    case 'olim': {
+      const olim = await olimService.getOlimByUserId(user.id);
+      if (olim) {
+        await olimService.deleteOlimById(olim.id, olim, user);
+      }
+      break;
+    }
+    default:
+      break;
   }
   await user.remove();
   return user;

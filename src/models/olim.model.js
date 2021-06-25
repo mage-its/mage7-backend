@@ -46,12 +46,10 @@ const olimSchema = mongoose.Schema(
     pathIdentitasAnggota1: {
       type: String,
       required: true,
-      private: true,
     },
     pathIdentitasAnggota2: {
       type: String,
       required: true,
-      private: true,
     },
     asalInstansi: {
       type: String,
@@ -66,7 +64,6 @@ const olimSchema = mongoose.Schema(
     pathSuratKeteranganSiswa: {
       type: String,
       required: true,
-      private: true,
     },
     asalInfo: {
       type: String,
@@ -75,13 +72,11 @@ const olimSchema = mongoose.Schema(
     pathBuktiBayar: {
       type: String,
       default: '',
-      private: true,
     },
     statusBayar: {
       type: String,
-      enum: ['Belum Bayar', 'Sedang Diverifikasi', 'Berhasil Diverifikasi', 'Bukti Pembayaran Ditolak'],
-      default: 'Belum Bayar',
-      private: true,
+      enum: ['Not Verified', 'Verified'],
+      default: 'Not Verified',
     },
     user: {
       type: mongoose.SchemaTypes.ObjectId,

@@ -47,7 +47,9 @@ const updateOlim = {
       asalInstansi: Joi.string().trim().min(1).max(100),
       alamatInstansi: Joi.string().trim().min(1).max(100),
       asalInfo: Joi.string().trim().min(1).max(100),
-      statusBayar: Joi.string().trim(),
+      statusBayar: Joi.string()
+        .trim()
+        .valid('Belum Bayar', 'Sedang Diverifikasi', 'Berhasil Diverifikasi', 'Bukti Pembayaran Ditolak'),
     })
     .min(1),
 };

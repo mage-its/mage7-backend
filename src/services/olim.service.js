@@ -1,8 +1,9 @@
 const multer = require('multer');
 const path = require('path');
 const httpStatus = require('http-status');
-const { Olim } = require('../models');
+const { Olim, User } = require('../models');
 const ApiError = require('../utils/ApiError');
+const { removeFilePaths } = require('../utils/removeFile');
 
 const storage = multer.diskStorage({
   destination: './public/uploads/olim',
@@ -31,10 +32,7 @@ const upload = multer({
     fileSize: 1000000, // 1000000 Bytes = 1 MB
   },
   fileFilter(req, file, cb) {
-    if (!file.originalname.match(/\.(png|jpg)$/)) {
-      checkFileType(file, cb);
-    }
-    cb(null, true);
+    checkFileType(file, cb);
   },
 });
 
@@ -55,9 +53,17 @@ const simpanDataOlim = async (req) => {
   olim.pathSuratKeteranganSiswa = files.suratKeteranganSiswa[0].path;
   olim.user = user.id;
   user.registeredComp = 'olim';
-  await olim.save();
   await user.save();
-  return olim;
+  return olim.save();
+};
+
+/**
+ * Get olim by userId
+ * @param {ObjectId} userId
+ * @returns {Promise<Olim>}
+ */
+const getOlimByUserId = async (userId) => {
+  return Olim.findOne({ user: userId });
 };
 
 const queryOlims = async (filter, options) => {
@@ -95,12 +101,24 @@ const updateOlimById = async (olimId, updateBody) => {
  * @param {ObjectId} olimId
  * @returns {Promise<User>}
  */
-const deleteOlimById = async (olimId) => {
-  const olim = await getOlimById(olimId);
+const deleteOlimById = async (olimId, olimObj = null, userObj = null) => {
+  const olim = olimObj || (await getOlimById(olimId));
   if (!olim) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
   }
+  const user = userObj || (await User.findById(olim.user));
+  if (user) {
+    user.registeredComp = '';
+  }
+  await removeFilePaths([
+    olim.pathIdentitasKetua,
+    olim.pathIdentitasAnggota1,
+    olim.pathIdentitasAnggota2,
+    olim.pathSuratKeteranganSiswa,
+  ]);
   await olim.remove();
+  await olim.remove();
+  await user.save();
   return olim;
 };
 
@@ -110,6 +128,7 @@ module.exports = {
   simpanDataOlim,
   queryOlims,
   getOlimById,
+  getOlimByUserId,
   updateOlimById,
   deleteOlimById,
 };

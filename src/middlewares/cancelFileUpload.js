@@ -1,16 +1,8 @@
-const { promisify } = require('util');
-const { unlink } = require('fs');
-
-const unlinkAsync = promisify(unlink);
+const { removeFile } = require('../utils/removeFile');
 
 const cancelFileUpload = () => async (err, req, res, next) => {
   if (req.files) {
-    const { files } = req;
-    const cleanedKeys = Object.keys(files).filter((key) => {
-      return files[key]?.[0]?.path;
-    });
-    const promises = cleanedKeys.map(async (key) => unlinkAsync(files[key][0].path));
-    await Promise.all(promises);
+    await removeFile(req.files);
   }
   next(err);
 };
