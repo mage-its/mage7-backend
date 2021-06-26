@@ -43,10 +43,9 @@ const multiUploads = upload.fields([
   { name: 'suratKeteranganSiswa', maxCount: 1 },
 ]);
 
-const daftarOlim = async (olimBody) => new Olim(olimBody);
-
-const simpanDataOlim = async (req) => {
-  const { olim, user, files } = req;
+const daftarOlim = async (req) => {
+  const { user, files, body } = req;
+  const olim = new Olim(body);
   olim.pathIdentitasKetua = files.identitasKetua[0].path;
   olim.pathIdentitasAnggota1 = files.identitasAnggota1[0].path;
   olim.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
@@ -125,7 +124,6 @@ const deleteOlimById = async (olimId, olimObj = null, userObj = null) => {
 module.exports = {
   daftarOlim,
   multiUploads,
-  simpanDataOlim,
   queryOlims,
   getOlimById,
   getOlimByUserId,
