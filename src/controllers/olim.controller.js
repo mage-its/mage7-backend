@@ -5,9 +5,24 @@ const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 
 const daftarOlim = catchAsync(async (req, res) => {
-  await userService.checkEmailVerification(req.user.id);
-  await userService.isRegistered(req.user.id);
-  const [olim] = await olimService.daftarOlim(req);
+  const { body, files, user } = req;
+  await userService.checkEmailVerification(user.id);
+  await userService.isRegistered(user.id);
+  const [olim] = await olimService.daftarOlim(body, files, user);
+  res.status(httpStatus.CREATED).send({ olim });
+});
+
+const updateProfile = catchAsync(async (req, res) => {
+  const olim = await olimService.updateOlimByUserId(req.user.id, req.body);
+  res.send(olim);
+});
+
+const createOlim = catchAsync(async (req, res) => {
+  const { userId } = req.params;
+  const { body, files } = req;
+  await userService.checkEmailVerification(userId);
+  await userService.isRegistered(userId);
+  const [olim] = await olimService.createOlim(body, files, userId);
   res.status(httpStatus.CREATED).send({ olim });
 });
 
@@ -38,6 +53,8 @@ const deleteOlim = catchAsync(async (req, res) => {
 
 module.exports = {
   daftarOlim,
+  updateProfile,
+  createOlim,
   getOlims,
   getOlim,
   updateOlim,

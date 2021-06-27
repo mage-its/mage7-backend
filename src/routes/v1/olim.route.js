@@ -1,4 +1,5 @@
 const express = require('express');
+const form = require('multer')().none();
 const validate = require('../../middlewares/validate');
 const olimValidation = require('../../validations/olim.validation');
 const olimController = require('../../controllers/olim.controller');
@@ -7,6 +8,8 @@ const readForm = require('../../middlewares/readForm');
 const cancelFileUpload = require('../../middlewares/cancelFileUpload');
 
 const router = express.Router();
+
+// User route
 
 router.post(
   '/daftar-olim',
@@ -17,12 +20,25 @@ router.post(
   cancelFileUpload()
 );
 
-router.get('/', auth('manageUsers'), validate(olimValidation.getOlims), olimController.getOlims);
+router.patch('/update-profile', auth(), form, validate(olimValidation.updateProfile), olimController.updateProfile);
+
+// Admin route
+
+router.get('/', auth('getUsers'), validate(olimValidation.getOlims), olimController.getOlims);
+
+router.post(
+  '/:userId',
+  auth('manageUsers'),
+  readForm('olim'),
+  validate(olimValidation.createOlim),
+  olimController.createOlim,
+  cancelFileUpload()
+);
 
 router
   .route('/:olimId')
   .get(auth('getUsers'), validate(olimValidation.getOlim), olimController.getOlim)
-  .patch(auth('manageUsers'), validate(olimValidation.updateOlim), olimController.updateOlim)
+  .patch(auth('manageUsers'), form, validate(olimValidation.updateOlim), olimController.updateOlim)
   .delete(auth('manageUsers'), validate(olimValidation.deleteOlim), olimController.deleteOlim);
 
 module.exports = router;

@@ -3,6 +3,11 @@ const { toJSON, paginate } = require('./plugins');
 
 const olimSchema = mongoose.Schema(
   {
+    noPeserta: {
+      type: String,
+      required: true,
+      index: true,
+    },
     namaTim: {
       type: String,
       required: true,
@@ -31,25 +36,24 @@ const olimSchema = mongoose.Schema(
     pathIdentitasKetua: {
       type: String,
       required: true,
-      private: true,
     },
     namaAnggota1: {
       type: String,
-      required: true,
       trim: true,
+      default: null,
     },
     namaAnggota2: {
       type: String,
-      required: true,
       trim: true,
+      default: null,
     },
     pathIdentitasAnggota1: {
       type: String,
-      required: true,
+      default: null,
     },
     pathIdentitasAnggota2: {
       type: String,
-      required: true,
+      default: null,
     },
     asalInstansi: {
       type: String,
@@ -65,7 +69,15 @@ const olimSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    asalKota: {
+      type: String,
+      required: true,
+    },
     asalInfo: {
+      type: String,
+      required: true,
+    },
+    price: {
       type: String,
       required: true,
     },

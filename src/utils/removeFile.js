@@ -1,5 +1,5 @@
 const { promisify } = require('util');
-const { unlink } = require('fs');
+const { unlink, existsSync } = require('fs');
 
 const unlinkAsync = promisify(unlink);
 
@@ -12,7 +12,8 @@ const removeFile = async (files) => {
 };
 
 const removeFilePaths = async (paths) => {
-  const promises = paths.map(async (path) => unlinkAsync(path));
+  const existPaths = paths.filter((path) => existsSync(path));
+  const promises = existPaths.map(async (path) => unlinkAsync(path));
   await Promise.all(promises);
 };
 

@@ -1,6 +1,7 @@
 const multer = require('multer');
 const path = require('path');
 const httpStatus = require('http-status');
+const kodeBayarService = require('./kodeBayar.service');
 const { Olim, User } = require('../models');
 const ApiError = require('../utils/ApiError');
 const { removeFilePaths } = require('../utils/removeFile');
@@ -43,18 +44,6 @@ const multiUploads = upload.fields([
   { name: 'suratKeteranganSiswa', maxCount: 1 },
 ]);
 
-const daftarOlim = async (req) => {
-  const { user, files, body } = req;
-  const olim = new Olim(body);
-  olim.pathIdentitasKetua = files.identitasKetua[0].path;
-  olim.pathIdentitasAnggota1 = files.identitasAnggota1[0].path;
-  olim.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
-  olim.pathSuratKeteranganSiswa = files.suratKeteranganSiswa[0].path;
-  olim.user = user.id;
-  user.registeredComp = 'olim';
-  return Promise.all([olim.save(), user.save()]);
-};
-
 /**
  * Get olim by userId
  * @param {ObjectId} userId
@@ -62,6 +51,81 @@ const daftarOlim = async (req) => {
  */
 const getOlimByUserId = async (userId) => {
   return Olim.findOne({ user: userId });
+};
+
+const daftarOlim = async (olimBody, files, user) => {
+  const olim = new Olim(olimBody);
+
+  if (!files.identitasKetua) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Identitas ketua WAJIB diberikan');
+  }
+  olim.pathIdentitasKetua = files.identitasKetua[0].path;
+
+  if (files.pathIdentitasAnggota1?.[0]?.path) {
+    olim.pathIdentitasAnggota1 = files.identitasAnggota1[0].path;
+    if (files.pathIdentitasAnggota2?.[0]?.path) {
+      olim.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
+    } else {
+      olim.namaAnggota2 = null;
+    }
+  } else {
+    olim.namaAnggota1 = null;
+    olim.namaAnggota2 = null;
+  }
+
+  if (!files.suratKeteranganSiswa) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Surat keterangan siswa WAJIB diberikan');
+  }
+  olim.pathSuratKeteranganSiswa = files.suratKeteranganSiswa[0].path;
+  olim.user = user.id;
+
+  const kode = await kodeBayarService.getKodeBayarByCabang('olim');
+
+  const noUrut = kode.no.toString().padStart(3, '0');
+
+  olim.noPeserta = `OLI0${noUrut}`;
+  olim.price = `${kode.price}.${noUrut}`;
+
+  // eslint-disable-next-line no-param-reassign
+  user.registeredComp = 'olim';
+  return Promise.all([olim.save(), user.save(), kodeBayarService.incNoUrut('olim', kode)]);
+};
+
+/**
+ * Update olim by userId
+ * @param {ObjectId} userId
+ * @param {Object} updateBody
+ * @returns {Promise<Olim>}
+ */
+const updateOlimByUserId = async (userId, updateBody) => {
+  const olim = await getOlimByUserId(userId);
+  if (!olim) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
+  }
+  Object.assign(olim, updateBody);
+  if (olim.pathIdentitasAnggota1 === null) {
+    olim.namaAnggota1 = null;
+  }
+  if (olim.pathIdentitasAnggota2 === null) {
+    olim.namaAnggota2 = null;
+  }
+  await olim.save();
+  return olim;
+};
+
+const createOlim = async (olimBody, files, userId) => {
+  const olim = new Olim(olimBody);
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  olim.pathIdentitasKetua = files.identitasKetua[0].path;
+  olim.pathIdentitasAnggota1 = files.identitasAnggota1[0].path;
+  olim.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
+  olim.pathSuratKeteranganSiswa = files.suratKeteranganSiswa[0].path;
+  olim.user = user.id;
+  user.registeredComp = 'olim';
+  return Promise.all([olim.save(), user.save()]);
 };
 
 const queryOlims = async (filter, options) => {
@@ -90,6 +154,12 @@ const updateOlimById = async (olimId, updateBody) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
   }
   Object.assign(olim, updateBody);
+  if (olim.pathIdentitasAnggota1 === null) {
+    olim.namaAnggota1 = null;
+  }
+  if (olim.pathIdentitasAnggota2 === null) {
+    olim.namaAnggota2 = null;
+  }
   await olim.save();
   return olim;
 };
@@ -122,8 +192,10 @@ module.exports = {
   daftarOlim,
   multiUploads,
   queryOlims,
+  createOlim,
   getOlimById,
   getOlimByUserId,
   updateOlimById,
+  updateOlimByUserId,
   deleteOlimById,
 };
