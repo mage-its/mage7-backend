@@ -114,7 +114,7 @@ const deleteOlimById = async (olimId, olimObj = null, userObj = null) => {
     olim.pathIdentitasAnggota2,
     olim.pathSuratKeteranganSiswa,
   ]);
-  Promise.all([olim.remove(), user.save()]);
+  await Promise.all([olim.remove(), user.save()]);
   return olim;
 };
 
