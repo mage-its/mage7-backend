@@ -7,7 +7,7 @@ const ApiError = require('../utils/ApiError');
 const daftarOlim = catchAsync(async (req, res) => {
   await userService.checkEmailVerification(req.user.id);
   await userService.isRegistered(req.user.id);
-  const olim = await olimService.daftarOlim(req);
+  const olim = (await olimService.daftarOlim(req))[0];
   res.status(httpStatus.CREATED).send({ olim });
 });
 

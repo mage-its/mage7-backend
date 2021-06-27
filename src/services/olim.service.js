@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
 
 const checkFileType = (file, cb) => {
   // Allowed ext
-  const filetypes = /(?:jp(?:eg|g)|p(?:df|ng))/; // /jpeg|jpg|png|pdf/
+  const filetypes = /(?:jp(?:eg|g)|p(?:df|ng))$/; // /jpeg|jpg|png|pdf/
   // Check ext
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   // Check mime
@@ -23,7 +23,7 @@ const checkFileType = (file, cb) => {
   if (mimetype && extname) {
     return cb(null, true);
   }
-  cb('Please upload an Image');
+  cb(new ApiError(httpStatus.BAD_REQUEST, 'Please upload an Image or PDF'));
 };
 
 const upload = multer({
@@ -52,8 +52,7 @@ const daftarOlim = async (req) => {
   olim.pathSuratKeteranganSiswa = files.suratKeteranganSiswa[0].path;
   olim.user = user.id;
   user.registeredComp = 'olim';
-  await user.save();
-  return olim.save();
+  return Promise.all([olim.save(), user.save()]);
 };
 
 /**
@@ -115,9 +114,7 @@ const deleteOlimById = async (olimId, olimObj = null, userObj = null) => {
     olim.pathIdentitasAnggota2,
     olim.pathSuratKeteranganSiswa,
   ]);
-  await olim.remove();
-  await olim.remove();
-  await user.save();
+  Promise.all([olim.remove(), user.save()]);
   return olim;
 };
 
