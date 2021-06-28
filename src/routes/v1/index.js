@@ -4,7 +4,7 @@ const userRoute = require('./user.route');
 const docsRoute = require('./docs.route');
 const olimRoute = require('./olim.route');
 const kodeBayarRoute = require('./kodeBayar.route');
-const config = require('../../config/config');
+// const config = require('../../config/config');
 
 const router = express.Router();
 
@@ -40,10 +40,10 @@ defaultRoutes.forEach((route) => {
 });
 
 /* istanbul ignore next */
-if (config.env === 'development') {
-  devRoutes.forEach((route) => {
-    router.use(route.path, route.route);
-  });
-}
+// if (config.env === 'development') {
+devRoutes.forEach((route) => {
+  router.use(route.path, route.route);
+});
+// }
 
 module.exports = router;
