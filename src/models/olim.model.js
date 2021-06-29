@@ -83,7 +83,7 @@ const olimSchema = mongoose.Schema(
     },
     pathBuktiBayar: {
       type: String,
-      default: '',
+      default: null,
     },
     statusBayar: {
       type: String,

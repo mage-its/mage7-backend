@@ -40,7 +40,7 @@ const userSchema = mongoose.Schema(
     },
     registeredComp: {
       type: String,
-      enum: ['', 'olim', 'devcom'],
+      enum: ['', 'olim', 'gamedev', 'appdev', 'iotdev'],
       default: '',
     },
     role: {

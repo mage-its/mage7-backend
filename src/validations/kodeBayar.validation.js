@@ -2,9 +2,9 @@ const Joi = require('joi');
 
 const createKodeBayar = {
   body: Joi.object().keys({
-    name: Joi.string().required().valid('olim', 'gdevm', 'adevm', 'idevm', 'gdevs', 'adevs'),
-    no: Joi.number().integer().required(),
-    price: Joi.number().integer().required(),
+    name: Joi.string().required().valid('olim', 'gdevm', 'adevm', 'idev', 'gdevs', 'adevs'),
+    no: Joi.number().integer().min(1),
+    price: Joi.number().integer().min(1).required(),
   }),
 };
 

@@ -3,10 +3,28 @@ const { toJSON, paginate } = require('./plugins');
 
 const gameDevSchema = mongoose.Schema(
   {
+    kategori: {
+      type: String,
+      required: true,
+      enum: ['Siswa', 'Mahasiswa'],
+    },
     noPeserta: {
       type: String,
       required: true,
       index: true,
+    },
+    namaPembimbing: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    hpPembimbing: {
+      type: String,
+      required: true,
+    },
+    waPembimbing: {
+      type: String,
+      required: true,
     },
     namaTim: {
       type: String,
@@ -67,7 +85,7 @@ const gameDevSchema = mongoose.Schema(
     },
     pathSuratKeteranganSiswa: {
       type: String,
-      required: true,
+      default: null,
     },
     asalKota: {
       type: String,
@@ -83,12 +101,20 @@ const gameDevSchema = mongoose.Schema(
     },
     pathBuktiBayar: {
       type: String,
-      default: '',
+      default: null,
     },
     statusBayar: {
       type: String,
       enum: ['Not Verified', 'Verified'],
       default: 'Not Verified',
+    },
+    pathProposal: {
+      type: String,
+      default: null,
+    },
+    tahap: {
+      type: Number,
+      default: 1,
     },
     user: {
       type: mongoose.SchemaTypes.ObjectId,

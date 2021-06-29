@@ -12,7 +12,7 @@ const removeFile = async (files) => {
 };
 
 const removeFilePaths = async (paths) => {
-  const existPaths = paths.filter((path) => existsSync(path));
+  const existPaths = paths.filter((path) => existsSync(path) && path);
   const promises = existPaths.map(async (path) => unlinkAsync(path));
   await Promise.all(promises);
 };
