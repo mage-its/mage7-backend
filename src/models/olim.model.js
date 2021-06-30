@@ -81,6 +81,14 @@ const olimSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    sudahUploadBuktiBayar: {
+      type: Boolean,
+      default: false,
+    },
+    namaBayar: {
+      type: String,
+      default: null,
+    },
     pathBuktiBayar: {
       type: String,
       default: null,
@@ -106,6 +114,12 @@ const olimSchema = mongoose.Schema(
 // add plugin that converts mongoose to json
 olimSchema.plugin(toJSON);
 olimSchema.plugin(paginate);
+
+olimSchema.pre('save', async function (next) {
+  const olim = this;
+  olim.sudahUploadBuktiBayar = !!olim.pathBuktiBayar && !!olim.namaBayar;
+  next();
+});
 
 /**
  * @typedef Olim

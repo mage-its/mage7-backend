@@ -5,6 +5,7 @@ const docsRoute = require('./docs.route');
 const olimRoute = require('./olim.route');
 const gameDevRoute = require('./gameDev.route');
 const kodeBayarRoute = require('./kodeBayar.route');
+const paymentRoute = require('./payment.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -29,6 +30,10 @@ const defaultRoutes = [
   {
     path: '/kodebayar',
     route: kodeBayarRoute,
+  },
+  {
+    path: '/payment',
+    route: paymentRoute,
   },
 ];
 

@@ -5,6 +5,7 @@ const kodeBayarService = require('./kodeBayar.service');
 const { Olim, User } = require('../models');
 const ApiError = require('../utils/ApiError');
 const { removeFilePaths } = require('../utils/removeFile');
+const isImageOrPdf = require('../utils/isImageOrPdf');
 
 const storage = multer.diskStorage({
   destination: './public/uploads/olim',
@@ -14,27 +15,13 @@ const storage = multer.diskStorage({
   },
 });
 
-const checkFileType = (file, cb) => {
-  // Allowed ext
-  const filetypes = /(?:jp(?:eg|g)|p(?:df|ng))$/; // /jpeg|jpg|png|pdf/
-  // Check ext
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  // Check mime
-  const mimetype = filetypes.test(file.mimetype);
-
-  if (mimetype && extname) {
-    return cb(null, true);
-  }
-  cb(new ApiError(httpStatus.BAD_REQUEST, 'Please upload an Image or PDF'));
-};
-
 const upload = multer({
   storage,
   limits: {
     fileSize: 1000000, // 1000000 Bytes = 1 MB
   },
   fileFilter(req, file, cb) {
-    checkFileType(file, cb);
+    isImageOrPdf(file, cb);
   },
 });
 
@@ -128,16 +115,16 @@ const createOlim = async (olimBody, files, userId) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-  if (files.pathIdentitasAnggota1?.[0]?.path) {
+  if (files.identitasAnggota1?.[0]?.path) {
     olim.pathIdentitasAnggota1 = files.identitasAnggota1[0].path;
   }
-  if (files.pathIdentitasAnggota2?.[0]?.path) {
+  if (files.identitasAnggota2?.[0]?.path) {
     olim.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
   }
-  if (files.pathSuratKeteranganSiswa?.[0]?.path) {
+  if (files.suratKeteranganSiswa?.[0]?.path) {
     olim.pathSuratKeteranganSiswa = files.suratKeteranganSiswa[0].path;
   }
-  if (files.pathIdentitasKetua?.[0]?.path) {
+  if (files.identitasKetua?.[0]?.path) {
     olim.pathIdentitasKetua = files.identitasKetua[0].path;
   }
   olim.user = user.id;

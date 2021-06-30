@@ -5,6 +5,7 @@ const kodeBayarService = require('./kodeBayar.service');
 const { GameDev, User } = require('../models');
 const ApiError = require('../utils/ApiError');
 const { removeFilePaths } = require('../utils/removeFile');
+const isImageOrPdf = require('../utils/isImageOrPdf');
 
 const storage = multer.diskStorage({
   destination: './public/uploads/gamedev',
@@ -14,27 +15,13 @@ const storage = multer.diskStorage({
   },
 });
 
-const checkFileType = (file, cb) => {
-  // Allowed ext
-  const filetypes = /(?:jp(?:eg|g)|p(?:df|ng))$/; // /jpeg|jpg|png|pdf/
-  // Check ext
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  // Check mime
-  const mimetype = filetypes.test(file.mimetype);
-
-  if (mimetype && extname) {
-    return cb(null, true);
-  }
-  cb(new ApiError(httpStatus.BAD_REQUEST, 'Please upload an Image or PDF'));
-};
-
 const upload = multer({
   storage,
   limits: {
     fileSize: 1000000, // 1000000 Bytes = 1 MB
   },
   fileFilter(req, file, cb) {
-    checkFileType(file, cb);
+    isImageOrPdf(file, cb);
   },
 });
 

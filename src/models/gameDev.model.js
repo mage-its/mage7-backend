@@ -99,6 +99,14 @@ const gameDevSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    sudahUploadBuktiBayar: {
+      type: Boolean,
+      default: false,
+    },
+    namaBayar: {
+      type: String,
+      default: null,
+    },
     pathBuktiBayar: {
       type: String,
       default: null,
@@ -132,6 +140,12 @@ const gameDevSchema = mongoose.Schema(
 // add plugin that converts mongoose to json
 gameDevSchema.plugin(toJSON);
 gameDevSchema.plugin(paginate);
+
+gameDevSchema.pre('save', async function (next) {
+  const gameDev = this;
+  gameDev.sudahUploadBuktiBayar = !!gameDev.pathBuktiBayar && !!gameDev.namaBayar;
+  next();
+});
 
 /**
  * @typedef GameDev
