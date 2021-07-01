@@ -49,14 +49,14 @@ const daftarAppDev = async (appDevBody, files, user) => {
   }
   appDev.pathIdentitasKetua = files.identitasKetua[0].path;
 
-  if (files.identitasAnggota1?.[0]?.path && appdev.namaAnggota1) {
+  if (files.identitasAnggota1?.[0]?.path && appDev.namaAnggota1) {
     appDev.pathIdentitasAnggota1 = files.identitasAnggota1[0].path;
-    if (files.identitasAnggota2?.[0]?.path && appdev.namaAnggota2) {
+    if (files.identitasAnggota2?.[0]?.path && appDev.namaAnggota2) {
       appDev.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
     } else if (appDev.namaAnggota2) {
-        throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
     }
-} else if (appDev.namaAnggota1) {
+  } else if (appDev.namaAnggota1) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
   }
 
@@ -66,7 +66,7 @@ const daftarAppDev = async (appDevBody, files, user) => {
 
   if (!appDev.namaAnggota2 && files.identitasAnggota2?.[0]?.path) {
     removeFilePaths([files.identitasAnggota2[0].path]);
-    }
+  }
 
   if (appDevBody.kategori === 'Siswa') {
     if (!files.suratKeteranganSiswa) {
@@ -126,7 +126,7 @@ const createAppDev = async (appDevBody, files, userId) => {
     appDev.pathIdentitasAnggota1 = files.identitasAnggota1[0].path;
   }
   if (files.identitasAnggota2?.[0]?.path) {
-   appDev.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
+    appDev.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
   }
   if (files.suratKeteranganSiswa?.[0]?.path) {
     appDev.pathSuratKeteranganSiswa = files.suratKeteranganSiswa[0].path;
@@ -144,6 +144,7 @@ const createAppDev = async (appDevBody, files, userId) => {
 
   appDev.noPeserta = `DCA${noUrutPrefix}${noUrut}`;
   appDev.price = `${kode.price}.${noUrut}`;
+  appDev.user = user.id;
 
   // eslint-disable-next-line no-param-reassign
   user.registeredComp = 'appdev';

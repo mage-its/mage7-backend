@@ -15,16 +15,16 @@ const appDevSchema = mongoose.Schema(
     },
     namaPembimbing: {
       type: String,
-      default:null,
+      default: null,
       trim: true,
     },
     hpPembimbing: {
       type: String,
-      default:null,
+      default: null,
     },
     waPembimbing: {
       type: String,
-      default:null,
+      default: null,
     },
     namaTim: {
       type: String,
