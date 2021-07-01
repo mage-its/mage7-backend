@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { toJSON, paginate } = require('./plugins');
 
-const gameDevSchema = mongoose.Schema(
+const appDevSchema = mongoose.Schema(
   {
     kategori: {
       type: String,
@@ -15,16 +15,16 @@ const gameDevSchema = mongoose.Schema(
     },
     namaPembimbing: {
       type: String,
-      default: null,
+      default:null,
       trim: true,
     },
     hpPembimbing: {
       type: String,
-      default: null,
+      default:null,
     },
     waPembimbing: {
       type: String,
-      default: null,
+      default:null,
     },
     namaTim: {
       type: String,
@@ -138,18 +138,18 @@ const gameDevSchema = mongoose.Schema(
 );
 
 // add plugin that converts mongoose to json
-gameDevSchema.plugin(toJSON);
-gameDevSchema.plugin(paginate);
+appDevSchema.plugin(toJSON);
+appDevSchema.plugin(paginate);
 
-gameDevSchema.pre('save', async function (next) {
-  const gameDev = this;
-  gameDev.sudahUploadBuktiBayar = !!gameDev.pathBuktiBayar && !!gameDev.namaBayar;
+appDevSchema.pre('save', async function (next) {
+  const appDev = this;
+  appDev.sudahUploadBuktiBayar = !!appDev.pathBuktiBayar && !!appDev.namaBayar;
   next();
 });
 
 /**
- * @typedef GameDev
+ * @typedef AppDev
  */
-const GameDev = mongoose.model('GameDev', gameDevSchema);
+const AppDev = mongoose.model('AppDev', appDevSchema);
 
-module.exports = GameDev;
+module.exports = AppDev;

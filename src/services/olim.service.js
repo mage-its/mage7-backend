@@ -5,27 +5,15 @@ const kodeBayarService = require('./kodeBayar.service');
 const { Olim, User } = require('../models');
 const ApiError = require('../utils/ApiError');
 const { removeFilePaths } = require('../utils/removeFile');
+const isImageOrPdf = require('../utils/isImageOrPdf');
 
 const storage = multer.diskStorage({
   destination: './public/uploads/olim',
   filename: (req, file, cb) => {
-    cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
+    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e6)}`;
+    cb(null, `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`);
   },
 });
-
-const checkFileType = (file, cb) => {
-  // Allowed ext
-  const filetypes = /(?:jp(?:eg|g)|p(?:df|ng))$/; // /jpeg|jpg|png|pdf/
-  // Check ext
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  // Check mime
-  const mimetype = filetypes.test(file.mimetype);
-
-  if (mimetype && extname) {
-    return cb(null, true);
-  }
-  cb(new ApiError(httpStatus.BAD_REQUEST, 'Please upload an Image or PDF'));
-};
 
 const upload = multer({
   storage,
@@ -33,7 +21,7 @@ const upload = multer({
     fileSize: 1000000, // 1000000 Bytes = 1 MB
   },
   fileFilter(req, file, cb) {
-    checkFileType(file, cb);
+    isImageOrPdf(file, cb);
   },
 });
 
@@ -61,16 +49,23 @@ const daftarOlim = async (olimBody, files, user) => {
   }
   olim.pathIdentitasKetua = files.identitasKetua[0].path;
 
-  if (files.pathIdentitasAnggota1?.[0]?.path) {
+  if (files.identitasAnggota1?.[0]?.path && olim.namaAnggota1) {
     olim.pathIdentitasAnggota1 = files.identitasAnggota1[0].path;
-    if (files.pathIdentitasAnggota2?.[0]?.path) {
+    if (files.identitasAnggota2?.[0]?.path && olim.namaAnggota2) {
       olim.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
-    } else {
-      olim.namaAnggota2 = null;
+    } else if (olim.namaAnggota2) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
     }
-  } else {
-    olim.namaAnggota1 = null;
-    olim.namaAnggota2 = null;
+  } else if (olim.namaAnggota1) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
+  }
+
+  if (!olim.namaAnggota1 && files.identitasAnggota1?.[0]?.path) {
+    removeFilePaths([files.identitasAnggota1[0].path]);
+  }
+
+  if (!olim.namaAnggota2 && files.identitasAnggota2?.[0]?.path) {
+    removeFilePaths([files.identitasAnggota2[0].path]);
   }
 
   if (!files.suratKeteranganSiswa) {
@@ -119,10 +114,18 @@ const createOlim = async (olimBody, files, userId) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-  olim.pathIdentitasKetua = files.identitasKetua[0].path;
-  olim.pathIdentitasAnggota1 = files.identitasAnggota1[0].path;
-  olim.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
-  olim.pathSuratKeteranganSiswa = files.suratKeteranganSiswa[0].path;
+  if (files.identitasAnggota1?.[0]?.path) {
+    olim.pathIdentitasAnggota1 = files.identitasAnggota1[0].path;
+  }
+  if (files.identitasAnggota2?.[0]?.path) {
+    olim.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
+  }
+  if (files.suratKeteranganSiswa?.[0]?.path) {
+    olim.pathSuratKeteranganSiswa = files.suratKeteranganSiswa[0].path;
+  }
+  if (files.identitasKetua?.[0]?.path) {
+    olim.pathIdentitasKetua = files.identitasKetua[0].path;
+  }
   olim.user = user.id;
   user.registeredComp = 'olim';
   return Promise.all([olim.save(), user.save()]);
@@ -183,6 +186,7 @@ const deleteOlimById = async (olimId, olimObj = null, userObj = null) => {
     olim.pathIdentitasAnggota1,
     olim.pathIdentitasAnggota2,
     olim.pathSuratKeteranganSiswa,
+    olim.pathBuktiBayar,
   ]);
   await Promise.all([olim.remove(), user.save()]);
   return olim;

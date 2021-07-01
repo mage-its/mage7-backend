@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { toJSON, paginate } = require('./plugins');
 
-const kodeBayarSchema = mongoose.Schema(
+const kodePromoSchema = mongoose.Schema(
   {
     name: {
       type: String,
@@ -25,12 +25,12 @@ const kodeBayarSchema = mongoose.Schema(
 );
 
 // add plugin that converts mongoose to json
-kodeBayarSchema.plugin(toJSON);
-kodeBayarSchema.plugin(paginate);
+kodePromoSchema.plugin(toJSON);
+kodePromoSchema.plugin(paginate);
 
 /**
- * @typedef KodeBayar
+ * @typedef KodePromo
  */
-const kodeBayar = mongoose.model('KodeBayar', kodeBayarSchema);
+const kodePromo = mongoose.model('KodePromo', kodePromoSchema);
 
-module.exports = kodeBayar;
+module.exports = kodePromo;
