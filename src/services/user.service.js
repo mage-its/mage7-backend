@@ -1,7 +1,10 @@
 const httpStatus = require('http-status');
 const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
+<<<<<<< HEAD
 const olimService = require('./olim.service');
+=======
+>>>>>>> a531d754c3f0eb12475da89319af70a8575cbab2
 
 /**
  * Create a user
@@ -48,6 +51,7 @@ const getUserByEmail = async (email) => {
   return User.findOne({ email });
 };
 
+<<<<<<< HEAD
 const checkEmailVerification = async (userId) => {
   const verifiedUser = await User.findOne({ _id: userId, isEmailVerified: true });
   if (!verifiedUser) {
@@ -61,6 +65,8 @@ const isRegistered = async (userId) => {
   }
 };
 
+=======
+>>>>>>> a531d754c3f0eb12475da89319af70a8575cbab2
 /**
  * Update user by id
  * @param {ObjectId} userId
@@ -90,6 +96,7 @@ const deleteUserById = async (userId) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
+<<<<<<< HEAD
   switch (user.registeredComp) {
     case 'olim': {
       const olim = await olimService.getOlimByUserId(user.id);
@@ -101,6 +108,8 @@ const deleteUserById = async (userId) => {
     default:
       break;
   }
+=======
+>>>>>>> a531d754c3f0eb12475da89319af70a8575cbab2
   await user.remove();
   return user;
 };
@@ -112,6 +121,9 @@ module.exports = {
   getUserByEmail,
   updateUserById,
   deleteUserById,
+<<<<<<< HEAD
   checkEmailVerification,
   isRegistered,
+=======
+>>>>>>> a531d754c3f0eb12475da89319af70a8575cbab2
 };

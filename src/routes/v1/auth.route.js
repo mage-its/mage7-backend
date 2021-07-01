@@ -1,12 +1,18 @@
 const express = require('express');
+<<<<<<< HEAD
 const upload = require('multer')();
+=======
+>>>>>>> a531d754c3f0eb12475da89319af70a8575cbab2
 const validate = require('../../middlewares/validate');
 const authValidation = require('../../validations/auth.validation');
 const authController = require('../../controllers/auth.controller');
 const auth = require('../../middlewares/auth');
 
 const router = express.Router();
+<<<<<<< HEAD
 router.use(upload.none());
+=======
+>>>>>>> a531d754c3f0eb12475da89319af70a8575cbab2
 
 router.post('/register', validate(authValidation.register), authController.register);
 router.post('/login', validate(authValidation.login), authController.login);
