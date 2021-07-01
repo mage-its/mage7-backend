@@ -144,6 +144,7 @@ const createGameDev = async (gameDevBody, files, userId) => {
 
   gameDev.noPeserta = `DCG${noUrutPrefix}${noUrut}`;
   gameDev.price = `${kode.price}.${noUrut}`;
+  gameDev.user = user.id;
 
   // eslint-disable-next-line no-param-reassign
   user.registeredComp = 'gamedev';
