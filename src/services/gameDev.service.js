@@ -49,18 +49,24 @@ const daftarGameDev = async (gameDevBody, files, user) => {
   }
   gameDev.pathIdentitasKetua = files.identitasKetua[0].path;
 
-  if (files.identitasAnggota1?.[0]?.path) {
+  if (files.identitasAnggota1?.[0]?.path && gameDev.namaAnggota1) {
     gameDev.pathIdentitasAnggota1 = files.identitasAnggota1[0].path;
-    if (files.identitasAnggota2?.[0]?.path) {
+    if (files.identitasAnggota2?.[0]?.path && gameDev.namaAnggota2) {
       gameDev.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
-    } else {
-      gameDev.namaAnggota2 = null;
+    } else if (gameDev.namaAnggota2) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
     }
-  } else {
-    gameDev.namaAnggota1 = null;
-    gameDev.namaAnggota2 = null;
+  } else if (gameDev.namaAnggota1) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
   }
 
+  if (!gameDev.namaAnggota1 && files.identitasAnggota1?.[0]?.path) {
+    removeFilePaths([files.identitasAnggota1[0].path]);
+  }
+
+  if (!gameDev.namaAnggota2 && files.identitasAnggota2?.[0]?.path) {
+    removeFilePaths([files.identitasAnggota2[0].path]);
+  }
   if (gameDevBody.kategori === 'Siswa') {
     if (!files.suratKeteranganSiswa) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Surat keterangan siswa WAJIB diberikan bagi peserta kategori siswa');
@@ -199,6 +205,7 @@ const deleteGameDevById = async (gameDevId, gameDevObj = null, userObj = null) =
     gameDev.pathIdentitasAnggota2,
     gameDev.pathSuratKeteranganSiswa,
     gameDev.pathProposal,
+    gameDev.pathBuktiBayar,
   ]);
   await Promise.all([gameDev.remove(), user.save()]);
   return gameDev;

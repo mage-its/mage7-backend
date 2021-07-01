@@ -49,17 +49,24 @@ const daftarAppDev = async (appDevBody, files, user) => {
   }
   appDev.pathIdentitasKetua = files.identitasKetua[0].path;
 
-  if (files.identitasAnggota1?.[0]?.path) {
+  if (files.identitasAnggota1?.[0]?.path && appdev.namaAnggota1) {
     appDev.pathIdentitasAnggota1 = files.identitasAnggota1[0].path;
-    if (files.identitasAnggota2?.[0]?.path) {
+    if (files.identitasAnggota2?.[0]?.path && appdev.namaAnggota2) {
       appDev.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
-    } else {
-      appDev.namaAnggota2 = null;
+    } else if (appDev.namaAnggota2) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
     }
-  } else {
-    appDev.namaAnggota1 = null;
-    appDev.namaAnggota2 = null;
+} else if (appDev.namaAnggota1) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
   }
+
+  if (!appDev.namaAnggota1 && files.identitasAnggota1?.[0]?.path) {
+    removeFilePaths([files.identitasAnggota1[0].path]);
+  }
+
+  if (!appDev.namaAnggota2 && files.identitasAnggota2?.[0]?.path) {
+    removeFilePaths([files.identitasAnggota2[0].path]);
+    }
 
   if (appDevBody.kategori === 'Siswa') {
     if (!files.suratKeteranganSiswa) {
@@ -199,6 +206,7 @@ const deleteAppDevById = async (appDevId, appDevObj = null, userObj = null) => {
     appDev.pathIdentitasAnggota2,
     appDev.pathSuratKeteranganSiswa,
     appDev.pathProposal,
+    appDev.pathBuktiBayar,
   ]);
   await Promise.all([appDev.remove(), user.save()]);
   return appDev;

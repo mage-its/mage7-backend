@@ -49,12 +49,12 @@ const daftarOlim = async (olimBody, files, user) => {
   }
   olim.pathIdentitasKetua = files.identitasKetua[0].path;
 
-  if (files.identitasAnggota1?.[0]?.path) {
+  if (files.identitasAnggota1?.[0]?.path && olim.namaAnggota1) {
     olim.pathIdentitasAnggota1 = files.identitasAnggota1[0].path;
-    if (files.identitasAnggota2?.[0]?.path) {
+    if (files.identitasAnggota2?.[0]?.path && olim.namaAnggota2) {
       olim.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
-    } else {
-      olim.namaAnggota2 = null;
+    } else if (olim.namaAnggota2) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
     }
   } else {
     olim.namaAnggota1 = null;
@@ -187,6 +187,7 @@ const deleteOlimById = async (olimId, olimObj = null, userObj = null) => {
     olim.pathIdentitasAnggota1,
     olim.pathIdentitasAnggota2,
     olim.pathSuratKeteranganSiswa,
+    olim.pathBuktiBayar,
   ]);
   await Promise.all([olim.remove(), user.save()]);
   return olim;

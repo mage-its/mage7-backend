@@ -42,9 +42,12 @@ const pay = async (userId, namaBayar, files) => {
   }
 
   const compeModel = compeSelection[user.registeredComp];
-  const compe = await compeModel.findOne({ _id: userId });
+  const compe = await compeModel.findOne({ user: userId });
   if (!compe) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User belum mendaftar di salah satu lomba!');
+  }
+  if (compe.sudahUploadBuktiBayar) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User sudah mengupload bukti bayar!');
   }
   compe.pathBuktiBayar = files.buktiBayar[0].path;
   compe.namaBayar = namaBayar;

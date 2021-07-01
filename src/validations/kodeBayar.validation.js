@@ -8,6 +8,17 @@ const createKodeBayar = {
   }),
 };
 
+const getKodeBayars = {
+  query: Joi.object().keys({
+    name: Joi.string(),
+    price: Joi.number().integer().min(1),
+    sortBy: Joi.string(),
+    limit: Joi.number().integer(),
+    page: Joi.number().integer(),
+  }),
+};
+
 module.exports = {
   createKodeBayar,
+  getKodeBayars,
 };
