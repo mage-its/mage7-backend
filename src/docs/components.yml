@@ -47,7 +47,6 @@ components:
         message:
           type: string
 
-<<<<<<< HEAD
     Olim:
       type: object
       properties:
@@ -87,8 +86,6 @@ components:
         id: 5ebac534954b54139806c112
 
 
-=======
->>>>>>> a531d754c3f0eb12475da89319af70a8575cbab2
   responses:
     DuplicateEmail:
       description: Email already taken

@@ -11,6 +11,7 @@ const createKodeBayar = async (kodeBayarBody) => {
   const kodeBayar = await KodeBayar.create(kodeBayarBody);
   return kodeBayar;
 };
+
 /**
  * Query for kodebayars
  * @param {Object} filter - Mongo filter
@@ -24,6 +25,7 @@ const queryKodeBayars = async (filter, options) => {
   const kodeBayars = await KodeBayar.paginate(filter, options);
   return kodeBayars;
 };
+
 const getKodeBayarByCabang = async (cabang) => {
   const kodeBayar = await KodeBayar.findOne({ name: cabang });
   if (!kodeBayar) {

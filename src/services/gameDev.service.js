@@ -67,6 +67,7 @@ const daftarGameDev = async (gameDevBody, files, user) => {
   if (!gameDev.namaAnggota2 && files.identitasAnggota2?.[0]?.path) {
     removeFilePaths([files.identitasAnggota2[0].path]);
   }
+
   if (gameDevBody.kategori === 'Siswa') {
     if (!files.suratKeteranganSiswa) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Surat keterangan siswa WAJIB diberikan bagi peserta kategori siswa');

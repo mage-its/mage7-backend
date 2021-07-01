@@ -56,9 +56,8 @@ const daftarOlim = async (olimBody, files, user) => {
     } else if (olim.namaAnggota2) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
     }
-  } else {
-    olim.namaAnggota1 = null;
-    olim.namaAnggota2 = null;
+  } else if (olim.namaAnggota1) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
   }
 
   if (!olim.namaAnggota1 && files.identitasAnggota1?.[0]?.path) {

@@ -4,12 +4,9 @@ const bcrypt = require('bcryptjs');
 const { toJSON, paginate } = require('./plugins');
 const { roles } = require('../config/roles');
 
-<<<<<<< HEAD
 const numRegex = /\d/;
 const letterRegex = /[a-zA-Z]/;
 
-=======
->>>>>>> a531d754c3f0eb12475da89319af70a8575cbab2
 const userSchema = mongoose.Schema(
   {
     name: {
@@ -35,24 +32,17 @@ const userSchema = mongoose.Schema(
       trim: true,
       minlength: 8,
       validate(value) {
-<<<<<<< HEAD
         if (!value.match(numRegex) || !value.match(letterRegex)) {
-=======
-        if (!value.match(/\d/) || !value.match(/[a-zA-Z]/)) {
->>>>>>> a531d754c3f0eb12475da89319af70a8575cbab2
           throw new Error('Password must contain at least one letter and one number');
         }
       },
       private: true, // used by the toJSON plugin
     },
-<<<<<<< HEAD
     registeredComp: {
       type: String,
       enum: ['', 'olim', 'gamedev', 'appdev', 'iotdev'],
       default: '',
     },
-=======
->>>>>>> a531d754c3f0eb12475da89319af70a8575cbab2
     role: {
       type: String,
       enum: roles,
