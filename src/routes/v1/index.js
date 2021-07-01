@@ -4,6 +4,7 @@ const userRoute = require('./user.route');
 const docsRoute = require('./docs.route');
 const olimRoute = require('./olim.route');
 const gameDevRoute = require('./gameDev.route');
+const appDevRoute = require('./appDev.route');
 const kodeBayarRoute = require('./kodeBayar.route');
 const paymentRoute = require('./payment.route');
 const config = require('../../config/config');
@@ -26,6 +27,10 @@ const defaultRoutes = [
   {
     path: '/gamedev',
     route: gameDevRoute,
+  },
+  {
+    path: '/appdev',
+    route: appDevRoute,
   },
   {
     path: '/kodebayar',
