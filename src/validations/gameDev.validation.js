@@ -6,9 +6,9 @@ const daftarGameDev = {
     .keys({
       kategori: Joi.string().trim().valid('Mahasiswa', 'Siswa').required(),
       namaTim: Joi.string().trim().min(1).max(30).required(),
-      namaPembimbing: Joi.string().trim().min(1).max(100).required(),
-      hpPembimbing: Joi.string().trim().min(1).max(30).required(),
-      waPembimbing: Joi.string().trim().min(1).max(30).required(),
+      namaPembimbing: Joi.string().trim().min(1).max(100),
+      hpPembimbing: Joi.string().trim().min(1).max(30),
+      waPembimbing: Joi.string().trim().min(1).max(30),
       namaKetua: Joi.string().trim().min(1).max(100).required(),
       hpKetua: Joi.string().trim().phoneNumber({ defaultCountry: 'ID', strict: true }).required(),
       waKetua: Joi.string().trim().phoneNumber({ defaultCountry: 'ID', strict: true }).required(),

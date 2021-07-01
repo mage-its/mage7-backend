@@ -12,6 +12,20 @@ const createKodeBayar = async (kodeBayarBody) => {
   return kodeBayar;
 };
 
+/**
+ * Query for kodebayars
+ * @param {Object} filter - Mongo filter
+ * @param {Object} options - Query options
+ * @param {string} [options.sortBy] - Sort option in the format: sortField:(desc|asc)
+ * @param {number} [options.limit] - Maximum number of results per page (default = 10)
+ * @param {number} [options.page] - Current page (default = 1)
+ * @returns {Promise<QueryResult>}
+ */
+const queryKodeBayars = async (filter, options) => {
+  const kodeBayars = await KodeBayar.paginate(filter, options);
+  return kodeBayars;
+};
+
 const getKodeBayarByCabang = async (cabang) => {
   const kodeBayar = await KodeBayar.findOne({ name: cabang });
   if (!kodeBayar) {
@@ -47,6 +61,7 @@ const incNoUrut = async (cabang, kodeBayarObj) => {
 
 module.exports = {
   createKodeBayar,
+  queryKodeBayars,
   getKodeBayarByCabang,
   getNoUrut,
   incNoUrut,
