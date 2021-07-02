@@ -120,6 +120,10 @@ const gameDevSchema = mongoose.Schema(
       type: String,
       default: null,
     },
+    linkKaryaDanVideo: {
+      type: String,
+      default: null,
+    },
     tahap: {
       type: Number,
       default: 1,

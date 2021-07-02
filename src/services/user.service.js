@@ -2,6 +2,9 @@ const httpStatus = require('http-status');
 const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
 const olimService = require('./olim.service');
+const appDevService = require('./appDev.service');
+const gameDevService = require('./gameDev.service');
+const iotDevService = require('./iotDev.service');
 
 /**
  * Create a user
@@ -95,6 +98,27 @@ const deleteUserById = async (userId) => {
       const olim = await olimService.getOlimByUserId(user.id);
       if (olim) {
         await olimService.deleteOlimById(olim.id, olim, user);
+      }
+      break;
+    }
+    case 'gamedev': {
+      const gameDev = await gameDevService.getGameDevByUserId(user.id);
+      if (gameDev) {
+        await gameDevService.deleteGameDevById(gameDev.id, gameDev, user);
+      }
+      break;
+    }
+    case 'appdev': {
+      const appDev = await appDevService.getAppDevByUserId(user.id);
+      if (appDev) {
+        await appDevService.deleteAppDevById(appDev.id, appDev, user);
+      }
+      break;
+    }
+    case 'iotdev': {
+      const iotDev = await iotDevService.getIotDevByUserId(user.id);
+      if (iotDev) {
+        await iotDevService.deleteIotDevById(iotDev.id, iotDev, user);
       }
       break;
     }
