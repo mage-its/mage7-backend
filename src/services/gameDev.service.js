@@ -5,10 +5,18 @@ const kodeBayarService = require('./kodeBayar.service');
 const { GameDev, User } = require('../models');
 const ApiError = require('../utils/ApiError');
 const { removeFilePaths } = require('../utils/removeFile');
-const isImageOrPdf = require('../utils/isImageOrPdf');
+const { isImageOrPdf, isPdf } = require('../utils/isImageOrPdf');
 
 const storage = multer.diskStorage({
   destination: './public/uploads/gamedev',
+  filename: (req, file, cb) => {
+    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e6)}`;
+    cb(null, `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`);
+  },
+});
+
+const proposalStorage = multer.diskStorage({
+  destination: './public/uploads/gamedev/proposal',
   filename: (req, file, cb) => {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e6)}`;
     cb(null, `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`);
@@ -24,6 +32,16 @@ const upload = multer({
     isImageOrPdf(file, cb);
   },
 });
+
+const multerProposal = multer({
+  storage: proposalStorage,
+  limits: {
+    fileSize: 5000000,
+  },
+  fileFilter(req, file, cb) {
+    isPdf(file, cb);
+  },
+}).fields([{ name: 'proposalGameDev', maxCount: 1 }]);
 
 const multiUploads = upload.fields([
   { name: 'identitasKetua', maxCount: 1 },
@@ -92,6 +110,24 @@ const daftarGameDev = async (gameDevBody, files, user) => {
   // eslint-disable-next-line no-param-reassign
   user.registeredComp = 'gamedev';
   return Promise.all([gameDev.save(), user.save(), kodeBayarService.incNoUrut(cabang, kode)]);
+};
+
+const uploadProposal = async (userId, files) => {
+  const gameDev = await getGameDevByUserId(userId);
+  if (!gameDev) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
+  }
+  if (gameDev.tahap !== 1) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      `Upload proposal hanya saat tahap 1, anda sekarang di tahap ${gameDev.tahap}`
+    );
+  }
+  if (!files.proposalGameDev?.[0]?.path) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'File proposal harus diupload');
+  }
+  gameDev.pathProposal = files.proposalGameDev[0].path;
+  return gameDev.save();
 };
 
 /**
@@ -215,7 +251,9 @@ const deleteGameDevById = async (gameDevId, gameDevObj = null, userObj = null) =
 
 module.exports = {
   daftarGameDev,
+  uploadProposal,
   multiUploads,
+  multerProposal,
   queryGameDevs,
   createGameDev,
   getGameDevById,

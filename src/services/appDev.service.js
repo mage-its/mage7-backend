@@ -5,10 +5,18 @@ const kodeBayarService = require('./kodeBayar.service');
 const { AppDev, User } = require('../models');
 const ApiError = require('../utils/ApiError');
 const { removeFilePaths } = require('../utils/removeFile');
-const isImageOrPdf = require('../utils/isImageOrPdf');
+const { isImageOrPdf, isPdf } = require('../utils/isImageOrPdf');
 
 const storage = multer.diskStorage({
   destination: './public/uploads/appdev',
+  filename: (req, file, cb) => {
+    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e6)}`;
+    cb(null, `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`);
+  },
+});
+
+const proposalStorage = multer.diskStorage({
+  destination: './public/uploads/appdev/proposal',
   filename: (req, file, cb) => {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e6)}`;
     cb(null, `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`);
@@ -25,6 +33,16 @@ const upload = multer({
   },
 });
 
+const multerProposal = multer({
+  storage: proposalStorage,
+  limits: {
+    fileSize: 5000000,
+  },
+  fileFilter(req, file, cb) {
+    isPdf(file, cb);
+  },
+}).fields([{ name: 'proposalAppDev', maxCount: 1 }]);
+
 const multiUploads = upload.fields([
   { name: 'identitasKetua', maxCount: 1 },
   { name: 'identitasAnggota1', maxCount: 1 },
@@ -35,7 +53,7 @@ const multiUploads = upload.fields([
 /**
  * Get appdev by userId
  * @param {ObjectId} userId
- * @returns {Promise<GameDev>}
+ * @returns {Promise<AppDev>}
  */
 const getAppDevByUserId = async (userId) => {
   return AppDev.findOne({ user: userId });
@@ -94,11 +112,26 @@ const daftarAppDev = async (appDevBody, files, user) => {
   return Promise.all([appDev.save(), user.save(), kodeBayarService.incNoUrut(cabang, kode)]);
 };
 
+const uploadProposal = async (userId, files) => {
+  const appDev = await getAppDevByUserId(userId);
+  if (!appDev) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
+  }
+  if (appDev.tahap !== 1) {
+    throw new ApiError(httpStatus.BAD_REQUEST, `Upload proposal hanya saat tahap 1, anda sekarang di tahap ${appDev.tahap}`);
+  }
+  if (!files.proposalAppDev?.[0]?.path) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'File proposal harus diupload');
+  }
+  appDev.pathProposal = files.proposalAppDev[0].path;
+  return appDev.save();
+};
+
 /**
  * Update appdev by userId
  * @param {ObjectId} userId
  * @param {Object} updateBody
- * @returns {Promise<GameDev>}
+ * @returns {Promise<AppDev>}
  */
 const updateAppDevByUserId = async (userId, updateBody) => {
   const appDev = await getAppDevByUserId(userId);
@@ -215,7 +248,9 @@ const deleteAppDevById = async (appDevId, appDevObj = null, userObj = null) => {
 
 module.exports = {
   daftarAppDev,
+  uploadProposal,
   multiUploads,
+  multerProposal,
   queryAppDevs,
   createAppDev,
   getAppDevById,

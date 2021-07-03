@@ -1,13 +1,8 @@
 const mongoose = require('mongoose');
 const { toJSON, paginate } = require('./plugins');
 
-const appDevSchema = mongoose.Schema(
+const iotDevSchema = mongoose.Schema(
   {
-    kategori: {
-      type: String,
-      required: true,
-      enum: ['Siswa', 'Mahasiswa'],
-    },
     noPeserta: {
       type: String,
       required: true,
@@ -142,18 +137,18 @@ const appDevSchema = mongoose.Schema(
 );
 
 // add plugin that converts mongoose to json
-appDevSchema.plugin(toJSON);
-appDevSchema.plugin(paginate);
+iotDevSchema.plugin(toJSON);
+iotDevSchema.plugin(paginate);
 
-appDevSchema.pre('save', async function (next) {
-  const appDev = this;
-  appDev.sudahUploadBuktiBayar = !!appDev.pathBuktiBayar && !!appDev.namaBayar;
+iotDevSchema.pre('save', async function (next) {
+  const iotDev = this;
+  iotDev.sudahUploadBuktiBayar = !!iotDev.pathBuktiBayar && !!iotDev.namaBayar;
   next();
 });
 
 /**
- * @typedef AppDev
+ * @typedef IotDev
  */
-const AppDev = mongoose.model('AppDev', appDevSchema);
+const IotDev = mongoose.model('IotDev', iotDevSchema);
 
-module.exports = AppDev;
+module.exports = IotDev;

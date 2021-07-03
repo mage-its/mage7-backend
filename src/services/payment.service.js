@@ -46,6 +46,13 @@ const pay = async (userId, namaBayar, files) => {
   if (!compe) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User belum mendaftar di salah satu lomba!');
   }
+
+  if (user.registeredComp !== 'olim') {
+    if (compe.tahap !== 2) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Peserta belum lolos tahap 2!');
+    }
+  }
+
   if (compe.sudahUploadBuktiBayar) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User sudah mengupload bukti bayar!');
   }

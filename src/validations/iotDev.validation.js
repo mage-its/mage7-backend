@@ -1,10 +1,13 @@
 const Joi = require('joi').extend(require('joi-phone-number'));
 const { objectId } = require('./custom.validation');
 
-const daftarOlim = {
+const daftarIotDev = {
   body: Joi.object()
     .keys({
       namaTim: Joi.string().trim().min(1).max(30).required(),
+      namaPembimbing: Joi.string().trim().min(1).max(100),
+      hpPembimbing: Joi.string().trim().min(1).max(30),
+      waPembimbing: Joi.string().trim().min(1).max(30),
       namaKetua: Joi.string().trim().min(1).max(100).required(),
       hpKetua: Joi.string().trim().phoneNumber({ defaultCountry: 'ID', strict: true }).required(),
       waKetua: Joi.string().trim().phoneNumber({ defaultCountry: 'ID', strict: true }).required(),
@@ -23,6 +26,9 @@ const updateProfile = {
   body: Joi.object()
     .keys({
       namaTim: Joi.string().trim().min(1).max(30),
+      namaPembimbing: Joi.string().trim().min(1).max(100),
+      hpPembimbing: Joi.string().trim().min(1).max(30),
+      waPembimbing: Joi.string().trim().min(1).max(30),
       namaKetua: Joi.string().trim().min(1).max(100),
       hpKetua: Joi.string().trim().phoneNumber({ defaultCountry: 'ID', strict: true }),
       waKetua: Joi.string().trim().phoneNumber({ defaultCountry: 'ID', strict: true }),
@@ -37,10 +43,13 @@ const updateProfile = {
     .min(1),
 };
 
-const createOlim = {
+const createIotDev = {
   body: Joi.object()
     .keys({
       namaTim: Joi.string().trim().min(1).max(30).required(),
+      namaPembimbing: Joi.string().trim().min(1).max(100),
+      hpPembimbing: Joi.string().trim().min(1).max(30),
+      waPembimbing: Joi.string().trim().min(1).max(30),
       namaKetua: Joi.string().trim().min(1).max(100).required(),
       hpKetua: Joi.string().trim().phoneNumber({ defaultCountry: 'ID', strict: true }).required(),
       waKetua: Joi.string().trim().phoneNumber({ defaultCountry: 'ID', strict: true }).required(),
@@ -58,7 +67,7 @@ const createOlim = {
   }),
 };
 
-const getOlims = {
+const getIotDevs = {
   query: Joi.object().keys({
     statusBayar: Joi.string(),
     sortBy: Joi.string(),
@@ -67,19 +76,22 @@ const getOlims = {
   }),
 };
 
-const getOlim = {
+const getIotDev = {
   params: Joi.object().keys({
-    olimId: Joi.string().custom(objectId),
+    iotDevId: Joi.string().custom(objectId),
   }),
 };
 
-const updateOlim = {
+const updateIotDev = {
   params: Joi.object().keys({
-    olimId: Joi.required().custom(objectId),
+    iotDevId: Joi.required().custom(objectId),
   }),
   body: Joi.object()
     .keys({
       namaTim: Joi.string().trim().min(1).max(30),
+      namaPembimbing: Joi.string().trim().min(1).max(100),
+      hpPembimbing: Joi.string().trim().min(1).max(30),
+      waPembimbing: Joi.string().trim().min(1).max(30),
       namaKetua: Joi.string().trim().min(1).max(100),
       hpKetua: Joi.string().trim().phoneNumber({ defaultCountry: 'ID', strict: true }),
       waKetua: Joi.string().trim().phoneNumber({ defaultCountry: 'ID', strict: true }),
@@ -90,24 +102,25 @@ const updateOlim = {
       alamatInstansi: Joi.string().trim().min(1).max(100),
       asalKota: Joi.string().trim().min(1).max(100),
       asalInfo: Joi.string().trim().min(1).max(100),
+      tahap: Joi.number().min(1).max(69),
       price: Joi.string().regex(/^[1-9]\d\d?\.\d{3}$/),
       statusBayar: Joi.string().trim().valid('Verified', 'Not Verified'),
     })
     .min(1),
 };
 
-const deleteOlim = {
+const deleteIotDev = {
   params: Joi.object().keys({
-    olimId: Joi.string().custom(objectId),
+    iotDevId: Joi.string().custom(objectId),
   }),
 };
 
 module.exports = {
-  daftarOlim,
+  daftarIotDev,
   updateProfile,
-  createOlim,
-  getOlims,
-  getOlim,
-  updateOlim,
-  deleteOlim,
+  createIotDev,
+  getIotDevs,
+  getIotDev,
+  updateIotDev,
+  deleteIotDev,
 };

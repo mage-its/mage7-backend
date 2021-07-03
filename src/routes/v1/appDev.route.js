@@ -22,6 +22,8 @@ router.post(
 
 router.patch('/update-profile', auth(), form, validate(appDevValidation.updateProfile), appDevController.updateProfile);
 
+router.post('/upload-proposal', auth(), readForm('appdevProposal'), appDevController.uploadProposal);
+
 // Admin route
 
 router.get('/', auth('getUsers'), validate(appDevValidation.getAppDevs), appDevController.getAppDevs);
