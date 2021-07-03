@@ -5,7 +5,7 @@ const kodeBayarService = require('./kodeBayar.service');
 const { Olim, User } = require('../models');
 const ApiError = require('../utils/ApiError');
 const { removeFilePaths } = require('../utils/removeFile');
-const isImageOrPdf = require('../utils/isImageOrPdf');
+const { isImageOrPdf } = require('../utils/isImageOrPdf');
 
 const storage = multer.diskStorage({
   destination: './public/uploads/olim',
