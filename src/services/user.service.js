@@ -64,6 +64,31 @@ const isRegistered = async (userId) => {
   }
 };
 
+const getProfile = async (userId) => {
+  const user = await getUserById(userId);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  let compe = {};
+  switch (user.registeredComp) {
+    case 'olim':
+      compe = await olimService.getOlimByUserId(userId);
+      break;
+    case 'gamedev':
+      compe = await gameDevService.getGameDevByUserId(userId);
+      break;
+    case 'appdev':
+      compe = await appDevService.getAppDevByUserId(userId);
+      break;
+    case 'iotdev':
+      compe = await iotDevService.getIotDevByUserId(userId);
+      break;
+    default:
+      break;
+  }
+  return { user, compe };
+};
+
 /**
  * Update user by id
  * @param {ObjectId} userId
@@ -131,6 +156,7 @@ const deleteUserById = async (userId) => {
 
 module.exports = {
   createUser,
+  getProfile,
   queryUsers,
   getUserById,
   getUserByEmail,

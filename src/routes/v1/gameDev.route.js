@@ -22,6 +22,8 @@ router.post(
 
 router.patch('/update-profile', auth(), form, validate(gameDevValidation.updateProfile), gameDevController.updateProfile);
 
+router.post('/upload-proposal', auth(), readForm('gamedevProposal'), gameDevController.uploadProposal);
+
 // Admin route
 
 router.get('/', auth('getUsers'), validate(gameDevValidation.getGameDevs), gameDevController.getGameDevs);

@@ -22,6 +22,8 @@ router.post(
 
 router.patch('/update-profile', auth(), form, validate(iotDevValidation.updateProfile), iotDevController.updateProfile);
 
+router.post('/upload-proposal', auth(), readForm('iotdevProposal'), iotDevController.uploadProposal);
+
 // Admin route
 
 router.get('/', auth('getUsers'), validate(iotDevValidation.getIotDevs), iotDevController.getIotDevs);

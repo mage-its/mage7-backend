@@ -5,10 +5,18 @@ const kodeBayarService = require('./kodeBayar.service');
 const { IotDev, User } = require('../models');
 const ApiError = require('../utils/ApiError');
 const { removeFilePaths } = require('../utils/removeFile');
-const isImageOrPdf = require('../utils/isImageOrPdf');
+const { isImageOrPdf, isPdf } = require('../utils/isImageOrPdf');
 
 const storage = multer.diskStorage({
   destination: './public/uploads/iotdev',
+  filename: (req, file, cb) => {
+    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e6)}`;
+    cb(null, `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`);
+  },
+});
+
+const proposalStorage = multer.diskStorage({
+  destination: './public/uploads/iotdev/proposal',
   filename: (req, file, cb) => {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e6)}`;
     cb(null, `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`);
@@ -24,6 +32,16 @@ const upload = multer({
     isImageOrPdf(file, cb);
   },
 });
+
+const multerProposal = multer({
+  storage: proposalStorage,
+  limits: {
+    fileSize: 5000000,
+  },
+  fileFilter(req, file, cb) {
+    isPdf(file, cb);
+  },
+}).fields([{ name: 'proposalIotDev', maxCount: 1 }]);
 
 const multiUploads = upload.fields([
   { name: 'identitasKetua', maxCount: 1 },
@@ -92,6 +110,21 @@ const daftarIotDev = async (iotDevBody, files, user) => {
   // eslint-disable-next-line no-param-reassign
   user.registeredComp = 'iotdev';
   return Promise.all([iotDev.save(), user.save(), kodeBayarService.incNoUrut(cabang, kode)]);
+};
+
+const uploadProposal = async (userId, files) => {
+  const iotDev = await getIotDevByUserId(userId);
+  if (!iotDev) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
+  }
+  if (iotDev.tahap !== 1) {
+    throw new ApiError(httpStatus.BAD_REQUEST, `Upload proposal hanya saat tahap 1, anda sekarang di tahap ${iotDev.tahap}`);
+  }
+  if (!files.proposalIotDev?.[0]?.path) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'File proposal harus diupload');
+  }
+  iotDev.pathProposal = files.proposalIotDev[0].path;
+  return iotDev.save();
 };
 
 /**
@@ -215,7 +248,9 @@ const deleteIotDevById = async (iotDevId, iotDevObj = null, userObj = null) => {
 
 module.exports = {
   daftarIotDev,
+  uploadProposal,
   multiUploads,
+  multerProposal,
   queryIotDevs,
   createIotDev,
   getIotDevById,

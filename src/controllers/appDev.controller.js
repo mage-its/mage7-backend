@@ -17,6 +17,11 @@ const updateProfile = catchAsync(async (req, res) => {
   res.send(appDev);
 });
 
+const uploadProposal = catchAsync(async (req, res) => {
+  const appDev = await appDevService.uploadProposal(req.user.id, req.files);
+  res.send(appDev);
+});
+
 const createAppDev = catchAsync(async (req, res) => {
   const { userId } = req.params;
   const { body, files } = req;
@@ -54,6 +59,7 @@ const deleteAppDev = catchAsync(async (req, res) => {
 module.exports = {
   daftarAppDev,
   updateProfile,
+  uploadProposal,
   createAppDev,
   getAppDevs,
   getAppDev,

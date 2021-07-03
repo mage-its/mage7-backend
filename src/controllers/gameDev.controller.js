@@ -17,6 +17,11 @@ const updateProfile = catchAsync(async (req, res) => {
   res.send(gameDev);
 });
 
+const uploadProposal = catchAsync(async (req, res) => {
+  const gameDev = await gameDevService.uploadProposal(req.user.id, req.files);
+  res.send(gameDev);
+});
+
 const createGameDev = catchAsync(async (req, res) => {
   const { userId } = req.params;
   const { body, files } = req;
@@ -54,6 +59,7 @@ const deleteGameDev = catchAsync(async (req, res) => {
 module.exports = {
   daftarGameDev,
   updateProfile,
+  uploadProposal,
   createGameDev,
   getGameDevs,
   getGameDev,

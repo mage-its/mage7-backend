@@ -17,6 +17,11 @@ const updateProfile = catchAsync(async (req, res) => {
   res.send(iotDev);
 });
 
+const uploadProposal = catchAsync(async (req, res) => {
+  const iotDev = await iotDevService.uploadProposal(req.user.id, req.files);
+  res.send(iotDev);
+});
+
 const createIotDev = catchAsync(async (req, res) => {
   const { userId } = req.params;
   const { body, files } = req;
@@ -54,6 +59,7 @@ const deleteIotDev = catchAsync(async (req, res) => {
 module.exports = {
   daftarIotDev,
   updateProfile,
+  uploadProposal,
   createIotDev,
   getIotDevs,
   getIotDev,
