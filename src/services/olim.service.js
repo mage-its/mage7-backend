@@ -127,8 +127,16 @@ const createOlim = async (olimBody, files, userId) => {
     olim.pathIdentitasKetua = files.identitasKetua[0].path;
   }
   olim.user = user.id;
+
+  const kode = await kodeBayarService.getKodeBayarByCabang('olim');
+
+  const noUrut = kode.no.toString().padStart(3, '0');
+
+  olim.noPeserta = `OLI0${noUrut}`;
+  olim.price = `${kode.price}.${noUrut}`;
+
   user.registeredComp = 'olim';
-  return Promise.all([olim.save(), user.save()]);
+  return Promise.all([olim.save(), user.save(), kodeBayarService.incNoUrut('olim', kode)]);
 };
 
 const queryOlims = async (filter, options) => {
