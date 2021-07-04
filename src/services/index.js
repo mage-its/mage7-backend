@@ -6,5 +6,6 @@ module.exports.olimService = require('./olim.service');
 module.exports.gameDevService = require('./gameDev.service');
 module.exports.appDevService = require('./appDev.service');
 module.exports.iotDevService = require('./iotDev.service');
+module.exports.pengumumanService = require('./pengumuman.service');
 module.exports.kodeBayarService = require('./kodeBayar.service');
 module.exports.paymentService = require('./payment.service');
