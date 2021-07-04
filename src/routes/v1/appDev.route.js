@@ -5,6 +5,7 @@ const appDevValidation = require('../../validations/appDev.validation');
 const appDevController = require('../../controllers/appDev.controller');
 const auth = require('../../middlewares/auth');
 const readForm = require('../../middlewares/readForm');
+const removeEmpty = require('../../middlewares/removeEmpty');
 const cancelFileUpload = require('../../middlewares/cancelFileUpload');
 
 const router = express.Router();
@@ -16,11 +17,19 @@ router.post(
   auth(),
   readForm('appdev'),
   validate(appDevValidation.daftarAppDev),
+  removeEmpty,
   appDevController.daftarAppDev,
   cancelFileUpload()
 );
 
-router.patch('/update-profile', auth(), form, validate(appDevValidation.updateProfile), appDevController.updateProfile);
+router.patch(
+  '/update-profile',
+  auth(),
+  form,
+  validate(appDevValidation.updateProfile),
+  removeEmpty,
+  appDevController.updateProfile
+);
 
 router.post('/upload-proposal', auth(), readForm('appdevProposal'), appDevController.uploadProposal);
 
@@ -33,6 +42,7 @@ router.post(
   auth('manageUsers'),
   readForm('appdev'),
   validate(appDevValidation.createAppDev),
+  removeEmpty,
   appDevController.createAppDev,
   cancelFileUpload()
 );
@@ -40,7 +50,7 @@ router.post(
 router
   .route('/:appDevId')
   .get(auth('getUsers'), validate(appDevValidation.getAppDev), appDevController.getAppDev)
-  .patch(auth('manageUsers'), form, validate(appDevValidation.updateAppDev), appDevController.updateAppDev)
+  .patch(auth('manageUsers'), form, validate(appDevValidation.updateAppDev), removeEmpty, appDevController.updateAppDev)
   .delete(auth('manageUsers'), validate(appDevValidation.deleteAppDev), appDevController.deleteAppDev);
 
 module.exports = router;

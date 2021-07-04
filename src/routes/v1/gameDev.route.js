@@ -5,6 +5,7 @@ const gameDevValidation = require('../../validations/gameDev.validation');
 const gameDevController = require('../../controllers/gameDev.controller');
 const auth = require('../../middlewares/auth');
 const readForm = require('../../middlewares/readForm');
+const removeEmpty = require('../../middlewares/removeEmpty');
 const cancelFileUpload = require('../../middlewares/cancelFileUpload');
 
 const router = express.Router();
@@ -16,11 +17,19 @@ router.post(
   auth(),
   readForm('gamedev'),
   validate(gameDevValidation.daftarGameDev),
+  removeEmpty,
   gameDevController.daftarGameDev,
   cancelFileUpload()
 );
 
-router.patch('/update-profile', auth(), form, validate(gameDevValidation.updateProfile), gameDevController.updateProfile);
+router.patch(
+  '/update-profile',
+  auth(),
+  form,
+  validate(gameDevValidation.updateProfile),
+  removeEmpty,
+  gameDevController.updateProfile
+);
 
 router.post('/upload-proposal', auth(), readForm('gamedevProposal'), gameDevController.uploadProposal);
 
@@ -33,6 +42,7 @@ router.post(
   auth('manageUsers'),
   readForm('gamedev'),
   validate(gameDevValidation.createGameDev),
+  removeEmpty,
   gameDevController.createGameDev,
   cancelFileUpload()
 );
@@ -40,7 +50,7 @@ router.post(
 router
   .route('/:gameDevId')
   .get(auth('getUsers'), validate(gameDevValidation.getGameDev), gameDevController.getGameDev)
-  .patch(auth('manageUsers'), form, validate(gameDevValidation.updateGameDev), gameDevController.updateGameDev)
+  .patch(auth('manageUsers'), form, validate(gameDevValidation.updateGameDev), removeEmpty, gameDevController.updateGameDev)
   .delete(auth('manageUsers'), validate(gameDevValidation.deleteGameDev), gameDevController.deleteGameDev);
 
 module.exports = router;
