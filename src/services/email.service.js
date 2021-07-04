@@ -35,7 +35,7 @@ const sendEmail = async (to, subject, html) => {
 const sendResetPasswordEmail = async (to, token) => {
   const subject = 'Reset password';
   // replace this url with the link to the reset password page of your front-end app
-  const resetPasswordUrl = `https://mage-its.com/reset-password?token=${token}`;
+  const resetPasswordUrl = `${config.url}/api/v1/auth/reset-password?token=${token}`;
   const html = getResetPassHtml(resetPasswordUrl);
   await sendEmail(to, subject, html);
 };
@@ -49,7 +49,7 @@ const sendResetPasswordEmail = async (to, token) => {
 const sendVerificationEmail = async (to, token) => {
   const subject = 'Email Verification';
   // replace this url with the link to the email verification page of your front-end app
-  const verificationEmailUrl = `https://mage-its.com/verify-email?token=${token}`;
+  const verificationEmailUrl = `${config.url}/api/v1/auth/verify-email?token=${token}`;
   const html = getVerMailHtml(verificationEmailUrl);
   await sendEmail(to, subject, html);
 };

@@ -48,6 +48,7 @@ const multiUploads = upload.fields([
   { name: 'identitasAnggota1', maxCount: 1 },
   { name: 'identitasAnggota2', maxCount: 1 },
   { name: 'suratKeteranganSiswa', maxCount: 1 },
+  { name: 'persyaratanRegistrasi', maxCount: 1 },
 ]);
 
 /**
@@ -77,6 +78,12 @@ const daftarIotDev = async (iotDevBody, files, user) => {
   } else if (iotDev.namaAnggota1) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
   }
+
+  if (!files.persyaratanRegistrasi) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Persyaratan registrasi wajib diupload');
+  }
+
+  iotDev.pathPersyaratanRegistrasi = files.persyaratanRegistrasi[0].path;
 
   if (!iotDev.namaAnggota1 && files.identitasAnggota1?.[0]?.path) {
     removeFilePaths([files.identitasAnggota1[0].path]);
@@ -167,6 +174,9 @@ const createIotDev = async (iotDevBody, files, userId) => {
   if (files.identitasKetua?.[0]?.path) {
     iotDev.pathIdentitasKetua = files.identitasKetua[0].path;
   }
+  if (files.persyaratanRegistrasi?.[0]?.path) {
+    iotDev.pathPersyaratanRegistrasi = files.persyaratanRegistrasi[0].path;
+  }
   const cabang = 'idev';
 
   const kode = await kodeBayarService.getKodeBayarByCabang(cabang);
@@ -239,6 +249,7 @@ const deleteIotDevById = async (iotDevId, iotDevObj = null, userObj = null) => {
     iotDev.pathIdentitasAnggota1,
     iotDev.pathIdentitasAnggota2,
     iotDev.pathSuratKeteranganSiswa,
+    iotDev.pathPersyaratanRegistrasi,
     iotDev.pathProposal,
     iotDev.pathBuktiBayar,
   ]);

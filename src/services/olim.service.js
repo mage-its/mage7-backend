@@ -30,6 +30,7 @@ const multiUploads = upload.fields([
   { name: 'identitasAnggota1', maxCount: 1 },
   { name: 'identitasAnggota2', maxCount: 1 },
   { name: 'suratKeteranganSiswa', maxCount: 1 },
+  { name: 'persyaratanRegistrasi', maxCount: 1 },
 ]);
 
 /**
@@ -59,6 +60,12 @@ const daftarOlim = async (olimBody, files, user) => {
   } else if (olim.namaAnggota1) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
   }
+
+  if (!files.persyaratanRegistrasi) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Persyaratan registrasi wajib diupload');
+  }
+
+  olim.pathPersyaratanRegistrasi = files.persyaratanRegistrasi[0].path;
 
   if (!olim.namaAnggota1 && files.identitasAnggota1?.[0]?.path) {
     removeFilePaths([files.identitasAnggota1[0].path]);
@@ -126,9 +133,21 @@ const createOlim = async (olimBody, files, userId) => {
   if (files.identitasKetua?.[0]?.path) {
     olim.pathIdentitasKetua = files.identitasKetua[0].path;
   }
+  if (files.persyaratanRegistrasi?.[0]?.path) {
+    olim.pathPersyaratanRegistrasi = files.persyaratanRegistrasi[0].path;
+  }
+
   olim.user = user.id;
+
+  const kode = await kodeBayarService.getKodeBayarByCabang('olim');
+
+  const noUrut = kode.no.toString().padStart(3, '0');
+
+  olim.noPeserta = `OLI0${noUrut}`;
+  olim.price = `${kode.price}.${noUrut}`;
+
   user.registeredComp = 'olim';
-  return Promise.all([olim.save(), user.save()]);
+  return Promise.all([olim.save(), user.save(), kodeBayarService.incNoUrut('olim', kode)]);
 };
 
 const queryOlims = async (filter, options) => {
@@ -186,6 +205,7 @@ const deleteOlimById = async (olimId, olimObj = null, userObj = null) => {
     olim.pathIdentitasAnggota1,
     olim.pathIdentitasAnggota2,
     olim.pathSuratKeteranganSiswa,
+    olim.pathPersyaratanRegistrasi,
     olim.pathBuktiBayar,
   ]);
   await Promise.all([olim.remove(), user.save()]);
