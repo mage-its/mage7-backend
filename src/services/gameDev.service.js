@@ -48,6 +48,7 @@ const multiUploads = upload.fields([
   { name: 'identitasAnggota1', maxCount: 1 },
   { name: 'identitasAnggota2', maxCount: 1 },
   { name: 'suratKeteranganSiswa', maxCount: 1 },
+  { name: 'persyaratanRegistrasi', maxCount: 1 },
 ]);
 
 /**
@@ -77,6 +78,12 @@ const daftarGameDev = async (gameDevBody, files, user) => {
   } else if (gameDev.namaAnggota1) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
   }
+
+  if (!files.persyaratanRegistrasi) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Persyaratan registrasi wajib diupload');
+  }
+
+  gameDev.pathPersyaratanRegistrasi = files.persyaratanRegistrasi[0].path;
 
   if (!gameDev.namaAnggota1 && files.identitasAnggota1?.[0]?.path) {
     removeFilePaths([files.identitasAnggota1[0].path]);
@@ -170,6 +177,9 @@ const createGameDev = async (gameDevBody, files, userId) => {
   if (files.identitasKetua?.[0]?.path) {
     gameDev.pathIdentitasKetua = files.identitasKetua[0].path;
   }
+  if (files.persyaratanRegistrasi?.[0]?.path) {
+    gameDev.pathPersyaratanRegistrasi = files.persyaratanRegistrasi[0].path;
+  }
   const cabang = gameDevBody.kategori === 'Siswa' ? 'gdevs' : 'gdevm';
 
   const kode = await kodeBayarService.getKodeBayarByCabang(cabang);
@@ -242,6 +252,7 @@ const deleteGameDevById = async (gameDevId, gameDevObj = null, userObj = null) =
     gameDev.pathIdentitasAnggota1,
     gameDev.pathIdentitasAnggota2,
     gameDev.pathSuratKeteranganSiswa,
+    gameDev.pathPersyaratanRegistrasi,
     gameDev.pathProposal,
     gameDev.pathBuktiBayar,
   ]);

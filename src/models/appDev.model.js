@@ -87,6 +87,10 @@ const appDevSchema = mongoose.Schema(
       type: String,
       default: null,
     },
+    pathPersyaratanRegistrasi: {
+      type: String,
+      required: true,
+    },
     asalKota: {
       type: String,
       required: true,

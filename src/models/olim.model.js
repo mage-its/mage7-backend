@@ -69,6 +69,10 @@ const olimSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    pathPersyaratanRegistrasi: {
+      type: String,
+      required: true,
+    },
     asalKota: {
       type: String,
       required: true,

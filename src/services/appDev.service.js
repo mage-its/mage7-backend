@@ -48,6 +48,7 @@ const multiUploads = upload.fields([
   { name: 'identitasAnggota1', maxCount: 1 },
   { name: 'identitasAnggota2', maxCount: 1 },
   { name: 'suratKeteranganSiswa', maxCount: 1 },
+  { name: 'persyaratanRegistrasi', maxCount: 1 },
 ]);
 
 /**
@@ -77,6 +78,12 @@ const daftarAppDev = async (appDevBody, files, user) => {
   } else if (appDev.namaAnggota1) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
   }
+
+  if (!files.persyaratanRegistrasi) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Persyaratan registrasi wajib diupload');
+  }
+
+  appDev.pathPersyaratanRegistrasi = files.persyaratanRegistrasi[0].path;
 
   if (!appDev.namaAnggota1 && files.identitasAnggota1?.[0]?.path) {
     removeFilePaths([files.identitasAnggota1[0].path]);
@@ -167,6 +174,9 @@ const createAppDev = async (appDevBody, files, userId) => {
   if (files.identitasKetua?.[0]?.path) {
     appDev.pathIdentitasKetua = files.identitasKetua[0].path;
   }
+  if (files.persyaratanRegistrasi?.[0]?.path) {
+    appDev.pathPersyaratanRegistrasi = files.persyaratanRegistrasi[0].path;
+  }
   const cabang = appDevBody.kategori === 'Siswa' ? 'adevs' : 'adevm';
 
   const kode = await kodeBayarService.getKodeBayarByCabang(cabang);
@@ -239,6 +249,7 @@ const deleteAppDevById = async (appDevId, appDevObj = null, userObj = null) => {
     appDev.pathIdentitasAnggota1,
     appDev.pathIdentitasAnggota2,
     appDev.pathSuratKeteranganSiswa,
+    appDev.pathPersyaratanRegistrasi,
     appDev.pathProposal,
     appDev.pathBuktiBayar,
   ]);
