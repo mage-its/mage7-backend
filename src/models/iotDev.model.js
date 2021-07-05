@@ -68,21 +68,49 @@ const iotDevSchema = mongoose.Schema(
       type: String,
       default: null,
     },
-    asalInstansi: {
+    asalInstansiKetua: {
       type: String,
-      required: true,
       trim: true,
+      default: null,
     },
-    alamatInstansi: {
+    alamatInstansiKetua: {
       type: String,
-      required: true,
       trim: true,
+      default: null,
+    },
+    asalInstansiAnggota1: {
+      type: String,
+      trim: true,
+      default: null,
+    },
+    alamatInstansiAnggota1: {
+      type: String,
+      trim: true,
+      default: null,
+    },
+    asalInstansiAnggota2: {
+      type: String,
+      trim: true,
+      default: null,
+    },
+    alamatInstansiAnggota2: {
+      type: String,
+      trim: true,
+      default: null,
     },
     pathSuratKeteranganSiswa: {
       type: String,
       default: null,
     },
-    pathPersyaratanRegistrasi: {
+    pathBuktiUploadTwibbon: {
+      type: String,
+      required: true,
+    },
+    pathBuktiFollowMage: {
+      type: String,
+      required: true,
+    },
+    pathBuktiRepostStory: {
       type: String,
       required: true,
     },

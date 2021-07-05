@@ -48,7 +48,9 @@ const multiUploads = upload.fields([
   { name: 'identitasAnggota1', maxCount: 1 },
   { name: 'identitasAnggota2', maxCount: 1 },
   { name: 'suratKeteranganSiswa', maxCount: 1 },
-  { name: 'persyaratanRegistrasi', maxCount: 1 },
+  { name: 'buktiUploadTwibbon', maxCount: 1 },
+  { name: 'buktiFollowMage', maxCount: 1 },
+  { name: 'buktiRepostStory', maxCount: 1 },
 ]);
 
 /**
@@ -79,11 +81,13 @@ const daftarIotDev = async (iotDevBody, files, user) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
   }
 
-  if (!files.persyaratanRegistrasi) {
+  if (!files.buktiUploadTwibbon || !files.buktiFollowMage || !files.buktiRepostStory) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Persyaratan registrasi wajib diupload');
   }
 
-  iotDev.pathPersyaratanRegistrasi = files.persyaratanRegistrasi[0].path;
+  iotDev.pathBuktiUploadTwibbon = files.buktiUploadTwibbon[0].path;
+  iotDev.pathBuktiFollowMage = files.buktiFollowMage[0].path;
+  iotDev.pathBuktiRepostStory = files.buktiRepostStory[0].path;
 
   if (!iotDev.namaAnggota1 && files.identitasAnggota1?.[0]?.path) {
     removeFilePaths([files.identitasAnggota1[0].path]);
@@ -174,8 +178,14 @@ const createIotDev = async (iotDevBody, files, userId) => {
   if (files.identitasKetua?.[0]?.path) {
     iotDev.pathIdentitasKetua = files.identitasKetua[0].path;
   }
-  if (files.persyaratanRegistrasi?.[0]?.path) {
-    iotDev.pathPersyaratanRegistrasi = files.persyaratanRegistrasi[0].path;
+  if (files.buktiUploadTwibbon?.[0]?.path) {
+    iotDev.pathBuktiUploadTwibbon = files.buktiUploadTwibbon[0].path;
+  }
+  if (files.buktiFollowMage?.[0]?.path) {
+    iotDev.pathBuktiFollowMage = files.buktiFollowMage[0].path;
+  }
+  if (files.buktiRepostStory?.[0]?.path) {
+    iotDev.pathBuktiRepostStory = files.buktiRepostStory[0].path;
   }
   const cabang = 'idev';
 
@@ -249,7 +259,9 @@ const deleteIotDevById = async (iotDevId, iotDevObj = null, userObj = null) => {
     iotDev.pathIdentitasAnggota1,
     iotDev.pathIdentitasAnggota2,
     iotDev.pathSuratKeteranganSiswa,
-    iotDev.pathPersyaratanRegistrasi,
+    iotDev.pathBuktiUploadTwibbon,
+    iotDev.pathBuktiFollowMage,
+    iotDev.pathBuktiRepostStory,
     iotDev.pathProposal,
     iotDev.pathBuktiBayar,
   ]);
