@@ -30,7 +30,9 @@ const multiUploads = upload.fields([
   { name: 'identitasAnggota1', maxCount: 1 },
   { name: 'identitasAnggota2', maxCount: 1 },
   { name: 'suratKeteranganSiswa', maxCount: 1 },
-  { name: 'persyaratanRegistrasi', maxCount: 1 },
+  { name: 'buktiUploadTwibbon', maxCount: 1 },
+  { name: 'buktiFollowMage', maxCount: 1 },
+  { name: 'buktiRepostStory', maxCount: 1 },
 ]);
 
 /**
@@ -61,11 +63,13 @@ const daftarOlim = async (olimBody, files, user) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
   }
 
-  if (!files.persyaratanRegistrasi) {
+  if (!files.buktiUploadTwibbon || !files.buktiFollowMage || !files.buktiRepostStory) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Persyaratan registrasi wajib diupload');
   }
 
-  olim.pathPersyaratanRegistrasi = files.persyaratanRegistrasi[0].path;
+  olim.pathBuktiUploadTwibbon = files.buktiUploadTwibbon[0].path;
+  olim.pathBuktiFollowMage = files.buktiFollowMage[0].path;
+  olim.pathBuktiRepostStory = files.buktiRepostStory[0].path;
 
   if (!olim.namaAnggota1 && files.identitasAnggota1?.[0]?.path) {
     removeFilePaths([files.identitasAnggota1[0].path]);
@@ -133,8 +137,14 @@ const createOlim = async (olimBody, files, userId) => {
   if (files.identitasKetua?.[0]?.path) {
     olim.pathIdentitasKetua = files.identitasKetua[0].path;
   }
-  if (files.persyaratanRegistrasi?.[0]?.path) {
-    olim.pathPersyaratanRegistrasi = files.persyaratanRegistrasi[0].path;
+  if (files.buktiUploadTwibbon?.[0]?.path) {
+    olim.pathBuktiUploadTwibbon = files.buktiUploadTwibbon[0].path;
+  }
+  if (files.buktiFollowMage?.[0]?.path) {
+    olim.pathBuktiFollowMage = files.buktiFollowMage[0].path;
+  }
+  if (files.buktiRepostStory?.[0]?.path) {
+    olim.pathBuktiRepostStory = files.buktiRepostStory[0].path;
   }
 
   olim.user = user.id;
@@ -205,7 +215,9 @@ const deleteOlimById = async (olimId, olimObj = null, userObj = null) => {
     olim.pathIdentitasAnggota1,
     olim.pathIdentitasAnggota2,
     olim.pathSuratKeteranganSiswa,
-    olim.pathPersyaratanRegistrasi,
+    olim.pathBuktiUploadTwibbon,
+    olim.pathBuktiFollowMage,
+    olim.pathBuktiRepostStory,
     olim.pathBuktiBayar,
   ]);
   await Promise.all([olim.remove(), user.save()]);

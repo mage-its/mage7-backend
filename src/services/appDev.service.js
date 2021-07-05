@@ -48,7 +48,9 @@ const multiUploads = upload.fields([
   { name: 'identitasAnggota1', maxCount: 1 },
   { name: 'identitasAnggota2', maxCount: 1 },
   { name: 'suratKeteranganSiswa', maxCount: 1 },
-  { name: 'persyaratanRegistrasi', maxCount: 1 },
+  { name: 'buktiUploadTwibbon', maxCount: 1 },
+  { name: 'buktiFollowMage', maxCount: 1 },
+  { name: 'buktiRepostStory', maxCount: 1 },
 ]);
 
 /**
@@ -79,11 +81,13 @@ const daftarAppDev = async (appDevBody, files, user) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
   }
 
-  if (!files.persyaratanRegistrasi) {
+  if (!files.buktiUploadTwibbon || !files.buktiFollowMage || !files.buktiRepostStory) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Persyaratan registrasi wajib diupload');
   }
 
-  appDev.pathPersyaratanRegistrasi = files.persyaratanRegistrasi[0].path;
+  appDev.pathBuktiUploadTwibbon = files.buktiUploadTwibbon[0].path;
+  appDev.pathBuktiFollowMage = files.buktiFollowMage[0].path;
+  appDev.pathBuktiRepostStory = files.buktiRepostStory[0].path;
 
   if (!appDev.namaAnggota1 && files.identitasAnggota1?.[0]?.path) {
     removeFilePaths([files.identitasAnggota1[0].path]);
@@ -174,8 +178,14 @@ const createAppDev = async (appDevBody, files, userId) => {
   if (files.identitasKetua?.[0]?.path) {
     appDev.pathIdentitasKetua = files.identitasKetua[0].path;
   }
-  if (files.persyaratanRegistrasi?.[0]?.path) {
-    appDev.pathPersyaratanRegistrasi = files.persyaratanRegistrasi[0].path;
+  if (files.buktiUploadTwibbon?.[0]?.path) {
+    appDev.pathBuktiUploadTwibbon = files.buktiUploadTwibbon[0].path;
+  }
+  if (files.buktiFollowMage?.[0]?.path) {
+    appDev.pathBuktiFollowMage = files.buktiFollowMage[0].path;
+  }
+  if (files.buktiRepostStory?.[0]?.path) {
+    appDev.pathBuktiRepostStory = files.buktiRepostStory[0].path;
   }
   const cabang = appDevBody.kategori === 'Siswa' ? 'adevs' : 'adevm';
 
@@ -249,7 +259,9 @@ const deleteAppDevById = async (appDevId, appDevObj = null, userObj = null) => {
     appDev.pathIdentitasAnggota1,
     appDev.pathIdentitasAnggota2,
     appDev.pathSuratKeteranganSiswa,
-    appDev.pathPersyaratanRegistrasi,
+    appDev.pathBuktiUploadTwibbon,
+    appDev.pathBuktiFollowMage,
+    appDev.pathBuktiRepostStory,
     appDev.pathProposal,
     appDev.pathBuktiBayar,
   ]);

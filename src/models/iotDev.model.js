@@ -82,7 +82,15 @@ const iotDevSchema = mongoose.Schema(
       type: String,
       default: null,
     },
-    pathPersyaratanRegistrasi: {
+    pathBuktiUploadTwibbon: {
+      type: String,
+      required: true,
+    },
+    pathBuktiFollowMage: {
+      type: String,
+      required: true,
+    },
+    pathBuktiRepostStory: {
       type: String,
       required: true,
     },
