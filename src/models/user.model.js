@@ -52,6 +52,11 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    method: {
+      type: String,
+      default: null,
+      private: true,
+    },
   },
   {
     timestamps: true,
@@ -85,7 +90,7 @@ userSchema.methods.isPasswordMatch = async function (password) {
 
 userSchema.pre('save', async function (next) {
   const user = this;
-  if (user.isModified('password')) {
+  if (user.isModified('password') && user.method === null) {
     user.password = await bcrypt.hash(user.password, 8);
   }
   next();
