@@ -47,6 +47,45 @@ components:
         message:
           type: string
 
+    Olim:
+      type: object
+      properties:
+        hpKetua:
+          type: string
+        namaTim:
+          type: string
+        namaKetua:
+          type: string
+        waKetua:
+          type: string
+        lineKetua:
+          type: string
+        namaAnggota1:
+          type: string
+        namaAnggota2:
+          type: string
+        asalInstansi:
+          type: string
+        alamatInstansi:
+          type: string
+        asalInfo:
+          type: string
+        id:
+          type: string
+      example:
+        hpKetua: "08169696969"
+        namaTim: Tim Auto Win
+        namaKetua: Thor
+        waKetua: "08169696969"
+        lineKetua: xxnoobslayer69
+        namaAnggota1: Ironman
+        namaAnggota2: Peter Parker
+        asalInstansi: Avengers
+        alamatInstansi: Earth
+        asalInfo: IG
+        id: 5ebac534954b54139806c112
+
+
   responses:
     DuplicateEmail:
       description: Email already taken

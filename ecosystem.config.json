@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "app",
+      "name": "mage7backend",
       "script": "src/index.js",
       "instances": 1,
       "autorestart": true,
