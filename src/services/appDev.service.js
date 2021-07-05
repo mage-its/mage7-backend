@@ -47,7 +47,6 @@ const multiUploads = upload.fields([
   { name: 'identitasKetua', maxCount: 1 },
   { name: 'identitasAnggota1', maxCount: 1 },
   { name: 'identitasAnggota2', maxCount: 1 },
-  { name: 'suratKeteranganSiswa', maxCount: 1 },
   { name: 'buktiUploadTwibbon', maxCount: 1 },
   { name: 'buktiFollowMage', maxCount: 1 },
   { name: 'buktiRepostStory', maxCount: 1 },
@@ -97,14 +96,6 @@ const daftarAppDev = async (appDevBody, files, user) => {
     removeFilePaths([files.identitasAnggota2[0].path]);
   }
 
-  if (appDevBody.kategori === 'Siswa') {
-    if (!files.suratKeteranganSiswa) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Surat keterangan siswa WAJIB diberikan bagi peserta kategori siswa');
-    }
-    appDev.pathSuratKeteranganSiswa = files.suratKeteranganSiswa[0].path;
-  } else if (files.suratKeteranganSiswa?.[0]?.path) {
-    removeFilePaths([files.suratKeteranganSiswa[0].path]);
-  }
   appDev.user = user.id;
 
   const cabang = appDevBody.kategori === 'Siswa' ? 'adevs' : 'adevm';
@@ -171,9 +162,6 @@ const createAppDev = async (appDevBody, files, userId) => {
   }
   if (files.identitasAnggota2?.[0]?.path) {
     appDev.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
-  }
-  if (files.suratKeteranganSiswa?.[0]?.path) {
-    appDev.pathSuratKeteranganSiswa = files.suratKeteranganSiswa[0].path;
   }
   if (files.identitasKetua?.[0]?.path) {
     appDev.pathIdentitasKetua = files.identitasKetua[0].path;
@@ -258,7 +246,6 @@ const deleteAppDevById = async (appDevId, appDevObj = null, userObj = null) => {
     appDev.pathIdentitasKetua,
     appDev.pathIdentitasAnggota1,
     appDev.pathIdentitasAnggota2,
-    appDev.pathSuratKeteranganSiswa,
     appDev.pathBuktiUploadTwibbon,
     appDev.pathBuktiFollowMage,
     appDev.pathBuktiRepostStory,

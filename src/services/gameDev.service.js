@@ -47,7 +47,6 @@ const multiUploads = upload.fields([
   { name: 'identitasKetua', maxCount: 1 },
   { name: 'identitasAnggota1', maxCount: 1 },
   { name: 'identitasAnggota2', maxCount: 1 },
-  { name: 'suratKeteranganSiswa', maxCount: 1 },
   { name: 'buktiUploadTwibbon', maxCount: 1 },
   { name: 'buktiFollowMage', maxCount: 1 },
   { name: 'buktiRepostStory', maxCount: 1 },
@@ -97,14 +96,6 @@ const daftarGameDev = async (gameDevBody, files, user) => {
     removeFilePaths([files.identitasAnggota2[0].path]);
   }
 
-  if (gameDevBody.kategori === 'Siswa') {
-    if (!files.suratKeteranganSiswa) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Surat keterangan siswa WAJIB diberikan bagi peserta kategori siswa');
-    }
-    gameDev.pathSuratKeteranganSiswa = files.suratKeteranganSiswa[0].path;
-  } else if (files.suratKeteranganSiswa?.[0]?.path) {
-    removeFilePaths([files.suratKeteranganSiswa[0].path]);
-  }
   gameDev.user = user.id;
 
   const cabang = gameDevBody.kategori === 'Siswa' ? 'gdevs' : 'gdevm';
@@ -174,9 +165,6 @@ const createGameDev = async (gameDevBody, files, userId) => {
   }
   if (files.identitasAnggota2?.[0]?.path) {
     gameDev.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
-  }
-  if (files.suratKeteranganSiswa?.[0]?.path) {
-    gameDev.pathSuratKeteranganSiswa = files.suratKeteranganSiswa[0].path;
   }
   if (files.identitasKetua?.[0]?.path) {
     gameDev.pathIdentitasKetua = files.identitasKetua[0].path;
@@ -261,7 +249,6 @@ const deleteGameDevById = async (gameDevId, gameDevObj = null, userObj = null) =
     gameDev.pathIdentitasKetua,
     gameDev.pathIdentitasAnggota1,
     gameDev.pathIdentitasAnggota2,
-    gameDev.pathSuratKeteranganSiswa,
     gameDev.pathBuktiUploadTwibbon,
     gameDev.pathBuktiFollowMage,
     gameDev.pathBuktiRepostStory,
