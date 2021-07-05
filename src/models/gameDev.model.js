@@ -83,10 +83,6 @@ const gameDevSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
-    pathSuratKeteranganSiswa: {
-      type: String,
-      default: null,
-    },
     pathBuktiUploadTwibbon: {
       type: String,
       required: true,

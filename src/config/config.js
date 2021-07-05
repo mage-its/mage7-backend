@@ -24,6 +24,7 @@ const envVarsSchema = Joi.object()
     SMTP_PASSWORD: Joi.string().description('password for email server'),
     EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
     APP_URL: Joi.string().default('https://mage-its.com'),
+    FIREBASE_PW: Joi.string(),
   })
   .unknown();
 
@@ -63,4 +64,5 @@ module.exports = {
     from: envVars.EMAIL_FROM,
   },
   url: envVars.APP_URL,
+  firepw: envVars.FIREBASE_PW,
 };

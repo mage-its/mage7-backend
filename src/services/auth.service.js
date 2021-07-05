@@ -16,6 +16,9 @@ const loginUserWithEmailAndPassword = async (email, password) => {
   if (!user || !(await user.isPasswordMatch(password))) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
   }
+  if (user.method !== null) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Cannot login with email and password, use google instead');
+  }
   return user;
 };
 

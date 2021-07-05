@@ -47,7 +47,6 @@ const multiUploads = upload.fields([
   { name: 'identitasKetua', maxCount: 1 },
   { name: 'identitasAnggota1', maxCount: 1 },
   { name: 'identitasAnggota2', maxCount: 1 },
-  { name: 'suratKeteranganSiswa', maxCount: 1 },
   { name: 'buktiUploadTwibbon', maxCount: 1 },
   { name: 'buktiFollowMage', maxCount: 1 },
   { name: 'buktiRepostStory', maxCount: 1 },
@@ -97,14 +96,6 @@ const daftarIotDev = async (iotDevBody, files, user) => {
     removeFilePaths([files.identitasAnggota2[0].path]);
   }
 
-  if (iotDevBody.kategori === 'Siswa') {
-    if (!files.suratKeteranganSiswa) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Surat keterangan siswa WAJIB diberikan bagi peserta kategori siswa');
-    }
-    iotDev.pathSuratKeteranganSiswa = files.suratKeteranganSiswa[0].path;
-  } else if (files.suratKeteranganSiswa?.[0]?.path) {
-    removeFilePaths([files.suratKeteranganSiswa[0].path]);
-  }
   iotDev.user = user.id;
 
   const cabang = 'idev';
@@ -171,9 +162,6 @@ const createIotDev = async (iotDevBody, files, userId) => {
   }
   if (files.identitasAnggota2?.[0]?.path) {
     iotDev.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
-  }
-  if (files.suratKeteranganSiswa?.[0]?.path) {
-    iotDev.pathSuratKeteranganSiswa = files.suratKeteranganSiswa[0].path;
   }
   if (files.identitasKetua?.[0]?.path) {
     iotDev.pathIdentitasKetua = files.identitasKetua[0].path;
@@ -258,7 +246,6 @@ const deleteIotDevById = async (iotDevId, iotDevObj = null, userObj = null) => {
     iotDev.pathIdentitasKetua,
     iotDev.pathIdentitasAnggota1,
     iotDev.pathIdentitasAnggota2,
-    iotDev.pathSuratKeteranganSiswa,
     iotDev.pathBuktiUploadTwibbon,
     iotDev.pathBuktiFollowMage,
     iotDev.pathBuktiRepostStory,
