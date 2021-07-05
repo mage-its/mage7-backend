@@ -55,7 +55,6 @@ const userSchema = mongoose.Schema(
     method: {
       type: String,
       default: null,
-      private: true,
     },
   },
   {
