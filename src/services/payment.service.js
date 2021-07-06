@@ -4,7 +4,7 @@ const multer = require('multer');
 const userService = require('./user.service');
 const { Olim, GameDev } = require('../models');
 const ApiError = require('../utils/ApiError');
-const isImageOrPdf = require('../utils/isImageOrPdf');
+const { isImageOrPdf } = require('../utils/isImageOrPdf');
 
 const storage = multer.diskStorage({
   destination: './public/uploads/buktibayar',
