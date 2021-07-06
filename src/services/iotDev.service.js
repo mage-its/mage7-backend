@@ -1,6 +1,7 @@
 const multer = require('multer');
 const path = require('path');
 const httpStatus = require('http-status');
+const sanitizeFilename = require('sanitize-filename');
 const kodeBayarService = require('./kodeBayar.service');
 const { IotDev, User } = require('../models');
 const ApiError = require('../utils/ApiError');
@@ -18,8 +19,9 @@ const storage = multer.diskStorage({
 const proposalStorage = multer.diskStorage({
   destination: './public/uploads/iotdev/proposal',
   filename: (req, file, cb) => {
-    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e6)}`;
-    cb(null, `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`);
+    const uniqueSuffix = `${Date.now()}${Math.round(Math.random() * 1e5)}`;
+    const cleanName = sanitizeFilename(file.originalname);
+    cb(null, `${path.parse(cleanName).name}-${uniqueSuffix}${path.extname(file.originalname)}`);
   },
 });
 
