@@ -49,7 +49,7 @@ const sendResetPasswordEmail = async (to, token) => {
 const sendVerificationEmail = async (to, token) => {
   const subject = 'Email Verification';
   // replace this url with the link to the email verification page of your front-end app
-  const verificationEmailUrl = `${config.url}/api/v1/auth/verify-email?token=${token}`;
+  const verificationEmailUrl = `${config.url}/confirmationemail?token=${token}`;
   const html = getVerMailHtml(verificationEmailUrl);
   await sendEmail(to, subject, html);
 };

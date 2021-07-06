@@ -98,10 +98,6 @@ const iotDevSchema = mongoose.Schema(
       trim: true,
       default: null,
     },
-    pathSuratKeteranganSiswa: {
-      type: String,
-      default: null,
-    },
     pathBuktiUploadTwibbon: {
       type: String,
       required: true,

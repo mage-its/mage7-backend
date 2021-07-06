@@ -29,7 +29,6 @@ const multiUploads = upload.fields([
   { name: 'identitasKetua', maxCount: 1 },
   { name: 'identitasAnggota1', maxCount: 1 },
   { name: 'identitasAnggota2', maxCount: 1 },
-  { name: 'suratKeteranganSiswa', maxCount: 1 },
   { name: 'buktiUploadTwibbon', maxCount: 1 },
   { name: 'buktiFollowMage', maxCount: 1 },
   { name: 'buktiRepostStory', maxCount: 1 },
@@ -79,10 +78,6 @@ const daftarOlim = async (olimBody, files, user) => {
     removeFilePaths([files.identitasAnggota2[0].path]);
   }
 
-  if (!files.suratKeteranganSiswa) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Surat keterangan siswa WAJIB diberikan');
-  }
-  olim.pathSuratKeteranganSiswa = files.suratKeteranganSiswa[0].path;
   olim.user = user.id;
 
   const kode = await kodeBayarService.getKodeBayarByCabang('olim');
@@ -130,9 +125,6 @@ const createOlim = async (olimBody, files, userId) => {
   }
   if (files.identitasAnggota2?.[0]?.path) {
     olim.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
-  }
-  if (files.suratKeteranganSiswa?.[0]?.path) {
-    olim.pathSuratKeteranganSiswa = files.suratKeteranganSiswa[0].path;
   }
   if (files.identitasKetua?.[0]?.path) {
     olim.pathIdentitasKetua = files.identitasKetua[0].path;
@@ -214,7 +206,6 @@ const deleteOlimById = async (olimId, olimObj = null, userObj = null) => {
     olim.pathIdentitasKetua,
     olim.pathIdentitasAnggota1,
     olim.pathIdentitasAnggota2,
-    olim.pathSuratKeteranganSiswa,
     olim.pathBuktiUploadTwibbon,
     olim.pathBuktiFollowMage,
     olim.pathBuktiRepostStory,

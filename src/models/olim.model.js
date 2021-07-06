@@ -65,10 +65,6 @@ const olimSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
-    pathSuratKeteranganSiswa: {
-      type: String,
-      required: true,
-    },
     pathBuktiUploadTwibbon: {
       type: String,
       required: true,
