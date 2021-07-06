@@ -43,7 +43,7 @@ const multerProposal = multer({
   fileFilter(req, file, cb) {
     isPdf(file, cb);
   },
-}).fields([{ name: 'proposalGameDev', maxCount: 1 }]);
+}).fields([{ name: 'proposal', maxCount: 1 }]);
 
 const multiUploads = upload.fields([
   { name: 'identitasKetua', maxCount: 1 },
@@ -127,10 +127,10 @@ const uploadProposal = async (userId, files) => {
       `Upload proposal hanya saat tahap 1, anda sekarang di tahap ${gameDev.tahap}`
     );
   }
-  if (!files.proposalGameDev?.[0]?.path) {
+  if (!files.proposal?.[0]?.path) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'File proposal harus diupload');
   }
-  gameDev.pathProposal = files.proposalGameDev[0].path;
+  gameDev.pathProposal = files.proposal[0].path;
   return gameDev.save();
 };
 
