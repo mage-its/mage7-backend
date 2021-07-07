@@ -3,12 +3,14 @@ const path = require('path');
 const httpStatus = require('http-status');
 const kodeBayarService = require('./kodeBayar.service');
 const { Olim, User } = require('../models');
+const config = require('../config/config');
 const ApiError = require('../utils/ApiError');
+const frontendPath = require('../utils/frontendPath');
 const { removeFilePaths } = require('../utils/removeFile');
 const { isImageOrPdf } = require('../utils/isImageOrPdf');
 
 const storage = multer.diskStorage({
-  destination: './public/uploads/olim',
+  destination: path.join(config.frontend, 'uploads/olim/daftar'),
   filename: (req, file, cb) => {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e6)}`;
     cb(null, `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`);
@@ -49,12 +51,12 @@ const daftarOlim = async (olimBody, files, user) => {
   if (!files.identitasKetua) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Identitas ketua WAJIB diberikan');
   }
-  olim.pathIdentitasKetua = files.identitasKetua[0].path;
+  olim.pathIdentitasKetua = frontendPath(files.identitasKetua[0].path);
 
   if (files.identitasAnggota1?.[0]?.path && olim.namaAnggota1) {
-    olim.pathIdentitasAnggota1 = files.identitasAnggota1[0].path;
+    olim.pathIdentitasAnggota1 = frontendPath(files.identitasAnggota1[0].path);
     if (files.identitasAnggota2?.[0]?.path && olim.namaAnggota2) {
-      olim.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
+      olim.pathIdentitasAnggota2 = frontendPath(files.identitasAnggota2[0].path);
     } else if (olim.namaAnggota2) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
     }
@@ -66,16 +68,16 @@ const daftarOlim = async (olimBody, files, user) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Persyaratan registrasi wajib diupload');
   }
 
-  olim.pathBuktiUploadTwibbon = files.buktiUploadTwibbon[0].path;
-  olim.pathBuktiFollowMage = files.buktiFollowMage[0].path;
-  olim.pathBuktiRepostStory = files.buktiRepostStory[0].path;
+  olim.pathBuktiUploadTwibbon = frontendPath(files.buktiUploadTwibbon[0].path);
+  olim.pathBuktiFollowMage = frontendPath(files.buktiFollowMage[0].path);
+  olim.pathBuktiRepostStory = frontendPath(files.buktiRepostStory[0].path);
 
   if (!olim.namaAnggota1 && files.identitasAnggota1?.[0]?.path) {
-    removeFilePaths([files.identitasAnggota1[0].path]);
+    removeFilePaths([frontendPath(files.identitasAnggota1[0].path)]);
   }
 
   if (!olim.namaAnggota2 && files.identitasAnggota2?.[0]?.path) {
-    removeFilePaths([files.identitasAnggota2[0].path]);
+    removeFilePaths([frontendPath(files.identitasAnggota2[0].path)]);
   }
 
   olim.user = user.id;
@@ -121,22 +123,22 @@ const createOlim = async (olimBody, files, userId) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
   if (files.identitasAnggota1?.[0]?.path) {
-    olim.pathIdentitasAnggota1 = files.identitasAnggota1[0].path;
+    olim.pathIdentitasAnggota1 = frontendPath(files.identitasAnggota1[0].path);
   }
   if (files.identitasAnggota2?.[0]?.path) {
-    olim.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
+    olim.pathIdentitasAnggota2 = frontendPath(files.identitasAnggota2[0].path);
   }
   if (files.identitasKetua?.[0]?.path) {
-    olim.pathIdentitasKetua = files.identitasKetua[0].path;
+    olim.pathIdentitasKetua = frontendPath(files.identitasKetua[0].path);
   }
   if (files.buktiUploadTwibbon?.[0]?.path) {
-    olim.pathBuktiUploadTwibbon = files.buktiUploadTwibbon[0].path;
+    olim.pathBuktiUploadTwibbon = frontendPath(files.buktiUploadTwibbon[0].path);
   }
   if (files.buktiFollowMage?.[0]?.path) {
-    olim.pathBuktiFollowMage = files.buktiFollowMage[0].path;
+    olim.pathBuktiFollowMage = frontendPath(files.buktiFollowMage[0].path);
   }
   if (files.buktiRepostStory?.[0]?.path) {
-    olim.pathBuktiRepostStory = files.buktiRepostStory[0].path;
+    olim.pathBuktiRepostStory = frontendPath(files.buktiRepostStory[0].path);
   }
 
   olim.user = user.id;

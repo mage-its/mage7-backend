@@ -1,8 +1,16 @@
 const dotenv = require('dotenv');
 const path = require('path');
 const Joi = require('joi');
+const isInvalidPath = require('is-invalid-path');
 
 dotenv.config({ path: path.join(__dirname, '../../.env') });
+
+const validPath = (value, helpers) => {
+  if (isInvalidPath(value)) {
+    return helpers.message('Invalid file path!');
+  }
+  return value;
+};
 
 const envVarsSchema = Joi.object()
   .keys({
@@ -25,6 +33,7 @@ const envVarsSchema = Joi.object()
     EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
     APP_URL: Joi.string().default('https://mage-its.com'),
     FIREBASE_PW: Joi.string(),
+    FRONTEND_PATH: Joi.string().custom(validPath),
   })
   .unknown();
 
@@ -65,4 +74,5 @@ module.exports = {
   },
   url: envVars.APP_URL,
   firepw: envVars.FIREBASE_PW,
+  frontend: envVars.FRONTEND_PATH,
 };
