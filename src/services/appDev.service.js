@@ -4,12 +4,14 @@ const httpStatus = require('http-status');
 const sanitizeFilename = require('sanitize-filename');
 const kodeBayarService = require('./kodeBayar.service');
 const { AppDev, User } = require('../models');
+const config = require('../config/config');
 const ApiError = require('../utils/ApiError');
+const frontendPath = require('../utils/frontendPath');
 const { removeFilePaths } = require('../utils/removeFile');
 const { isImageOrPdf, isPdf } = require('../utils/isImageOrPdf');
 
 const storage = multer.diskStorage({
-  destination: './public/uploads/appdev',
+  destination: path.join(config.frontend, 'uploads/appdev/daftar'),
   filename: (req, file, cb) => {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e6)}`;
     cb(null, `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`);
@@ -17,7 +19,7 @@ const storage = multer.diskStorage({
 });
 
 const proposalStorage = multer.diskStorage({
-  destination: './public/uploads/appdev/proposal',
+  destination: path.join(config.frontend, 'uploads/appdev/proposal'),
   filename: (req, file, cb) => {
     const uniqueSuffix = `${Date.now()}${Math.round(Math.random() * 1e5)}`;
     const cleanName = sanitizeFilename(file.originalname);
@@ -69,12 +71,12 @@ const daftarAppDev = async (appDevBody, files, user) => {
   if (!files.identitasKetua) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Identitas ketua WAJIB diberikan');
   }
-  appDev.pathIdentitasKetua = files.identitasKetua[0].path;
+  appDev.pathIdentitasKetua = frontendPath(files.identitasKetua[0].path);
 
   if (files.identitasAnggota1?.[0]?.path && appDev.namaAnggota1) {
-    appDev.pathIdentitasAnggota1 = files.identitasAnggota1[0].path;
+    appDev.pathIdentitasAnggota1 = frontendPath(files.identitasAnggota1[0].path);
     if (files.identitasAnggota2?.[0]?.path && appDev.namaAnggota2) {
-      appDev.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
+      appDev.pathIdentitasAnggota2 = frontendPath(files.identitasAnggota2[0].path);
     } else if (appDev.namaAnggota2) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
     }
@@ -86,16 +88,16 @@ const daftarAppDev = async (appDevBody, files, user) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Persyaratan registrasi wajib diupload');
   }
 
-  appDev.pathBuktiUploadTwibbon = files.buktiUploadTwibbon[0].path;
-  appDev.pathBuktiFollowMage = files.buktiFollowMage[0].path;
-  appDev.pathBuktiRepostStory = files.buktiRepostStory[0].path;
+  appDev.pathBuktiUploadTwibbon = frontendPath(files.buktiUploadTwibbon[0].path);
+  appDev.pathBuktiFollowMage = frontendPath(files.buktiFollowMage[0].path);
+  appDev.pathBuktiRepostStory = frontendPath(files.buktiRepostStory[0].path);
 
   if (!appDev.namaAnggota1 && files.identitasAnggota1?.[0]?.path) {
-    removeFilePaths([files.identitasAnggota1[0].path]);
+    removeFilePaths([frontendPath(files.identitasAnggota1[0].path)]);
   }
 
   if (!appDev.namaAnggota2 && files.identitasAnggota2?.[0]?.path) {
-    removeFilePaths([files.identitasAnggota2[0].path]);
+    removeFilePaths([frontendPath(files.identitasAnggota2[0].path)]);
   }
 
   appDev.user = user.id;
@@ -127,7 +129,7 @@ const uploadProposal = async (userId, files) => {
   if (!files.proposal?.[0]?.path) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'File proposal harus diupload');
   }
-  appDev.pathProposal = files.proposal[0].path;
+  appDev.pathProposal = frontendPath(files.proposal[0].path);
   return appDev.save();
 };
 
@@ -160,22 +162,22 @@ const createAppDev = async (appDevBody, files, userId) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
   if (files.identitasAnggota1?.[0]?.path) {
-    appDev.pathIdentitasAnggota1 = files.identitasAnggota1[0].path;
+    appDev.pathIdentitasAnggota1 = frontendPath(files.identitasAnggota1[0].path);
   }
   if (files.identitasAnggota2?.[0]?.path) {
-    appDev.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
+    appDev.pathIdentitasAnggota2 = frontendPath(files.identitasAnggota2[0].path);
   }
   if (files.identitasKetua?.[0]?.path) {
-    appDev.pathIdentitasKetua = files.identitasKetua[0].path;
+    appDev.pathIdentitasKetua = frontendPath(files.identitasKetua[0].path);
   }
   if (files.buktiUploadTwibbon?.[0]?.path) {
-    appDev.pathBuktiUploadTwibbon = files.buktiUploadTwibbon[0].path;
+    appDev.pathBuktiUploadTwibbon = frontendPath(files.buktiUploadTwibbon[0].path);
   }
   if (files.buktiFollowMage?.[0]?.path) {
-    appDev.pathBuktiFollowMage = files.buktiFollowMage[0].path;
+    appDev.pathBuktiFollowMage = frontendPath(files.buktiFollowMage[0].path);
   }
   if (files.buktiRepostStory?.[0]?.path) {
-    appDev.pathBuktiRepostStory = files.buktiRepostStory[0].path;
+    appDev.pathBuktiRepostStory = frontendPath(files.buktiRepostStory[0].path);
   }
   const cabang = appDevBody.kategori === 'Siswa' ? 'adevs' : 'adevm';
 

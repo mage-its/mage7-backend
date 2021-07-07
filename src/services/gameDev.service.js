@@ -4,12 +4,14 @@ const httpStatus = require('http-status');
 const sanitizeFilename = require('sanitize-filename');
 const kodeBayarService = require('./kodeBayar.service');
 const { GameDev, User } = require('../models');
+const config = require('../config/config');
 const ApiError = require('../utils/ApiError');
+const frontendPath = require('../utils/frontendPath');
 const { removeFilePaths } = require('../utils/removeFile');
 const { isImageOrPdf, isPdf } = require('../utils/isImageOrPdf');
 
 const storage = multer.diskStorage({
-  destination: './public/uploads/gamedev',
+  destination: path.join(config.frontend, 'uploads/gamedev/daftar'),
   filename: (req, file, cb) => {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e6)}`;
     cb(null, `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`);
@@ -17,7 +19,7 @@ const storage = multer.diskStorage({
 });
 
 const proposalStorage = multer.diskStorage({
-  destination: './public/uploads/gamedev/proposal',
+  destination: path.join(config.frontend, 'uploads/gamedev/proposal'),
   filename: (req, file, cb) => {
     const uniqueSuffix = `${Date.now()}${Math.round(Math.random() * 1e5)}`;
     const cleanName = sanitizeFilename(file.originalname);
@@ -69,12 +71,12 @@ const daftarGameDev = async (gameDevBody, files, user) => {
   if (!files.identitasKetua) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Identitas ketua WAJIB diberikan');
   }
-  gameDev.pathIdentitasKetua = files.identitasKetua[0].path;
+  gameDev.pathIdentitasKetua = frontendPath(files.identitasKetua[0].path);
 
   if (files.identitasAnggota1?.[0]?.path && gameDev.namaAnggota1) {
-    gameDev.pathIdentitasAnggota1 = files.identitasAnggota1[0].path;
+    gameDev.pathIdentitasAnggota1 = frontendPath(files.identitasAnggota1[0].path);
     if (files.identitasAnggota2?.[0]?.path && gameDev.namaAnggota2) {
-      gameDev.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
+      gameDev.pathIdentitasAnggota2 = frontendPath(files.identitasAnggota2[0].path);
     } else if (gameDev.namaAnggota2) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
     }
@@ -86,16 +88,16 @@ const daftarGameDev = async (gameDevBody, files, user) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Persyaratan registrasi wajib diupload');
   }
 
-  gameDev.pathBuktiUploadTwibbon = files.buktiUploadTwibbon[0].path;
-  gameDev.pathBuktiFollowMage = files.buktiFollowMage[0].path;
-  gameDev.pathBuktiRepostStory = files.buktiRepostStory[0].path;
+  gameDev.pathBuktiUploadTwibbon = frontendPath(files.buktiUploadTwibbon[0].path);
+  gameDev.pathBuktiFollowMage = frontendPath(files.buktiFollowMage[0].path);
+  gameDev.pathBuktiRepostStory = frontendPath(files.buktiRepostStory[0].path);
 
   if (!gameDev.namaAnggota1 && files.identitasAnggota1?.[0]?.path) {
-    removeFilePaths([files.identitasAnggota1[0].path]);
+    removeFilePaths([frontendPath(files.identitasAnggota1[0].path)]);
   }
 
   if (!gameDev.namaAnggota2 && files.identitasAnggota2?.[0]?.path) {
-    removeFilePaths([files.identitasAnggota2[0].path]);
+    removeFilePaths([frontendPath(files.identitasAnggota2[0].path)]);
   }
 
   gameDev.user = user.id;
@@ -130,7 +132,7 @@ const uploadProposal = async (userId, files) => {
   if (!files.proposal?.[0]?.path) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'File proposal harus diupload');
   }
-  gameDev.pathProposal = files.proposal[0].path;
+  gameDev.pathProposal = frontendPath(files.proposal[0].path);
   return gameDev.save();
 };
 
@@ -163,22 +165,22 @@ const createGameDev = async (gameDevBody, files, userId) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
   if (files.identitasAnggota1?.[0]?.path) {
-    gameDev.pathIdentitasAnggota1 = files.identitasAnggota1[0].path;
+    gameDev.pathIdentitasAnggota1 = frontendPath(files.identitasAnggota1[0].path);
   }
   if (files.identitasAnggota2?.[0]?.path) {
-    gameDev.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
+    gameDev.pathIdentitasAnggota2 = frontendPath(files.identitasAnggota2[0].path);
   }
   if (files.identitasKetua?.[0]?.path) {
-    gameDev.pathIdentitasKetua = files.identitasKetua[0].path;
+    gameDev.pathIdentitasKetua = frontendPath(files.identitasKetua[0].path);
   }
   if (files.buktiUploadTwibbon?.[0]?.path) {
-    gameDev.pathBuktiUploadTwibbon = files.buktiUploadTwibbon[0].path;
+    gameDev.pathBuktiUploadTwibbon = frontendPath(files.buktiUploadTwibbon[0].path);
   }
   if (files.buktiFollowMage?.[0]?.path) {
-    gameDev.pathBuktiFollowMage = files.buktiFollowMage[0].path;
+    gameDev.pathBuktiFollowMage = frontendPath(files.buktiFollowMage[0].path);
   }
   if (files.buktiRepostStory?.[0]?.path) {
-    gameDev.pathBuktiRepostStory = files.buktiRepostStory[0].path;
+    gameDev.pathBuktiRepostStory = frontendPath(files.buktiRepostStory[0].path);
   }
   const cabang = gameDevBody.kategori === 'Siswa' ? 'gdevs' : 'gdevm';
 
