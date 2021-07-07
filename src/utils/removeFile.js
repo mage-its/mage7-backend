@@ -1,5 +1,7 @@
 const { access, unlink } = require('fs/promises');
 const { constants } = require('fs');
+const { join: pathJoin } = require('path');
+const config = require('../config/config');
 
 const filterExistPaths = async (paths) => {
   const res = await Promise.all(
@@ -17,7 +19,9 @@ const filterExistPaths = async (paths) => {
 };
 
 const removeFilePaths = async (paths) => {
-  const existPaths = await filterExistPaths(paths);
+  const noNullPaths = paths.filter((path) => path != null);
+  const realPaths = noNullPaths.map((path) => (path.startsWith(config.frontend) ? path : pathJoin(config.frontend, path)));
+  const existPaths = await filterExistPaths(realPaths);
   const promises = existPaths.map(async (path) => unlink(path));
   await Promise.all(promises);
 };

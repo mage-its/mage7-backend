@@ -4,12 +4,14 @@ const httpStatus = require('http-status');
 const sanitizeFilename = require('sanitize-filename');
 const kodeBayarService = require('./kodeBayar.service');
 const { IotDev, User } = require('../models');
+const config = require('../config/config');
 const ApiError = require('../utils/ApiError');
+const frontendPath = require('../utils/frontendPath');
 const { removeFilePaths } = require('../utils/removeFile');
 const { isImageOrPdf, isPdf } = require('../utils/isImageOrPdf');
 
 const storage = multer.diskStorage({
-  destination: './public/uploads/iotdev',
+  destination: path.join(config.frontend, 'uploads/iotdev/daftar'),
   filename: (req, file, cb) => {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e6)}`;
     cb(null, `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`);
@@ -17,7 +19,7 @@ const storage = multer.diskStorage({
 });
 
 const proposalStorage = multer.diskStorage({
-  destination: './public/uploads/iotdev/proposal',
+  destination: path.join(config.frontend, 'uploads/iotdev/proposal'),
   filename: (req, file, cb) => {
     const uniqueSuffix = `${Date.now()}${Math.round(Math.random() * 1e5)}`;
     const cleanName = sanitizeFilename(file.originalname);
@@ -69,12 +71,12 @@ const daftarIotDev = async (iotDevBody, files, user) => {
   if (!files.identitasKetua) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Identitas ketua WAJIB diberikan');
   }
-  iotDev.pathIdentitasKetua = files.identitasKetua[0].path;
+  iotDev.pathIdentitasKetua = frontendPath(files.identitasKetua[0].path);
 
   if (files.identitasAnggota1?.[0]?.path && iotDev.namaAnggota1) {
-    iotDev.pathIdentitasAnggota1 = files.identitasAnggota1[0].path;
+    iotDev.pathIdentitasAnggota1 = frontendPath(files.identitasAnggota1[0].path);
     if (files.identitasAnggota2?.[0]?.path && iotDev.namaAnggota2) {
-      iotDev.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
+      iotDev.pathIdentitasAnggota2 = frontendPath(files.identitasAnggota2[0].path);
     } else if (iotDev.namaAnggota2) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
     }
@@ -86,16 +88,16 @@ const daftarIotDev = async (iotDevBody, files, user) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Persyaratan registrasi wajib diupload');
   }
 
-  iotDev.pathBuktiUploadTwibbon = files.buktiUploadTwibbon[0].path;
-  iotDev.pathBuktiFollowMage = files.buktiFollowMage[0].path;
-  iotDev.pathBuktiRepostStory = files.buktiRepostStory[0].path;
+  iotDev.pathBuktiUploadTwibbon = frontendPath(files.buktiUploadTwibbon[0].path);
+  iotDev.pathBuktiFollowMage = frontendPath(files.buktiFollowMage[0].path);
+  iotDev.pathBuktiRepostStory = frontendPath(files.buktiRepostStory[0].path);
 
   if (!iotDev.namaAnggota1 && files.identitasAnggota1?.[0]?.path) {
-    removeFilePaths([files.identitasAnggota1[0].path]);
+    removeFilePaths([frontendPath(files.identitasAnggota1[0].path)]);
   }
 
   if (!iotDev.namaAnggota2 && files.identitasAnggota2?.[0]?.path) {
-    removeFilePaths([files.identitasAnggota2[0].path]);
+    removeFilePaths([frontendPath(files.identitasAnggota2[0].path)]);
   }
 
   iotDev.user = user.id;
@@ -127,7 +129,7 @@ const uploadProposal = async (userId, files) => {
   if (!files.proposal?.[0]?.path) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'File proposal harus diupload');
   }
-  iotDev.pathProposal = files.proposal[0].path;
+  iotDev.pathProposal = frontendPath(files.proposal[0].path);
   return iotDev.save();
 };
 
@@ -160,22 +162,22 @@ const createIotDev = async (iotDevBody, files, userId) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
   if (files.identitasAnggota1?.[0]?.path) {
-    iotDev.pathIdentitasAnggota1 = files.identitasAnggota1[0].path;
+    iotDev.pathIdentitasAnggota1 = frontendPath(files.identitasAnggota1[0].path);
   }
   if (files.identitasAnggota2?.[0]?.path) {
-    iotDev.pathIdentitasAnggota2 = files.identitasAnggota2[0].path;
+    iotDev.pathIdentitasAnggota2 = frontendPath(files.identitasAnggota2[0].path);
   }
   if (files.identitasKetua?.[0]?.path) {
-    iotDev.pathIdentitasKetua = files.identitasKetua[0].path;
+    iotDev.pathIdentitasKetua = frontendPath(files.identitasKetua[0].path);
   }
   if (files.buktiUploadTwibbon?.[0]?.path) {
-    iotDev.pathBuktiUploadTwibbon = files.buktiUploadTwibbon[0].path;
+    iotDev.pathBuktiUploadTwibbon = frontendPath(files.buktiUploadTwibbon[0].path);
   }
   if (files.buktiFollowMage?.[0]?.path) {
-    iotDev.pathBuktiFollowMage = files.buktiFollowMage[0].path;
+    iotDev.pathBuktiFollowMage = frontendPath(files.buktiFollowMage[0].path);
   }
   if (files.buktiRepostStory?.[0]?.path) {
-    iotDev.pathBuktiRepostStory = files.buktiRepostStory[0].path;
+    iotDev.pathBuktiRepostStory = frontendPath(files.buktiRepostStory[0].path);
   }
   const cabang = 'idev';
 

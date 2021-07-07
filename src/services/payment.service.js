@@ -3,11 +3,13 @@ const httpStatus = require('http-status');
 const multer = require('multer');
 const userService = require('./user.service');
 const { Olim, GameDev } = require('../models');
+const config = require('../config/config');
 const ApiError = require('../utils/ApiError');
+const frontendPath = require('../utils/frontendPath');
 const { isImageOrPdf } = require('../utils/isImageOrPdf');
 
 const storage = multer.diskStorage({
-  destination: './public/uploads/buktibayar',
+  destination: path.join(config.frontend, 'uploads/buktibayar'),
   filename: (req, file, cb) => {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e6)}`;
     cb(null, `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`);
@@ -56,7 +58,7 @@ const pay = async (userId, namaBayar, files) => {
   if (compe.sudahUploadBuktiBayar) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User sudah mengupload bukti bayar!');
   }
-  compe.pathBuktiBayar = files.buktiBayar[0].path;
+  compe.pathBuktiBayar = frontendPath(files.buktiBayar[0].path, 3);
   compe.namaBayar = namaBayar;
   return compe.save();
 };
