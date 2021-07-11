@@ -30,7 +30,7 @@ const proposalStorage = multer.diskStorage({
 const upload = multer({
   storage,
   limits: {
-    fileSize: 1000000, // 1000000 Bytes = 1 MB
+    fileSize: 6 * 2 * 1024 * 1024, // 1000000 Bytes = 1 MB
   },
   fileFilter(req, file, cb) {
     isImageOrPdf(file, cb);
@@ -40,7 +40,7 @@ const upload = multer({
 const multerProposal = multer({
   storage: proposalStorage,
   limits: {
-    fileSize: 5000000,
+    fileSize: 10 * 1024 * 1024,
   },
   fileFilter(req, file, cb) {
     isPdf(file, cb);
