@@ -42,8 +42,22 @@ app.use(mongoSanitize());
 app.use(compression());
 
 // enable cors
-app.use(cors());
-app.options('*', cors());
+if (config.env === 'production') {
+  app.use(
+    cors({
+      origin: 'https://mage-its.com',
+    })
+  );
+  app.options(
+    '*',
+    cors({
+      origin: 'https://mage-its.com',
+    })
+  );
+} else {
+  app.use(cors());
+  app.options('*', cors());
+}
 
 // jwt authentication
 app.use(passport.initialize());

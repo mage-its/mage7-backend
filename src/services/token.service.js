@@ -60,6 +60,29 @@ const verifyToken = async (token, type) => {
   return tokenDoc;
 };
 
+const isTokenExpired = async (token) => {
+  const { exp } = jwt.decode(token);
+  return Date.now() >= exp * 1000;
+};
+
+const getToken = async (user, type) => {
+  const token = await Token.findOne({ type, user });
+  return token;
+};
+
+const getUser = async (token, type) => {
+  const { user } = await Token.findOne({ type, token });
+  return user;
+};
+
+const deleteToken = async (tokenStr) => {
+  const token = await Token.findOne({ token: tokenStr });
+  if (!token) {
+    return;
+  }
+  return token.remove();
+};
+
 /**
  * Generate auth tokens
  * @param {User} user
@@ -117,6 +140,10 @@ module.exports = {
   generateToken,
   saveToken,
   verifyToken,
+  isTokenExpired,
+  getToken,
+  getUser,
+  deleteToken,
   generateAuthTokens,
   generateResetPasswordToken,
   generateVerifyEmailToken,
