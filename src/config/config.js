@@ -35,6 +35,7 @@ const envVarsSchema = Joi.object()
     APP_URL: Joi.string().default('https://mage-its.com'),
     FIREBASE_PW: Joi.string(),
     FRONTEND_PATH: Joi.string().custom(validPath),
+    CORS_ORIGIN: Joi.string().default('https://mage-its.com'),
   })
   .unknown();
 
@@ -77,4 +78,5 @@ module.exports = {
   url: envVars.APP_URL,
   firepw: envVars.FIREBASE_PW,
   frontend: envVars.FRONTEND_PATH,
+  cors: envVars.CORS_ORIGIN,
 };
