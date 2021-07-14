@@ -45,13 +45,13 @@ app.use(compression());
 if (config.env === 'production') {
   app.use(
     cors({
-      origin: 'https://mage-its.com',
+      origin: config.cors,
     })
   );
   app.options(
     '*',
     cors({
-      origin: 'https://mage-its.com',
+      origin: config.cors,
     })
   );
 } else {
