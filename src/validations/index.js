@@ -7,3 +7,4 @@ module.exports.iotDevValidation = require('./iotDev.validation');
 module.exports.pengumumanValidation = require('./pengumuman.validation');
 module.exports.kodeBayarValidation = require('./kodeBayar.validation');
 module.exports.paymentValidation = require('./payment.validation');
+module.exports.kodePromoValidation = require('./kodePromo.validation');

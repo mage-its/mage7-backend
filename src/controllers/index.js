@@ -7,3 +7,4 @@ module.exports.iotDevController = require('./iotDev.controller');
 module.exports.pengumumanController = require('./pengumuman.controller');
 module.exports.kodeBayarController = require('./kodeBayar.controller');
 module.exports.paymentController = require('./payment.controller');
+module.exports.kodePromoController = require('./kodePromo.controller');
