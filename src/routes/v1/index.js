@@ -9,6 +9,7 @@ const iotDevRoute = require('./iotDev.route');
 const pengumumanRoute = require('./pengumuman.route');
 const kodeBayarRoute = require('./kodeBayar.route');
 const paymentRoute = require('./payment.route');
+const kodePromoRoute = require('./kodePromo.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -49,6 +50,10 @@ const defaultRoutes = [
   {
     path: '/payment',
     route: paymentRoute,
+  },
+  {
+    path: '/kodepromo',
+    route: kodePromoRoute,
   },
 ];
 

@@ -3,20 +3,30 @@ const { toJSON, paginate } = require('./plugins');
 
 const kodePromoSchema = mongoose.Schema(
   {
-    name: {
+    kode: {
       type: String,
       required: true,
-      index: true,
-      unique: true,
-      enum: ['olim', 'gdevm', 'adevm', 'idev', 'gdevs', 'adevs'],
     },
-    no: {
+    category: {
+      type: String,
+      required: true,
+      enum: ['olim', 'devcom', 'all'],
+    },
+    usage: {
       type: Number,
-      default: 1,
+      default: 0,
     },
-    price: {
+    maxUsage: {
+      type: Number,
+      default: 69,
+    },
+    discountPrice: {
       type: Number,
       required: true,
+    },
+    active: {
+      type: Boolean,
+      default: true,
     },
   },
   {

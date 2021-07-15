@@ -139,6 +139,10 @@ const iotDevSchema = mongoose.Schema(
       enum: ['Not Verified', 'Verified'],
       default: 'Not Verified',
     },
+    usedPromo: {
+      type: Boolean,
+      default: false,
+    },
     pathProposal: {
       type: String,
       default: null,
