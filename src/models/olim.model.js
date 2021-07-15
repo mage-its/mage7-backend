@@ -106,6 +106,10 @@ const olimSchema = mongoose.Schema(
       enum: ['Not Verified', 'Verified'],
       default: 'Not Verified',
     },
+    usedPromo: {
+      type: Boolean,
+      default: false,
+    },
     user: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'User',
