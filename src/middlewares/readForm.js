@@ -1,4 +1,4 @@
-const { olimService, gameDevService, paymentService, appDevService, iotDevService } = require('../services');
+const { olimService, gameDevService, compeService, appDevService, iotDevService } = require('../services');
 
 const uploads = {
   olim: olimService.multiUploads,
@@ -8,7 +8,7 @@ const uploads = {
   gamedevProposal: gameDevService.multerProposal,
   appdevProposal: appDevService.multerProposal,
   iotdevProposal: iotDevService.multerProposal,
-  payment: paymentService.multiUploads,
+  payment: compeService.multiUploads,
 };
 
 const readForm = (key) => uploads[key];

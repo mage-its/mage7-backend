@@ -137,10 +137,11 @@ const uploadProposal = async (userId, files) => {
  * Update appdev by userId
  * @param {ObjectId} userId
  * @param {Object} updateBody
+ * @param {AppDev} appObj
  * @returns {Promise<AppDev>}
  */
-const updateAppDevByUserId = async (userId, updateBody) => {
-  const appDev = await getAppDevByUserId(userId);
+const updateAppDevByUserId = async (userId, updateBody, appObj) => {
+  const appDev = appObj || (await getAppDevByUserId(userId));
   if (!appDev) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
   }
@@ -214,10 +215,11 @@ const getAppDevById = async (id) => {
  * Update appdev by id
  * @param {ObjectId} appDevId
  * @param {Object} updateBody
+ * @param {AppDev} appObj
  * @returns {Promise<AppDev>}
  */
-const updateAppDevById = async (appDevId, updateBody) => {
-  const appDev = await getAppDevById(appDevId);
+const updateAppDevById = async (appDevId, updateBody, appObj) => {
+  const appDev = appObj || (await getAppDevById(appDevId));
   if (!appDev) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
   }

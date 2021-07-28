@@ -1,12 +1,12 @@
 const path = require('path');
 const httpStatus = require('http-status');
 const multer = require('multer');
-const userService = require('./user.service');
-const { Olim, GameDev } = require('../models');
+const { Olim, GameDev, IotDev, AppDev } = require('../models');
 const config = require('../config/config');
 const ApiError = require('../utils/ApiError');
 const frontendPath = require('../utils/frontendPath');
 const { isImageOrPdf } = require('../utils/isImageOrPdf');
+const { userService, olimService, gameDevService, appDevService, iotDevService } = require('.');
 
 const storage = multer.diskStorage({
   destination: path.join(config.frontend, 'uploads/buktibayar'),
@@ -28,9 +28,11 @@ const upload = multer({
 
 const multiUploads = upload.fields([{ name: 'buktiBayar', maxCount: 1 }]);
 
-const compeSelection = {
+const compeModels = {
   olim: Olim,
   gamedev: GameDev,
+  iotdev: IotDev,
+  appdev: AppDev,
 };
 
 const pay = async (userId, namaBayar, files) => {
@@ -43,7 +45,7 @@ const pay = async (userId, namaBayar, files) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User belum mendaftar di salah satu lomba!');
   }
 
-  const compeModel = compeSelection[user.registeredComp];
+  const compeModel = compeModels[user.registeredComp];
   const compe = await compeModel.findOne({ user: userId });
   if (!compe) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User belum mendaftar di salah satu lomba!');
@@ -63,7 +65,30 @@ const pay = async (userId, namaBayar, files) => {
   return compe.save();
 };
 
+const compeMethods = {
+  olim: [olimService.getOlimByUserId, olimService.updateOlimByUserId],
+  gamedev: [gameDevService.getGameDevByUserId, gameDevService.updateGameDevByUserId],
+  appdev: [appDevService.getAppDevByUserId, appDevService.updateAppDevByUserId],
+  iotdev: [iotDevService.getIotDevByUserId, iotDevService.updateIotDevByUserId],
+};
+
+const toggleVerif = async (userId) => {
+  const user = await userService.getUserById(userId);
+  if (user.registeredComp === '') {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User belum mendaftar di salah satu lomba!');
+  }
+  if (!(user.registeredComp in compeMethods)) {
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Cabang lomba yang terdaftar tidak diketahui');
+  }
+  const compe = await compeMethods[user.registeredComp][0](user.id);
+  if (!compe) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
+  }
+  return compeMethods[user.registeredComp][1](user.id, { isVerified: !compe.isVerified }, compe);
+};
+
 module.exports = {
   multiUploads,
   pay,
+  toggleVerif,
 };

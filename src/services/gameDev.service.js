@@ -140,10 +140,11 @@ const uploadProposal = async (userId, files) => {
  * Update gamedev by userId
  * @param {ObjectId} userId
  * @param {Object} updateBody
+ * @param {GameDev} gameObj
  * @returns {Promise<GameDev>}
  */
-const updateGameDevByUserId = async (userId, updateBody) => {
-  const gameDev = await getGameDevByUserId(userId);
+const updateGameDevByUserId = async (userId, updateBody, gameObj) => {
+  const gameDev = gameObj || (await getGameDevByUserId(userId));
   if (!gameDev) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
   }
@@ -217,10 +218,11 @@ const getGameDevById = async (id) => {
  * Update gamedev by id
  * @param {ObjectId} gameDevId
  * @param {Object} updateBody
+ * @param {GameDev} gameObj
  * @returns {Promise<GameDev>}
  */
-const updateGameDevById = async (gameDevId, updateBody) => {
-  const gameDev = await getGameDevById(gameDevId);
+const updateGameDevById = async (gameDevId, updateBody, gameObj) => {
+  const gameDev = gameObj || (await getGameDevById(gameDevId));
   if (!gameDev) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
   }

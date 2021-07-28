@@ -98,10 +98,11 @@ const daftarOlim = async (olimBody, files, user) => {
  * Update olim by userId
  * @param {ObjectId} userId
  * @param {Object} updateBody
+ * @param {Olim} olimObj
  * @returns {Promise<Olim>}
  */
-const updateOlimByUserId = async (userId, updateBody) => {
-  const olim = await getOlimByUserId(userId);
+const updateOlimByUserId = async (userId, updateBody, olimObj) => {
+  const olim = olimObj || (await getOlimByUserId(userId));
   if (!olim) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
   }
@@ -172,10 +173,11 @@ const getOlimById = async (id) => {
  * Update olim by id
  * @param {ObjectId} olimId
  * @param {Object} updateBody
+ * @param {Olim} olimObj
  * @returns {Promise<Olim>}
  */
-const updateOlimById = async (olimId, updateBody) => {
-  const olim = await getOlimById(olimId);
+const updateOlimById = async (olimId, updateBody, olimObj) => {
+  const olim = olimObj || (await getOlimById(olimId));
   if (!olim) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
   }

@@ -8,5 +8,5 @@ module.exports.appDevService = require('./appDev.service');
 module.exports.iotDevService = require('./iotDev.service');
 module.exports.pengumumanService = require('./pengumuman.service');
 module.exports.kodeBayarService = require('./kodeBayar.service');
-module.exports.paymentService = require('./payment.service');
+module.exports.compeService = require('./compe.service');
 module.exports.kodePromoService = require('./kodePromo.service');
