@@ -134,10 +134,9 @@ const iotDevSchema = mongoose.Schema(
       type: String,
       default: null,
     },
-    statusBayar: {
-      type: String,
-      enum: ['Not Verified', 'Verified'],
-      default: 'Not Verified',
+    isVerified: {
+      type: Boolean,
+      default: false,
     },
     usedPromo: {
       type: Boolean,
