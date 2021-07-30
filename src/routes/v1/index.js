@@ -10,6 +10,7 @@ const pengumumanRoute = require('./pengumuman.route');
 const kodeBayarRoute = require('./kodeBayar.route');
 const compeRoute = require('./compe.route');
 const kodePromoRoute = require('./kodePromo.route');
+const tokenRoute = require('./token.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -54,6 +55,10 @@ const defaultRoutes = [
   {
     path: '/kodepromo',
     route: kodePromoRoute,
+  },
+  {
+    path: '/tokens',
+    route: tokenRoute,
   },
 ];
 

@@ -83,6 +83,10 @@ const deleteToken = async (tokenStr) => {
   return token.remove();
 };
 
+const deleteRefreshTokens = async () => {
+  await Token.deleteMany({ type: 'refresh' });
+};
+
 /**
  * Generate auth tokens
  * @param {User} user
@@ -144,6 +148,7 @@ module.exports = {
   getToken,
   getUser,
   deleteToken,
+  deleteRefreshTokens,
   generateAuthTokens,
   generateResetPasswordToken,
   generateVerifyEmailToken,

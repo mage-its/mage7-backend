@@ -8,3 +8,4 @@ module.exports.pengumumanController = require('./pengumuman.controller');
 module.exports.kodeBayarController = require('./kodeBayar.controller');
 module.exports.compeController = require('./compe.controller');
 module.exports.kodePromoController = require('./kodePromo.controller');
+module.exports.tokenController = require('./token.controller');
