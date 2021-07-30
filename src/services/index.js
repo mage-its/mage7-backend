@@ -10,3 +10,4 @@ module.exports.pengumumanService = require('./pengumuman.service');
 module.exports.kodeBayarService = require('./kodeBayar.service');
 module.exports.compeService = require('./compe.service');
 module.exports.kodePromoService = require('./kodePromo.service');
+module.exports.tokenService = require('./token.service');
