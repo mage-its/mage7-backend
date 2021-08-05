@@ -3,6 +3,7 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const mongoSanitize = require('express-mongo-sanitize');
+const filter = require('content-filter');
 const compression = require('compression');
 const cors = require('cors');
 const passport = require('passport');
@@ -37,12 +38,18 @@ app.use(hpp());
 // sanitize request data
 app.use(xss());
 app.use(mongoSanitize());
+app.use(
+  filter({
+    urlBlackList: ['$', '{', '&&', '||'],
+    bodyBlackList: ['$', '{', '&&', '||'],
+  })
+);
 
 // gzip compression
 app.use(compression());
 
 // enable cors
-if (config.env === 'production') {
+if (config.env === 'production' && config.cors !== '*') {
   app.use(
     cors({
       origin: config.cors,

@@ -137,10 +137,11 @@ const uploadProposal = async (userId, files) => {
  * Update iotdev by userId
  * @param {ObjectId} userId
  * @param {Object} updateBody
+ * @param {IotDev} iotObj
  * @returns {Promise<IotDev>}
  */
-const updateIotDevByUserId = async (userId, updateBody) => {
-  const iotDev = await getIotDevByUserId(userId);
+const updateIotDevByUserId = async (userId, updateBody, iotObj) => {
+  const iotDev = iotObj || (await getIotDevByUserId(userId));
   if (!iotDev) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
   }
@@ -214,10 +215,11 @@ const getIotDevById = async (id) => {
  * Update iotdev by id
  * @param {ObjectId} iotDevId
  * @param {Object} updateBody
+ * @param {IotDev} iotObj
  * @returns {Promise<IotDev>}
  */
-const updateIotDevById = async (iotDevId, updateBody) => {
-  const iotDev = await getIotDevById(iotDevId);
+const updateIotDevById = async (iotDevId, updateBody, iotObj) => {
+  const iotDev = iotObj || (await getIotDevById(iotDevId));
   if (!iotDev) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
   }

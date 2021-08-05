@@ -71,7 +71,7 @@ const createGameDev = {
 
 const getGameDevs = {
   query: Joi.object().keys({
-    statusBayar: Joi.string(),
+    isVerified: Joi.boolean(),
     sortBy: Joi.string(),
     limit: Joi.number().integer(),
     page: Joi.number().integer(),
@@ -108,7 +108,7 @@ const updateGameDev = {
       price: Joi.string()
         .regex(/^[1-9]\d\d?\.\d{3}$/)
         .allow(''),
-      statusBayar: Joi.string().trim().valid('Verified', 'Not Verified').allow(''),
+      isVerified: Joi.boolean(),
     })
     .min(1),
 };

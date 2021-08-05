@@ -8,8 +8,9 @@ const appDevRoute = require('./appDev.route');
 const iotDevRoute = require('./iotDev.route');
 const pengumumanRoute = require('./pengumuman.route');
 const kodeBayarRoute = require('./kodeBayar.route');
-const paymentRoute = require('./payment.route');
+const compeRoute = require('./compe.route');
 const kodePromoRoute = require('./kodePromo.route');
+const tokenRoute = require('./token.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -48,12 +49,16 @@ const defaultRoutes = [
     route: kodeBayarRoute,
   },
   {
-    path: '/payment',
-    route: paymentRoute,
+    path: '/compe',
+    route: compeRoute,
   },
   {
     path: '/kodepromo',
     route: kodePromoRoute,
+  },
+  {
+    path: '/tokens',
+    route: tokenRoute,
   },
 ];
 
