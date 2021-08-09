@@ -51,6 +51,8 @@ router
   .patch(auth('manageUsers'), form, validate(olimValidation.updateOlim), removeEmpty, olimController.updateOlim)
   .delete(auth('manageUsers'), validate(olimValidation.deleteOlim), olimController.deleteOlim);
 
+router.post('/toggle-verif/:olimId', auth('manageUsers'), validate(olimValidation.toggleVerif), olimController.toggleVerif);
+
 module.exports = router;
 
 /**

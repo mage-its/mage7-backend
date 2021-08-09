@@ -262,6 +262,15 @@ const deleteAppDevById = async (appDevId, appDevObj = null, userObj = null) => {
   return appDev;
 };
 
+const toggleVerif = async (appDevId, appDevObj = null) => {
+  const appDev = appDevObj || (await getAppDevById(appDevId));
+  if (!appDev) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
+  }
+
+  return updateAppDevById(appDev.id, { isVerified: !appDev.isVerified }, appDev);
+};
+
 module.exports = {
   daftarAppDev,
   uploadProposal,
@@ -274,4 +283,5 @@ module.exports = {
   updateAppDevById,
   updateAppDevByUserId,
   deleteAppDevById,
+  toggleVerif,
 };

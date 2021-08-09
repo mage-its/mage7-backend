@@ -104,6 +104,12 @@ const deleteOlim = {
   }),
 };
 
+const toggleVerif = {
+  params: Joi.object().keys({
+    olimId: Joi.string().custom(objectId),
+  }),
+};
+
 module.exports = {
   daftarOlim,
   updateProfile,
@@ -112,4 +118,5 @@ module.exports = {
   getOlim,
   updateOlim,
   deleteOlim,
+  toggleVerif,
 };

@@ -32,7 +32,7 @@ const createIotDev = catchAsync(async (req, res) => {
 });
 
 const getIotDevs = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['statusBayar']);
+  const filter = pick(req.query, ['isVerified']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await iotDevService.queryIotDevs(filter, options);
   res.send(result);
@@ -56,6 +56,11 @@ const deleteIotDev = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const toggleVerif = catchAsync(async (req, res) => {
+  const iotDev = await iotDevService.toggleVerif(req.params.iotDevId);
+  res.send(iotDev);
+});
+
 module.exports = {
   daftarIotDev,
   updateProfile,
@@ -65,4 +70,5 @@ module.exports = {
   getIotDev,
   updateIotDev,
   deleteIotDev,
+  toggleVerif,
 };

@@ -9,11 +9,18 @@ const pay = {
 
 const toggleVerif = {
   params: Joi.object().keys({
-    userId: Joi.string().custom(objectId),
+    compeId: Joi.string().custom(objectId),
+  }),
+};
+
+const getCompetition = {
+  params: Joi.object().keys({
+    compeId: Joi.string().custom(objectId),
   }),
 };
 
 module.exports = {
   pay,
   toggleVerif,
+  getCompetition,
 };

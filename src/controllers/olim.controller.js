@@ -27,7 +27,7 @@ const createOlim = catchAsync(async (req, res) => {
 });
 
 const getOlims = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['statusBayar']);
+  const filter = pick(req.query, ['isVerified']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await olimService.queryOlims(filter, options);
   res.send(result);
@@ -51,6 +51,11 @@ const deleteOlim = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const toggleVerif = catchAsync(async (req, res) => {
+  const olim = await olimService.toggleVerif(req.params.olimId);
+  res.send(olim);
+});
+
 module.exports = {
   daftarOlim,
   updateProfile,
@@ -59,4 +64,5 @@ module.exports = {
   getOlim,
   updateOlim,
   deleteOlim,
+  toggleVerif,
 };

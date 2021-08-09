@@ -119,6 +119,12 @@ const deleteGameDev = {
   }),
 };
 
+const toggleVerif = {
+  params: Joi.object().keys({
+    gameDevId: Joi.string().custom(objectId),
+  }),
+};
+
 module.exports = {
   daftarGameDev,
   updateProfile,
@@ -127,4 +133,5 @@ module.exports = {
   getGameDev,
   updateGameDev,
   deleteGameDev,
+  toggleVerif,
 };
