@@ -53,4 +53,11 @@ router
   .patch(auth('manageUsers'), form, validate(appDevValidation.updateAppDev), removeEmpty, appDevController.updateAppDev)
   .delete(auth('manageUsers'), validate(appDevValidation.deleteAppDev), appDevController.deleteAppDev);
 
+router.post(
+  '/toggle-verif/:appDevId',
+  auth('manageUsers'),
+  validate(appDevValidation.toggleVerif),
+  appDevController.toggleVerif
+);
+
 module.exports = router;

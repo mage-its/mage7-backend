@@ -32,7 +32,7 @@ const createAppDev = catchAsync(async (req, res) => {
 });
 
 const getAppDevs = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['statusBayar']);
+  const filter = pick(req.query, ['isVerified']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await appDevService.queryAppDevs(filter, options);
   res.send(result);
@@ -56,6 +56,11 @@ const deleteAppDev = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const toggleVerif = catchAsync(async (req, res) => {
+  const appDev = await appDevService.toggleVerif(req.params.appDevId);
+  res.send(appDev);
+});
+
 module.exports = {
   daftarAppDev,
   updateProfile,
@@ -65,4 +70,5 @@ module.exports = {
   getAppDev,
   updateAppDev,
   deleteAppDev,
+  toggleVerif,
 };

@@ -139,6 +139,12 @@ const deleteIotDev = {
   }),
 };
 
+const toggleVerif = {
+  params: Joi.object().keys({
+    iotDevId: Joi.string().custom(objectId),
+  }),
+};
+
 module.exports = {
   daftarIotDev,
   updateProfile,
@@ -147,4 +153,5 @@ module.exports = {
   getIotDev,
   updateIotDev,
   deleteIotDev,
+  toggleVerif,
 };

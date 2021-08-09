@@ -265,6 +265,15 @@ const deleteGameDevById = async (gameDevId, gameDevObj = null, userObj = null) =
   return gameDev;
 };
 
+const toggleVerif = async (gameDevId, gameDevObj = null) => {
+  const gameDev = gameDevObj || (await getGameDevById(gameDevId));
+  if (!gameDev) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
+  }
+
+  return updateGameDevById(gameDev.id, { isVerified: !gameDev.isVerified }, gameDev);
+};
+
 module.exports = {
   daftarGameDev,
   uploadProposal,
@@ -277,4 +286,5 @@ module.exports = {
   updateGameDevById,
   updateGameDevByUserId,
   deleteGameDevById,
+  toggleVerif,
 };

@@ -65,30 +65,54 @@ const pay = async (userId, namaBayar, files) => {
   return compe.save();
 };
 
-const compeMethods = {
-  olim: [olimService.getOlimByUserId, olimService.updateOlimByUserId],
-  gamedev: [gameDevService.getGameDevByUserId, gameDevService.updateGameDevByUserId],
-  appdev: [appDevService.getAppDevByUserId, appDevService.updateAppDevByUserId],
-  iotdev: [iotDevService.getIotDevByUserId, iotDevService.updateIotDevByUserId],
+const compeToggleVerif = [
+  olimService.toggleVerif,
+  gameDevService.toggleVerif,
+  appDevService.toggleVerif,
+  iotDevService.toggleVerif,
+];
+
+const queryCompetitions = async (filter, options) => {
+  const [olim, gameDev, appDev, iotDev] = await Promise.all([
+    olimService.queryOlims(filter, options),
+    gameDevService.queryGameDevs(filter, options),
+    appDevService.queryAppDevs(filter, options),
+    iotDevService.queryIotDevs(filter, options),
+  ]);
+
+  return {
+    results: [...olim.results, ...gameDev.results, ...appDev.results, ...iotDev.results],
+  };
 };
 
-const toggleVerif = async (userId) => {
-  const user = await userService.getUserById(userId);
-  if (user.registeredComp === '') {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'User belum mendaftar di salah satu lomba!');
+const getCompeById = async (id) => {
+  const compe = await Promise.all([
+    olimService.getOlimById(id),
+    gameDevService.getGameDevById(id),
+    appDevService.getAppDevById(id),
+    iotDevService.getIotDevById(id),
+  ]);
+
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0, j = compe.length; i < j; ++i) {
+    if (compe[i]) return [compe[i], i];
   }
-  if (!(user.registeredComp in compeMethods)) {
-    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Cabang lomba yang terdaftar tidak diketahui');
-  }
-  const compe = await compeMethods[user.registeredComp][0](user.id);
-  if (!compe) {
+  return [null, -1];
+};
+
+const toggleVerif = async (compeId) => {
+  const [compe, index] = await getCompeById(compeId);
+  if (!compe || index === -1) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
   }
-  return compeMethods[user.registeredComp][1](user.id, { isVerified: !compe.isVerified }, compe);
+
+  return compeToggleVerif[index](compeId, compe);
 };
 
 module.exports = {
   multiUploads,
   pay,
   toggleVerif,
+  queryCompetitions,
+  getCompeById,
 };
