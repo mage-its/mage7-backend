@@ -53,4 +53,11 @@ router
   .patch(auth('manageUsers'), form, validate(gameDevValidation.updateGameDev), removeEmpty, gameDevController.updateGameDev)
   .delete(auth('manageUsers'), validate(gameDevValidation.deleteGameDev), gameDevController.deleteGameDev);
 
+router.post(
+  '/toggle-verif/:gameDevId',
+  auth('manageUsers'),
+  validate(gameDevValidation.toggleVerif),
+  gameDevController.toggleVerif
+);
+
 module.exports = router;

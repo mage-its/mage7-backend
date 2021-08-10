@@ -31,9 +31,6 @@ const multiUploads = upload.fields([
   { name: 'identitasKetua', maxCount: 1 },
   { name: 'identitasAnggota1', maxCount: 1 },
   { name: 'identitasAnggota2', maxCount: 1 },
-  { name: 'buktiUploadTwibbon', maxCount: 1 },
-  { name: 'buktiFollowMage', maxCount: 1 },
-  { name: 'buktiRepostStory', maxCount: 1 },
 ]);
 
 /**
@@ -63,14 +60,6 @@ const daftarOlim = async (olimBody, files, user) => {
   } else if (olim.namaAnggota1) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Semua Identitas anggota WAJIB diberikan');
   }
-
-  if (!files.buktiUploadTwibbon || !files.buktiFollowMage || !files.buktiRepostStory) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Persyaratan registrasi wajib diupload');
-  }
-
-  olim.pathBuktiUploadTwibbon = frontendPath(files.buktiUploadTwibbon[0].path);
-  olim.pathBuktiFollowMage = frontendPath(files.buktiFollowMage[0].path);
-  olim.pathBuktiRepostStory = frontendPath(files.buktiRepostStory[0].path);
 
   if (!olim.namaAnggota1 && files.identitasAnggota1?.[0]?.path) {
     removeFilePaths([frontendPath(files.identitasAnggota1[0].path)]);
@@ -131,15 +120,6 @@ const createOlim = async (olimBody, files, userId) => {
   }
   if (files.identitasKetua?.[0]?.path) {
     olim.pathIdentitasKetua = frontendPath(files.identitasKetua[0].path);
-  }
-  if (files.buktiUploadTwibbon?.[0]?.path) {
-    olim.pathBuktiUploadTwibbon = frontendPath(files.buktiUploadTwibbon[0].path);
-  }
-  if (files.buktiFollowMage?.[0]?.path) {
-    olim.pathBuktiFollowMage = frontendPath(files.buktiFollowMage[0].path);
-  }
-  if (files.buktiRepostStory?.[0]?.path) {
-    olim.pathBuktiRepostStory = frontendPath(files.buktiRepostStory[0].path);
   }
 
   olim.user = user.id;
@@ -210,13 +190,19 @@ const deleteOlimById = async (olimId, olimObj = null, userObj = null) => {
     olim.pathIdentitasKetua,
     olim.pathIdentitasAnggota1,
     olim.pathIdentitasAnggota2,
-    olim.pathBuktiUploadTwibbon,
-    olim.pathBuktiFollowMage,
-    olim.pathBuktiRepostStory,
     olim.pathBuktiBayar,
   ]);
   await Promise.all([olim.remove(), user.save()]);
   return olim;
+};
+
+const toggleVerif = async (olimId, olimObj) => {
+  const olim = olimObj || (await getOlimById(olimId));
+  if (!olim) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
+  }
+
+  return updateOlimById(olim.id, { isVerified: !olim.isVerified }, olim);
 };
 
 module.exports = {
@@ -229,4 +215,5 @@ module.exports = {
   updateOlimById,
   updateOlimByUserId,
   deleteOlimById,
+  toggleVerif,
 };

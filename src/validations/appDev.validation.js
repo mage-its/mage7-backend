@@ -119,6 +119,12 @@ const deleteAppDev = {
   }),
 };
 
+const toggleVerif = {
+  params: Joi.object().keys({
+    appDevId: Joi.string().custom(objectId),
+  }),
+};
+
 module.exports = {
   daftarAppDev,
   updateProfile,
@@ -127,4 +133,5 @@ module.exports = {
   getAppDev,
   updateAppDev,
   deleteAppDev,
+  toggleVerif,
 };

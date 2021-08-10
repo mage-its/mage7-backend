@@ -32,7 +32,7 @@ const createGameDev = catchAsync(async (req, res) => {
 });
 
 const getGameDevs = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['statusBayar']);
+  const filter = pick(req.query, ['isVerified']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await gameDevService.queryGameDevs(filter, options);
   res.send(result);
@@ -56,6 +56,11 @@ const deleteGameDev = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const toggleVerif = catchAsync(async (req, res) => {
+  const gameDev = await gameDevService.toggleVerif(req.params.gameDevId);
+  res.send(gameDev);
+});
+
 module.exports = {
   daftarGameDev,
   updateProfile,
@@ -65,4 +70,5 @@ module.exports = {
   getGameDev,
   updateGameDev,
   deleteGameDev,
+  toggleVerif,
 };

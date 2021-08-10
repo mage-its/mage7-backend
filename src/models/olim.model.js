@@ -65,18 +65,6 @@ const olimSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
-    pathBuktiUploadTwibbon: {
-      type: String,
-      required: true,
-    },
-    pathBuktiFollowMage: {
-      type: String,
-      required: true,
-    },
-    pathBuktiRepostStory: {
-      type: String,
-      required: true,
-    },
     asalKota: {
       type: String,
       required: true,

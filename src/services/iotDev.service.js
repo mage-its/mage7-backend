@@ -262,6 +262,15 @@ const deleteIotDevById = async (iotDevId, iotDevObj = null, userObj = null) => {
   return iotDev;
 };
 
+const toggleVerif = async (iotDevId, iotDevObj) => {
+  const iotDev = iotDevObj || (await getIotDevById(iotDevId));
+  if (!iotDev) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
+  }
+
+  return updateIotDevById(iotDev.id, { isVerified: !iotDev.isVerified }, iotDev);
+};
+
 module.exports = {
   daftarIotDev,
   uploadProposal,
@@ -274,4 +283,5 @@ module.exports = {
   updateIotDevById,
   updateIotDevByUserId,
   deleteIotDevById,
+  toggleVerif,
 };

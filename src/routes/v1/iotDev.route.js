@@ -53,4 +53,11 @@ router
   .patch(auth('manageUsers'), form, validate(iotDevValidation.updateIotDev), removeEmpty, iotDevController.updateIotDev)
   .delete(auth('manageUsers'), validate(iotDevValidation.deleteIotDev), iotDevController.deleteIotDev);
 
+router.post(
+  '/toggle-verif/:iotDevId',
+  auth('manageUsers'),
+  validate(iotDevValidation.toggleVerif),
+  iotDevController.toggleVerif
+);
+
 module.exports = router;

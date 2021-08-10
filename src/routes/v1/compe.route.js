@@ -8,10 +8,14 @@ const cancelFileUpload = require('../../middlewares/cancelFileUpload');
 
 const router = express.Router();
 
+router.get('/', auth('getUsers'), compeController.getCompetitions);
+
+router.get('/:compeId', auth('getUsers'), validate(compeValidation.getCompetition), compeController.getCompetition);
+
 router.post('/pay', auth(), readForm('payment'), validate(compeValidation.pay), compeController.pay, cancelFileUpload());
 
 router.post(
-  '/toggle-verif/:userId',
+  '/toggle-verif/:compeId',
   auth('manageUsers'),
   validate(compeValidation.toggleVerif),
   compeController.toggleVerif
