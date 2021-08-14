@@ -35,7 +35,7 @@ const sendEmail = async (to, subject, html) => {
 const sendResetPasswordEmail = async (to, token) => {
   const subject = 'Reset password';
   // replace this url with the link to the reset password page of your front-end app
-  const resetPasswordUrl = `${config.url}/api/v1/auth/reset-password?token=${token}`;
+  const resetPasswordUrl = `${config.url}/reset-password/${token}`;
   const html = getResetPassHtml(resetPasswordUrl);
   await sendEmail(to, subject, html);
 };
