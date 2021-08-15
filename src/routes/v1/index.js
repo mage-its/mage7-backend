@@ -6,7 +6,7 @@ const olimRoute = require('./olim.route');
 const gameDevRoute = require('./gameDev.route');
 const appDevRoute = require('./appDev.route');
 const iotDevRoute = require('./iotDev.route');
-const pengumumanRoute = require('./pengumuman.route');
+const announcementRoute = require('./announcement.route');
 const kodeBayarRoute = require('./kodeBayar.route');
 const compeRoute = require('./compe.route');
 const kodePromoRoute = require('./kodePromo.route');
@@ -41,8 +41,8 @@ const defaultRoutes = [
     route: iotDevRoute,
   },
   {
-    path: '/pengumuman',
-    route: pengumumanRoute,
+    path: '/announcement',
+    route: announcementRoute,
   },
   {
     path: '/kodebayar',
