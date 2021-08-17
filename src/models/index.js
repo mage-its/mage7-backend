@@ -4,6 +4,6 @@ module.exports.Olim = require('./olim.model');
 module.exports.GameDev = require('./gameDev.model');
 module.exports.AppDev = require('./appDev.model');
 module.exports.IotDev = require('./iotDev.model');
-module.exports.Pengumuman = require('./pengumuman.model');
 module.exports.KodeBayar = require('./kodeBayar.model');
 module.exports.KodePromo = require('./kodePromo.model');
+module.exports.Announcement = require('./announcement.model');
