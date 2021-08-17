@@ -3,7 +3,7 @@
     {
       "name": "mage7backend",
       "script": "src/index.js",
-      "instances": 1,
+      "instances": 0,
       "autorestart": true,
       "watch": false,
       "time": true,
