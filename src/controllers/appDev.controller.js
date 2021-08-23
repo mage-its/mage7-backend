@@ -33,7 +33,7 @@ const createAppDev = catchAsync(async (req, res) => {
 
 const getAppDevs = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['isVerified']);
-  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const options = { ...pick(req.query, ['sortBy', 'limit', 'page']), limit: 100 };
   const result = await appDevService.queryAppDevs(filter, options);
   res.send(result);
 });
