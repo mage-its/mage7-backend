@@ -33,7 +33,7 @@ const createIotDev = catchAsync(async (req, res) => {
 
 const getIotDevs = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['isVerified']);
-  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const options = { ...pick(req.query, ['sortBy', 'limit', 'page']), limit: 100 };
   const result = await iotDevService.queryIotDevs(filter, options);
   res.send(result);
 });
