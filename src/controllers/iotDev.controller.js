@@ -61,6 +61,16 @@ const toggleVerif = catchAsync(async (req, res) => {
   res.send(iotDev);
 });
 
+const incTahap = catchAsync(async (req, res) => {
+  const iotDev = await iotDevService.incTahap(req.params.iotDevId);
+  res.send(iotDev);
+});
+
+const decTahap = catchAsync(async (req, res) => {
+  const iotDev = await iotDevService.decTahap(req.params.iotDevId);
+  res.send(iotDev);
+});
+
 module.exports = {
   daftarIotDev,
   updateProfile,
@@ -71,4 +81,6 @@ module.exports = {
   updateIotDev,
   deleteIotDev,
   toggleVerif,
+  incTahap,
+  decTahap,
 };

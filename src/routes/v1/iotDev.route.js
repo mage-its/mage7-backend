@@ -60,4 +60,8 @@ router.post(
   iotDevController.toggleVerif
 );
 
+router.post('/inc-tahap/:iotDevId', auth('manageUsers'), validate(iotDevValidation.incTahap), iotDevController.incTahap);
+
+router.post('/dec-tahap/:iotDevId', auth('manageUsers'), validate(iotDevValidation.decTahap), iotDevController.decTahap);
+
 module.exports = router;
