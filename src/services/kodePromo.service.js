@@ -30,8 +30,8 @@ const getKodePromoById = async (id) => {
   return KodePromo.findById(id);
 };
 
-const getKodePromoByKode = async (kode) => {
-  const kodePromo = await KodePromo.findOne({ kode });
+const getKodePromoByKode = async (kode, category) => {
+  const kodePromo = await KodePromo.findOne({ kode, category });
   if (!kodePromo) {
     throw new ApiError(httpStatus.NOT_FOUND, `Kode promo dengan kode ${kode} tidak ditemukan`);
   }
@@ -82,11 +82,18 @@ const toggleActive = async (id) => {
   return kodePromo.save();
 };
 
+const kodePromoType = {
+  olim: { $in: ['olim', 'all'] },
+  appdev: { $in: ['devcom', 'all'] },
+  gamedev: { $in: ['devcom', 'all'] },
+  iotdev: { $in: ['devcom', 'all'] },
+};
+
 const applyPromo = async (kode, user, compe) => {
   if (!user.registeredComp) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User belum mendaftar');
   }
-  const kodePromo = await getKodePromoByKode(kode);
+  const kodePromo = await getKodePromoByKode(kode, kodePromoType[user.registeredComp]);
   if (!kodePromo) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Kode promo tidak ditemukan!');
   }
