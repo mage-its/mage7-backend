@@ -61,6 +61,16 @@ const toggleVerif = catchAsync(async (req, res) => {
   res.send(gameDev);
 });
 
+const incTahap = catchAsync(async (req, res) => {
+  const gameDev = await gameDevService.incTahap(req.params.gameDevId);
+  res.send(gameDev);
+});
+
+const decTahap = catchAsync(async (req, res) => {
+  const gameDev = await gameDevService.decTahap(req.params.gameDevId);
+  res.send(gameDev);
+});
+
 module.exports = {
   daftarGameDev,
   updateProfile,
@@ -71,4 +81,6 @@ module.exports = {
   updateGameDev,
   deleteGameDev,
   toggleVerif,
+  incTahap,
+  decTahap,
 };

@@ -271,6 +271,28 @@ const toggleVerif = async (appDevId, appDevObj = null) => {
   return updateAppDevById(appDev.id, { isVerified: !appDev.isVerified }, appDev);
 };
 
+const incTahap = async (appDevId) => {
+  const appDev = await getAppDevById(appDevId);
+  if (!appDev) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
+  }
+
+  if (appDev.tahap < 3) {
+    return updateAppDevById(appDev.id, { tahap: appDev.tahap + 1 }, appDev);
+  }
+};
+
+const decTahap = async (appDevId) => {
+  const appDev = await getAppDevById(appDevId);
+  if (!appDev) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
+  }
+
+  if (appDev.tahap > 1) {
+    return updateAppDevById(appDev.id, { tahap: appDev.tahap - 1 }, appDev);
+  }
+};
+
 module.exports = {
   daftarAppDev,
   uploadProposal,
@@ -284,4 +306,6 @@ module.exports = {
   updateAppDevByUserId,
   deleteAppDevById,
   toggleVerif,
+  incTahap,
+  decTahap,
 };

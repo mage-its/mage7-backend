@@ -274,6 +274,28 @@ const toggleVerif = async (gameDevId, gameDevObj = null) => {
   return updateGameDevById(gameDev.id, { isVerified: !gameDev.isVerified }, gameDev);
 };
 
+const incTahap = async (gameDevId) => {
+  const gameDev = await getGameDevById(gameDevId);
+  if (!gameDev) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
+  }
+
+  if (gameDev.tahap < 3) {
+    return updateGameDevById(gameDev.id, { tahap: gameDev.tahap + 1 }, gameDev);
+  }
+};
+
+const decTahap = async (gameDevId) => {
+  const gameDev = await getGameDevById(gameDevId);
+  if (!gameDev) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
+  }
+
+  if (gameDev.tahap > 1) {
+    return updateGameDevById(gameDev.id, { tahap: gameDev.tahap - 1 }, gameDev);
+  }
+};
+
 module.exports = {
   daftarGameDev,
   uploadProposal,
@@ -287,4 +309,6 @@ module.exports = {
   updateGameDevByUserId,
   deleteGameDevById,
   toggleVerif,
+  incTahap,
+  decTahap,
 };

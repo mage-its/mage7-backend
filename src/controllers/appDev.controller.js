@@ -61,6 +61,16 @@ const toggleVerif = catchAsync(async (req, res) => {
   res.send(appDev);
 });
 
+const incTahap = catchAsync(async (req, res) => {
+  const appDev = await appDevService.incTahap(req.params.appDevId);
+  res.send(appDev);
+});
+
+const decTahap = catchAsync(async (req, res) => {
+  const appDev = await appDevService.decTahap(req.params.appDevId);
+  res.send(appDev);
+});
+
 module.exports = {
   daftarAppDev,
   updateProfile,
@@ -71,4 +81,6 @@ module.exports = {
   updateAppDev,
   deleteAppDev,
   toggleVerif,
+  incTahap,
+  decTahap,
 };
