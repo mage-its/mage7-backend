@@ -14,6 +14,11 @@ const getProfile = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const getProfileByCompeId = catchAsync(async (req, res) => {
+  const result = await userService.getProfileByCompeId(req.params.compeId);
+  res.send(result);
+});
+
 const getUsers = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'role', 'registeredComp']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
@@ -42,6 +47,7 @@ const deleteUser = catchAsync(async (req, res) => {
 module.exports = {
   createUser,
   getProfile,
+  getProfileByCompeId,
   getUsers,
   getUser,
   updateUser,
