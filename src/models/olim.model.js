@@ -97,6 +97,10 @@ const olimSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    kodePromo: {
+      type: String,
+      default: null,
+    },
     user: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'User',
