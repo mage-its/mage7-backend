@@ -114,16 +114,14 @@ const applyPromo = async (kode, user, compe) => {
   if (compe.usedPromo) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Anda sudah pernah menggunakan kode promo !!!!!');
   }
+
   const [oldPrice, postFix] = compe.price.split('.');
   const newPrice = parseInt(oldPrice, 10) - kodePromo.discountPrice;
-  // eslint-disable-next-line no-param-reassign
-  compe.price = `${newPrice}.${postFix}`;
-  // eslint-disable-next-line no-param-reassign
-  compe.usedPromo = true;
+  const price = `${newPrice}.${postFix}`;
+  Object.assign(compe, { price, usedPromo: true, kodePromo: kode });
   kodePromo.usage += kodePromo.usage >= 0 ? 1 : 0;
-  await compe.save();
-  await kodePromo.save();
-  return compe;
+
+  return (await Promise.all([compe.save(), kodePromo.save()]))[0];
 };
 
 module.exports = {

@@ -125,6 +125,18 @@ const toggleVerif = {
   }),
 };
 
+const incTahap = {
+  params: Joi.object().keys({
+    appDevId: Joi.string().custom(objectId),
+  }),
+};
+
+const decTahap = {
+  params: Joi.object().keys({
+    appDevId: Joi.string().custom(objectId),
+  }),
+};
+
 module.exports = {
   daftarAppDev,
   updateProfile,
@@ -134,4 +146,6 @@ module.exports = {
   updateAppDev,
   deleteAppDev,
   toggleVerif,
+  incTahap,
+  decTahap,
 };

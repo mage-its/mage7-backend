@@ -60,4 +60,8 @@ router.post(
   gameDevController.toggleVerif
 );
 
+router.post('/inc-tahap/:gameDevId', auth('manageUsers'), validate(gameDevValidation.incTahap), gameDevController.incTahap);
+
+router.post('/dec-tahap/:gameDevId', auth('manageUsers'), validate(gameDevValidation.decTahap), gameDevController.decTahap);
+
 module.exports = router;

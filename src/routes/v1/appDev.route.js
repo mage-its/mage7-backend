@@ -60,4 +60,8 @@ router.post(
   appDevController.toggleVerif
 );
 
+router.post('/inc-tahap/:appDevId', auth('manageUsers'), validate(appDevValidation.incTahap), appDevController.incTahap);
+
+router.post('/dec-tahap/:appDevId', auth('manageUsers'), validate(appDevValidation.decTahap), appDevController.decTahap);
+
 module.exports = router;

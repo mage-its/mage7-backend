@@ -271,6 +271,28 @@ const toggleVerif = async (iotDevId, iotDevObj) => {
   return updateIotDevById(iotDev.id, { isVerified: !iotDev.isVerified }, iotDev);
 };
 
+const incTahap = async (iotDevId) => {
+  const iotDev = await getIotDevById(iotDevId);
+  if (!iotDev) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
+  }
+
+  if (iotDev.tahap < 3) {
+    return updateIotDevById(iotDev.id, { tahap: iotDev.tahap + 1 }, iotDev);
+  }
+};
+
+const decTahap = async (iotDevId) => {
+  const iotDev = await getIotDevById(iotDevId);
+  if (!iotDev) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
+  }
+
+  if (iotDev.tahap > 1) {
+    return updateIotDevById(iotDev.id, { tahap: iotDev.tahap - 1 }, iotDev);
+  }
+};
+
 module.exports = {
   daftarIotDev,
   uploadProposal,
@@ -284,4 +306,6 @@ module.exports = {
   updateIotDevByUserId,
   deleteIotDevById,
   toggleVerif,
+  incTahap,
+  decTahap,
 };

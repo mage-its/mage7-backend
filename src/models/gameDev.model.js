@@ -127,6 +127,10 @@ const gameDevSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    kodePromo: {
+      type: String,
+      default: null,
+    },
     pathProposal: {
       type: String,
       default: null,
