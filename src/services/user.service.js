@@ -88,6 +88,29 @@ const getProfile = async (userId) => {
   return { user, compe };
 };
 
+const getProfileByCompeId = async (compeId) => {
+  const competitions = await Promise.all([
+    olimService.getOlimById(compeId),
+    gameDevService.getGameDevById(compeId),
+    appDevService.getAppDevById(compeId),
+    iotDevService.getIotDevById(compeId),
+  ]);
+  let i = 0;
+  // eslint-disable-next-line no-plusplus
+  for (let j = competitions.length; i < j; ++i) {
+    if (competitions[i]) break;
+  }
+  if (!competitions[i]) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
+  }
+  const compe = competitions[i];
+  const user = await getUserById(compe.user);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  return { user, compe };
+};
+
 /**
  * Update user by id
  * @param {ObjectId} userId
@@ -156,6 +179,7 @@ const deleteUserById = async (userId) => {
 module.exports = {
   createUser,
   getProfile,
+  getProfileByCompeId,
   queryUsers,
   getUserById,
   getUserByEmail,

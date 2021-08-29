@@ -9,6 +9,6 @@ const router = express.Router();
 router
   .route('/')
   .post(auth('manageKodeBayar'), validate(kodeBayarValidation.createKodeBayar), kodeBayarController.createKodeBayar)
-  .get(auth('manageKodeBayar'), validate(kodeBayarValidation.getKodeBayars), kodeBayarController.getKodeBayars);
+  .get(auth('getKodeBayar'), validate(kodeBayarValidation.getKodeBayars), kodeBayarController.getKodeBayars);
 
 module.exports = router;

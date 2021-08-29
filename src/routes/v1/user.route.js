@@ -8,6 +8,13 @@ const router = express.Router();
 
 router.get('/profile', auth(), userController.getProfile);
 
+router.get(
+  '/profile/:compeId',
+  auth('getUsers'),
+  validate(userValidation.getProfileByCompeId),
+  userController.getProfileByCompeId
+);
+
 router
   .route('/')
   .post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser)

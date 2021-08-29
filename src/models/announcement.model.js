@@ -16,7 +16,7 @@ const announcementSchema = mongoose.Schema(
     type: {
       type: String,
       required: true,
-      enum: ['olim', 'devcom', 'gamedev', 'appdev', 'iotdev', 'all'],
+      enum: ['olim', 'devcom', 'gamedev', 'appdev', 'iotdev', 'all', 'guest'],
     },
   },
   {

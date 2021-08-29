@@ -27,6 +27,12 @@ const getUser = {
   }),
 };
 
+const getProfileByCompeId = {
+  params: Joi.object().keys({
+    compeId: Joi.string().custom(objectId),
+  }),
+};
+
 const updateUser = {
   params: Joi.object().keys({
     userId: Joi.required().custom(objectId),
@@ -50,6 +56,7 @@ module.exports = {
   createUser,
   getUsers,
   getUser,
+  getProfileByCompeId,
   updateUser,
   deleteUser,
 };
