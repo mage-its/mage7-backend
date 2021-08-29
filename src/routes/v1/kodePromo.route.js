@@ -15,12 +15,12 @@ router.post('/apply-kode', auth(), validate(kodePromoValidation.applyPromo), kod
 router
   .route('/')
   .post(auth('manageKodePromo'), validate(kodePromoValidation.createKodePromo), kodePromoController.createKodePromo)
-  .get(auth('manageKodePromo'), validate(kodePromoValidation.getKodePromos), kodePromoController.getKodePromos);
+  .get(auth('getKodePromo'), validate(kodePromoValidation.getKodePromos), kodePromoController.getKodePromos);
 
 router
   .route('/:kodePromoId')
   .patch(auth('manageKodePromo'), validate(kodePromoValidation.updateKodePromo), kodePromoController.createKodePromo)
-  .get(auth('manageKodePromo'), validate(kodePromoValidation.getKodePromo), kodePromoController.getKodePromo)
+  .get(auth('getKodePromo'), validate(kodePromoValidation.getKodePromo), kodePromoController.getKodePromo)
   .delete(auth('manageKodePromo'), validate(kodePromoValidation.deleteKodePromo), kodePromoController.deleteKodePromo);
 
 router
@@ -30,7 +30,7 @@ router
     validate(kodePromoValidation.updateKodePromoByKode),
     kodePromoController.updateKodePromoByKode
   )
-  .get(auth('manageKodePromo'), validate(kodePromoValidation.getKodePromoByKode), kodePromoController.getKodePromoByKode)
+  .get(auth('getKodePromo'), validate(kodePromoValidation.getKodePromoByKode), kodePromoController.getKodePromoByKode)
   .delete(
     auth('manageKodePromo'),
     validate(kodePromoValidation.deleteKodePromoByKode),
