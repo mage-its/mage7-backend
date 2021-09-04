@@ -1,4 +1,5 @@
 const httpStatus = require('http-status');
+const { nanoid } = require('nanoid/async');
 const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
 const olimService = require('./olim.service');
@@ -16,6 +17,18 @@ const createUser = async (userBody) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }
   return User.create(userBody);
+};
+
+/**
+ * Create a user with google
+ * @param {Object} userBody
+ * @returns {Promise<User>}
+ */
+const createUserGoogle = async (userBody) => {
+  const password = await nanoid(28);
+  const method = 'google';
+  const isEmailVerified = true;
+  return User.create({ ...userBody, method, password, isEmailVerified });
 };
 
 /**
@@ -178,6 +191,7 @@ const deleteUserById = async (userId) => {
 
 module.exports = {
   createUser,
+  createUserGoogle,
   getProfile,
   getProfileByCompeId,
   queryUsers,

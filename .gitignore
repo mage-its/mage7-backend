@@ -14,5 +14,5 @@ coverage
 # Public files
 public
 
-#firebase key
+# Firebase key
 serviceAccountKey.json
