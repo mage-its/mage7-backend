@@ -84,12 +84,13 @@ userSchema.statics.isEmailTaken = async function (email, excludeUserId) {
  */
 userSchema.methods.isPasswordMatch = async function (password) {
   const user = this;
+  if (user.method !== null) return false;
   return bcrypt.compare(password, user.password);
 };
 
 userSchema.pre('save', async function (next) {
   const user = this;
-  if (user.isModified('password') && user.method === null) {
+  if (user.isModified('password')) {
     user.password = await bcrypt.hash(user.password, 8);
   }
   next();

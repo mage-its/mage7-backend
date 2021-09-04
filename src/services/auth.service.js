@@ -4,6 +4,7 @@ const userService = require('./user.service');
 const Token = require('../models/token.model');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
+const firebase = require('../config/firebase');
 
 /**
  * Login with username and password
@@ -13,11 +14,39 @@ const { tokenTypes } = require('../config/tokens');
  */
 const loginUserWithEmailAndPassword = async (email, password) => {
   const user = await userService.getUserByEmail(email);
+  if (user.method !== null) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Cannot login with email and password, use google instead');
+  }
   if (!user || !(await user.isPasswordMatch(password))) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
   }
-  if (user.method !== null) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Cannot login with email and password, use google instead');
+  return user;
+};
+
+/**
+ * Login with google
+ * @param {string} email
+ * @param {string} name
+ * @param {string} idToken
+ * @returns {Promise<User>}
+ */
+const loginUserGoogle = async (idToken) => {
+  let decodedIdToken;
+  try {
+    decodedIdToken = await firebase.auth().verifyIdToken(idToken);
+  } catch {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Invalid ID token');
+  }
+  const { email, name } = decodedIdToken;
+
+  let user = await userService.getUserByEmail(email);
+  if (!user) {
+    user = await userService.createUserGoogle({ email, name });
+  } else if (
+    user.method !== 'google' ||
+    (decodedIdToken.firebase && decodedIdToken.firebase.sign_in_provider !== 'google.com')
+  ) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Cannot login with google');
   }
   return user;
 };
@@ -95,6 +124,7 @@ const verifyEmail = async (verifyEmailToken) => {
 
 module.exports = {
   loginUserWithEmailAndPassword,
+  loginUserGoogle,
   logout,
   refreshAuth,
   resetPassword,
