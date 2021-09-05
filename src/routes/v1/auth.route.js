@@ -4,11 +4,12 @@ const validate = require('../../middlewares/validate');
 const authValidation = require('../../validations/auth.validation');
 const authController = require('../../controllers/auth.controller');
 const auth = require('../../middlewares/auth');
+const verifyCaptcha = require('../../middlewares/verifyCaptcha');
 
 const router = express.Router();
 router.use(upload.none());
 
-router.post('/register', validate(authValidation.register), authController.register);
+router.post('/register', validate(authValidation.register), verifyCaptcha, authController.register);
 router.post('/login', validate(authValidation.login), authController.login);
 router.post('/google-login', validate(authValidation.googleLogin), authController.googleLogin);
 router.post('/logout', validate(authValidation.logout), authController.logout);

@@ -36,6 +36,7 @@ const envVarsSchema = Joi.object()
     FIREBASE_PW: Joi.string(),
     FRONTEND_PATH: Joi.string().custom(validPath),
     CORS_ORIGIN: Joi.string().default('https://mage-its.com'),
+    RECAPTCHA_SECRET: Joi.string(),
   })
   .unknown();
 
@@ -79,4 +80,5 @@ module.exports = {
   firepw: envVars.FIREBASE_PW,
   frontend: envVars.FRONTEND_PATH,
   cors: envVars.CORS_ORIGIN,
+  recaptchaSecret: envVars.RECAPTCHA_SECRET,
 };
