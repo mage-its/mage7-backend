@@ -129,6 +129,10 @@ const uploadProposal = async (userId, files) => {
   if (!files.proposal?.[0]?.path) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'File proposal harus diupload');
   }
+  // Delete proposal if exist
+  if (iotDev.pathProposal) {
+    await removeFilePaths([iotDev.pathProposal]);
+  }
   iotDev.pathProposal = frontendPath(files.proposal[0].path);
   return iotDev.save();
 };
