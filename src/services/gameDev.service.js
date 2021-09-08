@@ -132,6 +132,10 @@ const uploadProposal = async (userId, files) => {
   if (!files.proposal?.[0]?.path) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'File proposal harus diupload');
   }
+  // Delete proposal if exist
+  if (gameDev.pathProposal) {
+    await removeFilePaths([gameDev.pathProposal]);
+  }
   gameDev.pathProposal = frontendPath(files.proposal[0].path);
   return gameDev.save();
 };
