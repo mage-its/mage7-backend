@@ -14,7 +14,7 @@ const firebase = require('../config/firebase');
  */
 const loginUserWithEmailAndPassword = async (email, password) => {
   const user = await userService.getUserByEmail(email);
-  if (user.method !== null) {
+  if (user && user.method !== null) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Cannot login with email and password, use google instead');
   }
   if (!user || !(await user.isPasswordMatch(password))) {
