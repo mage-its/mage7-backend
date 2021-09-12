@@ -7,6 +7,7 @@ const auth = require('../../middlewares/auth');
 const readForm = require('../../middlewares/readForm');
 const removeEmpty = require('../../middlewares/removeEmpty');
 const cancelFileUpload = require('../../middlewares/cancelFileUpload');
+const registerBarrier = require('../../middlewares/registerBarrier');
 
 const router = express.Router();
 
@@ -14,6 +15,7 @@ const router = express.Router();
 
 router.post(
   '/daftar-gamedev',
+  registerBarrier('devcom'),
   auth(),
   readForm('gamedev'),
   validate(gameDevValidation.daftarGameDev),

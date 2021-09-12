@@ -69,8 +69,8 @@ if (config.env === 'production' && config.cors !== '*') {
 // maintenance mode
 if (config.maintenance === 'true') {
   app.use((req, res) => {
-    res.status(503).send({
-      code: 503,
+    res.status(httpStatus.SERVICE_UNAVAILABLE).send({
+      code: httpStatus.SERVICE_UNAVAILABLE,
       message: 'Site under maintenance',
     });
   });
