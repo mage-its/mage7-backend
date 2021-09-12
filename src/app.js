@@ -66,6 +66,16 @@ if (config.env === 'production' && config.cors !== '*') {
   app.options('*', cors());
 }
 
+// maintenance mode
+if (config.maintenance === 'true') {
+  app.use((req, res) => {
+    res.status(503).send({
+      code: 503,
+      message: 'Site under maintenance',
+    });
+  });
+}
+
 // jwt authentication
 app.use(passport.initialize());
 passport.use('jwt', jwtStrategy);

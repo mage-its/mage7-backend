@@ -15,6 +15,7 @@ const validPath = (value, helpers) => {
 const envVarsSchema = Joi.object()
   .keys({
     NODE_ENV: Joi.string().valid('production', 'development', 'test').required(),
+    MAINTENANCE: Joi.string().default(''),
     PORT: Joi.number().default(3000),
     MONGODB_URL: Joi.string().required().description('Mongo DB url'),
     JWT_SECRET: Joi.string().required().description('JWT secret key'),
@@ -81,4 +82,5 @@ module.exports = {
   frontend: envVars.FRONTEND_PATH,
   cors: envVars.CORS_ORIGIN,
   recaptchaSecret: envVars.RECAPTCHA_SECRET,
+  maintenance: envVars.MAINTENANCE,
 };

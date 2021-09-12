@@ -1,0 +1,16 @@
+{
+  "apps": [
+    {
+      "name": "mage7backend",
+      "script": "src/index.js",
+      "instances": 0,
+      "autorestart": true,
+      "watch": false,
+      "time": true,
+      "env": {
+        "NODE_ENV": "production",
+        "MAINTENANCE": "true"
+      }
+    }
+  ]
+}
