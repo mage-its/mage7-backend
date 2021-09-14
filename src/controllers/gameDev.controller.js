@@ -33,7 +33,7 @@ const createGameDev = catchAsync(async (req, res) => {
 
 const getGameDevs = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['isVerified']);
-  const options = { ...pick(req.query, ['sortBy', 'limit', 'page']), limit: 100 };
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await gameDevService.queryGameDevs(filter, options);
   res.send(result);
 });
