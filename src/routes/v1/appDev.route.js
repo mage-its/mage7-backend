@@ -8,6 +8,7 @@ const readForm = require('../../middlewares/readForm');
 const removeEmpty = require('../../middlewares/removeEmpty');
 const cancelFileUpload = require('../../middlewares/cancelFileUpload');
 const registerBarrier = require('../../middlewares/registerBarrier');
+const proposalBarrier = require('../../middlewares/proposalBarrier');
 
 const router = express.Router();
 
@@ -33,7 +34,7 @@ router.patch(
   appDevController.updateProfile
 );
 
-router.post('/upload-proposal', auth(), readForm('appdevProposal'), appDevController.uploadProposal);
+router.post('/upload-proposal', proposalBarrier(), auth(), readForm('appdevProposal'), appDevController.uploadProposal);
 
 // Admin route
 

@@ -8,6 +8,7 @@ const readForm = require('../../middlewares/readForm');
 const removeEmpty = require('../../middlewares/removeEmpty');
 const cancelFileUpload = require('../../middlewares/cancelFileUpload');
 const registerBarrier = require('../../middlewares/registerBarrier');
+const proposalBarrier = require('../../middlewares/proposalBarrier');
 
 const router = express.Router();
 
@@ -33,7 +34,7 @@ router.patch(
   gameDevController.updateProfile
 );
 
-router.post('/upload-proposal', auth(), readForm('gamedevProposal'), gameDevController.uploadProposal);
+router.post('/upload-proposal', proposalBarrier(), auth(), readForm('gamedevProposal'), gameDevController.uploadProposal);
 
 // Admin route
 
