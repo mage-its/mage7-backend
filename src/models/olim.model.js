@@ -106,7 +106,6 @@ const olimSchema = mongoose.Schema(
       ref: 'User',
       required: true,
       unique: true,
-      private: true,
     },
   },
   {
