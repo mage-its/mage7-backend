@@ -100,6 +100,21 @@ const getCompeById = async (id) => {
   return [null, -1];
 };
 
+const getCompeByUserId = async (id) => {
+  const compe = await Promise.all([
+    olimService.getOlimByUserId(id),
+    gameDevService.getGameDevByUserId(id),
+    appDevService.getAppDevByUserId(id),
+    iotDevService.getIotDevByUserId(id),
+  ]);
+
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0, j = compe.length; i < j; ++i) {
+    if (compe[i]) return [compe[i], i];
+  }
+  return [null, -1];
+};
+
 const toggleVerif = async (compeId) => {
   const [compe, index] = await getCompeById(compeId);
   if (!compe || index === -1) {
@@ -115,4 +130,5 @@ module.exports = {
   toggleVerif,
   queryCompetitions,
   getCompeById,
+  getCompeByUserId,
 };

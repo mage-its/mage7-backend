@@ -29,9 +29,18 @@ const getCompetition = catchAsync(async (req, res) => {
   res.send(compe);
 });
 
+const getCompetitionByUser = catchAsync(async (req, res) => {
+  const [compe] = await compeService.getCompeByUserId(req.params.userId);
+  if (!compe) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Peserta competition tidak ditemukan');
+  }
+  res.send(compe);
+});
+
 module.exports = {
   pay,
   toggleVerif,
   getCompetitions,
   getCompetition,
+  getCompetitionByUser,
 };

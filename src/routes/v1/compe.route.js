@@ -12,6 +12,13 @@ router.get('/', auth('getUsers'), compeController.getCompetitions);
 
 router.get('/:compeId', auth('getUsers'), validate(compeValidation.getCompetition), compeController.getCompetition);
 
+router.get(
+  '/user/:userId',
+  auth('getUsers'),
+  validate(compeValidation.getCompetitionByUser),
+  compeController.getCompetitionByUser
+);
+
 router.post('/pay', auth(), readForm('payment'), validate(compeValidation.pay), compeController.pay, cancelFileUpload());
 
 router.post(
