@@ -41,6 +41,7 @@ const envVarsSchema = Joi.object()
     CLOSE_DEVCOM: Joi.string().default(''),
     CLOSE_PROPOSAL: Joi.string().default(''),
     CLOSE_OLIM: Joi.string().default(''),
+    CLOSE_PAYMENT_OLIM: Joi.string().default(''),
   })
   .unknown();
 
@@ -90,5 +91,6 @@ module.exports = {
     olim: envVars.CLOSE_OLIM === 'true',
     devcom: envVars.CLOSE_DEVCOM === 'true',
     proposal: envVars.CLOSE_PROPOSAL === 'true',
+    paymentOlim: envVars.CLOSE_PAYMENT_OLIM === 'true',
   },
 };
