@@ -25,8 +25,6 @@ const loginUserWithEmailAndPassword = async (email, password) => {
 
 /**
  * Login with google
- * @param {string} email
- * @param {string} name
  * @param {string} idToken
  * @returns {Promise<User>}
  */
