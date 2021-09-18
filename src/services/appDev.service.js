@@ -216,7 +216,6 @@ const createAppDev = async (appDevBody, files, userId) => {
   appDev.price = `${kode.price}.${noUrut}`;
   appDev.user = user.id;
 
-  // eslint-disable-next-line no-param-reassign
   user.registeredComp = 'appdev';
   return Promise.all([appDev.save(), user.save(), kodeBayarService.incNoUrut(cabang, kode)]);
 };
