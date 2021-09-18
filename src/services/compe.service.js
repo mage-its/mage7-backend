@@ -35,6 +35,13 @@ const compeModels = {
   appdev: AppDev,
 };
 
+/**
+ * Pay
+ * @param {ObjectId} userId
+ * @param {string} namaBayar
+ * @param {Object} files
+ * @returns {Promise<AppDev|GameDev|IotDev|Olim>}
+ */
 const pay = async (userId, namaBayar, files) => {
   if (!files.buktiBayar) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Bukti pembayaran WAJIB disertakan!');
@@ -72,6 +79,15 @@ const compeToggleVerif = [
   iotDevService.toggleVerif,
 ];
 
+/**
+ * Query for competitions
+ * @param {Object} filter - Mongo filter
+ * @param {Object} options - Query options
+ * @param {string} [options.sortBy] - Sort option in the format: sortField:(desc|asc)
+ * @param {number} [options.limit] - Maximum number of results per page (default = 10)
+ * @param {number} [options.page] - Current page (default = 1)
+ * @returns {Promise<Object>}
+ */
 const queryCompetitions = async (filter, options) => {
   const [olim, gameDev, appDev, iotDev] = await Promise.all([
     olimService.queryOlims(filter, options),
@@ -85,6 +101,11 @@ const queryCompetitions = async (filter, options) => {
   };
 };
 
+/**
+ * Get competition by id
+ * @param {ObjectId} id
+ * @returns {Array<Olim|GameDev|AppDev|IotDev|null, number>}
+ */
 const getCompeById = async (id) => {
   const compe = await Promise.all([
     olimService.getOlimById(id),
@@ -100,6 +121,11 @@ const getCompeById = async (id) => {
   return [null, -1];
 };
 
+/**
+ * Get competition by userId
+ * @param {ObjectId} id - User Id
+ * @returns {Array<Olim|GameDev|AppDev|IotDev|null, number>}
+ */
 const getCompeByUserId = async (id) => {
   const compe = await Promise.all([
     olimService.getOlimByUserId(id),
@@ -115,6 +141,11 @@ const getCompeByUserId = async (id) => {
   return [null, -1];
 };
 
+/**
+ * Toggle verif by any competition id
+ * @param {ObjectId} compeId
+ * @returns {Promise<Olim|GameDev|AppDev|IotDev>}
+ */
 const toggleVerif = async (compeId) => {
   const [compe, index] = await getCompeById(compeId);
   if (!compe || index === -1) {

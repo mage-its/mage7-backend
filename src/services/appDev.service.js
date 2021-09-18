@@ -65,6 +65,13 @@ const getAppDevByUserId = async (userId) => {
   return AppDev.findOne({ user: userId });
 };
 
+/**
+ * Register appdev service
+ * @param {Object} appDevBody
+ * @param {Object} files
+ * @param {User} user
+ * @returns {Array<Promise<AppDev>, Promise<User>, Promise<KodeBayar>>}
+ */
 const daftarAppDev = async (appDevBody, files, user) => {
   const appDev = new AppDev(appDevBody);
 
@@ -118,6 +125,12 @@ const daftarAppDev = async (appDevBody, files, user) => {
   return Promise.all([appDev.save(), user.save(), kodeBayarService.incNoUrut(cabang, kode)]);
 };
 
+/**
+ * Upload proposal
+ * @param {ObjectId} userId
+ * @param {Object} files
+ * @returns {Promise<AppDev>}
+ */
 const uploadProposal = async (userId, files) => {
   const appDev = await getAppDevByUserId(userId);
   if (!appDev) {
@@ -160,6 +173,13 @@ const updateAppDevByUserId = async (userId, updateBody, appObj) => {
   return appDev;
 };
 
+/**
+ * Create appdev
+ * @param {Object} appDevBody
+ * @param {Object} files
+ * @param {ObjectId} userId
+ * @returns {Array<Promise<AppDev>, Promise<User>, Promise<KodeBayar>>}
+ */
 const createAppDev = async (appDevBody, files, userId) => {
   const appDev = new AppDev(appDevBody);
   const user = await User.findById(userId);
@@ -201,6 +221,15 @@ const createAppDev = async (appDevBody, files, userId) => {
   return Promise.all([appDev.save(), user.save(), kodeBayarService.incNoUrut(cabang, kode)]);
 };
 
+/**
+ * Query for appdevs
+ * @param {Object} filter - Mongo filter
+ * @param {Object} options - Query options
+ * @param {string} [options.sortBy] - Sort option in the format: sortField:(desc|asc)
+ * @param {number} [options.limit] - Maximum number of results per page (default = 10)
+ * @param {number} [options.page] - Current page (default = 1)
+ * @returns {Promise<QueryResult>}
+ */
 const queryAppDevs = async (filter, options) => {
   const appDevs = await AppDev.paginate(filter, options);
   return appDevs;
@@ -266,6 +295,12 @@ const deleteAppDevById = async (appDevId, appDevObj = null, userObj = null) => {
   return appDev;
 };
 
+/**
+ * Toggle verification
+ * @param {ObjectId} appdevId
+ * @param {AppDev} [appDevObj=null]
+ * @returns {Promise<AppDev>}
+ */
 const toggleVerif = async (appDevId, appDevObj = null) => {
   const appDev = appDevObj || (await getAppDevById(appDevId));
   if (!appDev) {
@@ -275,6 +310,11 @@ const toggleVerif = async (appDevId, appDevObj = null) => {
   return updateAppDevById(appDev.id, { isVerified: !appDev.isVerified }, appDev);
 };
 
+/**
+ * Increment tahap
+ * @param {ObjectId} appdevId
+ * @returns {Promise<AppDev>}
+ */
 const incTahap = async (appDevId) => {
   const appDev = await getAppDevById(appDevId);
   if (!appDev) {
@@ -284,8 +324,14 @@ const incTahap = async (appDevId) => {
   if (appDev.tahap < 3) {
     return updateAppDevById(appDev.id, { tahap: appDev.tahap + 1 }, appDev);
   }
+  return appDev;
 };
 
+/**
+ * Decrement tahap
+ * @param {ObjectId} appdevId
+ * @returns {Promise<AppDev>}
+ */
 const decTahap = async (appDevId) => {
   const appDev = await getAppDevById(appDevId);
   if (!appDev) {
@@ -295,6 +341,7 @@ const decTahap = async (appDevId) => {
   if (appDev.tahap > 1) {
     return updateAppDevById(appDev.id, { tahap: appDev.tahap - 1 }, appDev);
   }
+  return appDev;
 };
 
 module.exports = {

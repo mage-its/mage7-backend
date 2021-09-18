@@ -5,6 +5,7 @@ const readForm = require('../../middlewares/readForm');
 const compeValidation = require('../../validations/compe.validation');
 const compeController = require('../../controllers/compe.controller');
 const cancelFileUpload = require('../../middlewares/cancelFileUpload');
+const paymentBarrier = require('../../middlewares/paymentBarrier');
 
 const router = express.Router();
 
@@ -19,7 +20,15 @@ router.get(
   compeController.getCompetitionByUser
 );
 
-router.post('/pay', auth(), readForm('payment'), validate(compeValidation.pay), compeController.pay, cancelFileUpload());
+router.post(
+  '/pay',
+  auth(),
+  paymentBarrier(),
+  readForm('payment'),
+  validate(compeValidation.pay),
+  compeController.pay,
+  cancelFileUpload()
+);
 
 router.post(
   '/toggle-verif/:compeId',

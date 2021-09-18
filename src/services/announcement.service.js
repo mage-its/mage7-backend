@@ -26,6 +26,11 @@ const queryAnnouncements = async (filter, options) => {
   return announcements;
 };
 
+/**
+ * Getting announcement by type
+ * @param {string} type
+ * @returns {User}
+ */
 const getAnnouncementByType = async (type) => {
   const announcement = await Announcement.findOne({ type });
   if (!announcement) {
@@ -41,10 +46,20 @@ const announcementType = {
   iotdev: { $in: ['iotdev', 'devcom', 'all'] },
 };
 
+/**
+ * Query for peserta announcements
+ * @param {string} cabang
+ * @returns {Promise<QueryResult>}
+ */
 const getAnnouncementsPeserta = async (cabang) => {
   return queryAnnouncements({ type: announcementType[cabang] }, { limit: 69 });
 };
 
+/**
+ * Delete announcement by id
+ * @param {string} announcementId
+ * @returns {Promise<Announcement>}
+ */
 const deleteAnnouncement = async (announcementId) => {
   const announcement = await Announcement.findById(announcementId);
   if (!announcement) {
