@@ -164,8 +164,12 @@ const compeQuery = {
 };
 
 const downloadCsv = async (compe) => {
-  const data = compeQuery?.[compe]({}, { limit: 69420 });
-  return parseAsync(data);
+  const { results } = await compeQuery?.[compe]({}, { limit: 69420 });
+  const cleanResults = results.map((result) => {
+    const { __v, _id, ...cleanResult } = result.toObject();
+    return cleanResult;
+  });
+  return parseAsync(cleanResults);
 };
 
 module.exports = {

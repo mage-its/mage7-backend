@@ -44,6 +44,13 @@ const deleteUser = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const downloadCsv = catchAsync(async (req, res) => {
+  const csv = await userService.downloadCsv();
+  res.header('Content-Type', 'text/csv');
+  res.attachment(`users.csv`);
+  res.send(csv);
+});
+
 module.exports = {
   createUser,
   getProfile,
@@ -52,4 +59,5 @@ module.exports = {
   getUser,
   updateUser,
   deleteUser,
+  downloadCsv,
 };

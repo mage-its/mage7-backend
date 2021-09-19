@@ -37,6 +37,6 @@ router.post(
   compeController.toggleVerif
 );
 
-router.get('/download-csv', auth('getUsers'), validate(compeValidation.downloadCsv), compeController.downloadCsv);
+router.get('/download-csv/:compe', auth('getUsers'), validate(compeValidation.downloadCsv), compeController.downloadCsv);
 
 module.exports = router;

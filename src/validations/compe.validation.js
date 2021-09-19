@@ -26,7 +26,7 @@ const getCompetitionByUser = {
 };
 
 const downloadCsv = {
-  query: Joi.object().keys({
+  params: Joi.object().keys({
     compe: Joi.string().required().valid('olim', 'appdev', 'gamedev', 'iotdev'),
   }),
 };

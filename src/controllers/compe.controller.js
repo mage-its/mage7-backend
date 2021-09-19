@@ -38,7 +38,7 @@ const getCompetitionByUser = catchAsync(async (req, res) => {
 });
 
 const downloadCsv = catchAsync(async (req, res) => {
-  const csv = await compeService.downloadCsv(req.query.compe);
+  const csv = await compeService.downloadCsv(req.params.compe);
   res.header('Content-Type', 'text/csv');
   res.attachment(`${req.query.compe}.csv`);
   res.send(csv);
