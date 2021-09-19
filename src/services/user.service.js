@@ -1,5 +1,6 @@
 const httpStatus = require('http-status');
 const { nanoid } = require('nanoid/async');
+const { parseAsync } = require('json2csv');
 const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
 const olimService = require('./olim.service');
@@ -189,6 +190,15 @@ const deleteUserById = async (userId) => {
   return user;
 };
 
+const downloadCsv = async () => {
+  const { results } = await queryUsers({}, { limit: 69420 });
+  const cleanResults = results.map((result) => {
+    const { __v, _id, ...cleanResult } = result.toObject();
+    return cleanResult;
+  });
+  return parseAsync(cleanResults);
+};
+
 module.exports = {
   createUser,
   createUserGoogle,
@@ -201,4 +211,5 @@ module.exports = {
   deleteUserById,
   checkEmailVerification,
   isRegistered,
+  downloadCsv,
 };

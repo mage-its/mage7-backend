@@ -1,6 +1,7 @@
 const path = require('path');
 const httpStatus = require('http-status');
 const multer = require('multer');
+const { parseAsync } = require('json2csv');
 const { Olim, GameDev, IotDev, AppDev } = require('../models');
 const config = require('../config/config');
 const ApiError = require('../utils/ApiError');
@@ -155,6 +156,22 @@ const toggleVerif = async (compeId) => {
   return compeToggleVerif[index](compeId, compe);
 };
 
+const compeQuery = {
+  olim: olimService.queryOlims,
+  gamedev: gameDevService.queryGameDevs,
+  appdev: appDevService.queryAppDevs,
+  iotdev: iotDevService.queryIotDevs,
+};
+
+const downloadCsv = async (compe) => {
+  const { results } = await compeQuery?.[compe]({}, { limit: 69420 });
+  const cleanResults = results.map((result) => {
+    const { __v, _id, ...cleanResult } = result.toObject();
+    return cleanResult;
+  });
+  return parseAsync(cleanResults);
+};
+
 module.exports = {
   multiUploads,
   pay,
@@ -162,4 +179,5 @@ module.exports = {
   queryCompetitions,
   getCompeById,
   getCompeByUserId,
+  downloadCsv,
 };

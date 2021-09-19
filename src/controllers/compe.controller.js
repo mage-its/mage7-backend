@@ -37,10 +37,18 @@ const getCompetitionByUser = catchAsync(async (req, res) => {
   res.send(compe);
 });
 
+const downloadCsv = catchAsync(async (req, res) => {
+  const csv = await compeService.downloadCsv(req.params.compe);
+  res.header('Content-Type', 'text/csv');
+  res.attachment(`${req.query.compe}.csv`);
+  res.send(csv);
+});
+
 module.exports = {
   pay,
   toggleVerif,
   getCompetitions,
   getCompetition,
   getCompetitionByUser,
+  downloadCsv,
 };
