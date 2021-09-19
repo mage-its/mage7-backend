@@ -6,7 +6,7 @@ const isInvalidPath = require('is-invalid-path');
 dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 const validPath = (value, helpers) => {
-  if (isInvalidPath(value)) {
+  if (isInvalidPath(value, { windows: true })) {
     return helpers.message('Invalid file path!');
   }
   return value;

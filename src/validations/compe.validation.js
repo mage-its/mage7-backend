@@ -25,9 +25,16 @@ const getCompetitionByUser = {
   }),
 };
 
+const downloadCsv = {
+  params: Joi.object().keys({
+    compe: Joi.string().required().valid('olim', 'appdev', 'gamedev', 'iotdev'),
+  }),
+};
+
 module.exports = {
   pay,
   toggleVerif,
   getCompetition,
   getCompetitionByUser,
+  downloadCsv,
 };
