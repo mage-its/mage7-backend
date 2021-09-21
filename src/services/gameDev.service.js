@@ -57,12 +57,21 @@ const multiUploads = upload.fields([
 ]);
 
 /**
- * Get gamedev by userId
- * @param {ObjectId} userId
+ * Get gamedev by user id
+ * @param {ObjectId} user
  * @returns {Promise<GameDev>}
  */
-const getGameDevByUserId = async (userId) => {
-  return GameDev.findOne({ user: userId });
+const getGameDevByUserId = async (user) => {
+  return GameDev.findOne({ user });
+};
+
+/**
+ * Get gamedev by nama tim
+ * @param {string} namaTim
+ * @returns {Promise<GameDev>}
+ */
+const getGameDevByNamaTim = async (namaTim) => {
+  return GameDev.findOne({ namaTim });
 };
 
 const daftarGameDev = async (gameDevBody, files, user) => {
@@ -159,8 +168,7 @@ const updateGameDevByUserId = async (userId, updateBody, gameObj) => {
   if (gameDev.pathIdentitasAnggota2 === null) {
     gameDev.namaAnggota2 = null;
   }
-  await gameDev.save();
-  return gameDev;
+  return gameDev.save();
 };
 
 const createGameDev = async (gameDevBody, files, userId) => {
@@ -237,8 +245,7 @@ const updateGameDevById = async (gameDevId, updateBody, gameObj) => {
   if (gameDev.pathIdentitasAnggota2 === null) {
     gameDev.namaAnggota2 = null;
   }
-  await gameDev.save();
-  return gameDev;
+  return gameDev.save();
 };
 
 /**
@@ -309,6 +316,7 @@ module.exports = {
   createGameDev,
   getGameDevById,
   getGameDevByUserId,
+  getGameDevByNamaTim,
   updateGameDevById,
   updateGameDevByUserId,
   deleteGameDevById,

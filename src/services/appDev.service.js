@@ -57,12 +57,21 @@ const multiUploads = upload.fields([
 ]);
 
 /**
- * Get appdev by userId
- * @param {ObjectId} userId
+ * Get appdev by user id
+ * @param {ObjectId} user
  * @returns {Promise<AppDev>}
  */
-const getAppDevByUserId = async (userId) => {
-  return AppDev.findOne({ user: userId });
+const getAppDevByUserId = async (user) => {
+  return AppDev.findOne({ user });
+};
+
+/**
+ * Get appdev by nama tim
+ * @param {string} namaTim
+ * @returns {Promise<AppDev>}
+ */
+const getAppDevByNamaTim = async (namaTim) => {
+  return AppDev.findOne({ namaTim });
 };
 
 /**
@@ -169,8 +178,7 @@ const updateAppDevByUserId = async (userId, updateBody, appObj) => {
   if (appDev.pathIdentitasAnggota2 === null) {
     appDev.namaAnggota2 = null;
   }
-  await appDev.save();
-  return appDev;
+  return appDev.save();
 };
 
 /**
@@ -262,8 +270,7 @@ const updateAppDevById = async (appDevId, updateBody, appObj) => {
   if (appDev.pathIdentitasAnggota2 === null) {
     appDev.namaAnggota2 = null;
   }
-  await appDev.save();
-  return appDev;
+  return appDev.save();
 };
 
 /**
@@ -352,6 +359,7 @@ module.exports = {
   createAppDev,
   getAppDevById,
   getAppDevByUserId,
+  getAppDevByNamaTim,
   updateAppDevById,
   updateAppDevByUserId,
   deleteAppDevById,
