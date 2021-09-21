@@ -38,6 +38,7 @@ const envVarsSchema = Joi.object()
     FRONTEND_PATH: Joi.string().custom(validPath),
     CORS_ORIGIN: Joi.string().default('https://mage-its.com'),
     RECAPTCHA_SECRET: Joi.string(),
+    LOGGING: Joi.string().default(''),
     CLOSE_DEVCOM: Joi.string().default(''),
     CLOSE_PROPOSAL: Joi.string().default(''),
     CLOSE_OLIM: Joi.string().default(''),
@@ -83,6 +84,7 @@ module.exports = {
   cors: envVars.CORS_ORIGIN,
   recaptchaSecret: envVars.RECAPTCHA_SECRET,
   maintenance: envVars.MAINTENANCE,
+  logging: envVars.LOGGING === 'true',
   close: {
     olim: envVars.CLOSE_OLIM === 'true',
     devcom: envVars.CLOSE_DEVCOM === 'true',
