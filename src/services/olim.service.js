@@ -34,12 +34,21 @@ const multiUploads = upload.fields([
 ]);
 
 /**
- * Get olim by userId
- * @param {ObjectId} userId
+ * Get olim by user id
+ * @param {ObjectId} user
  * @returns {Promise<Olim>}
  */
-const getOlimByUserId = async (userId) => {
-  return Olim.findOne({ user: userId });
+const getOlimByUserId = async (user) => {
+  return Olim.findOne({ user });
+};
+
+/**
+ * Get olim by nama tim
+ * @param {string} namaTim
+ * @returns {Promise<Olim>}
+ */
+const getOlimByNamaTim = async (namaTim) => {
+  return Olim.findOne({ namaTim });
 };
 
 const daftarOlim = async (olimBody, files, user) => {
@@ -102,8 +111,7 @@ const updateOlimByUserId = async (userId, updateBody, olimObj) => {
   if (olim.pathIdentitasAnggota2 === null) {
     olim.namaAnggota2 = null;
   }
-  await olim.save();
-  return olim;
+  return olim.save();
 };
 
 const createOlim = async (olimBody, files, userId) => {
@@ -168,8 +176,7 @@ const updateOlimById = async (olimId, updateBody, olimObj) => {
   if (olim.pathIdentitasAnggota2 === null) {
     olim.namaAnggota2 = null;
   }
-  await olim.save();
-  return olim;
+  return olim.save();
 };
 
 /**
@@ -212,6 +219,7 @@ module.exports = {
   createOlim,
   getOlimById,
   getOlimByUserId,
+  getOlimByNamaTim,
   updateOlimById,
   updateOlimByUserId,
   deleteOlimById,

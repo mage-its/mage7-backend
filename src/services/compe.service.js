@@ -143,6 +143,26 @@ const getCompeByUserId = async (id) => {
 };
 
 /**
+ * Get competition by nama tim
+ * @param {string} namaTim - Nama Tim
+ * @returns {Array<Olim|GameDev|AppDev|IotDev|null, number>}
+ */
+const getCompeByNamaTim = async (namaTim) => {
+  const compe = await Promise.all([
+    olimService.getOlimByNamaTim(namaTim),
+    gameDevService.getGameDevByNamaTim(namaTim),
+    appDevService.getAppDevByNamaTim(namaTim),
+    iotDevService.getIotDevByNamaTim(namaTim),
+  ]);
+
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0, j = compe.length; i < j; ++i) {
+    if (compe[i]) return [compe[i], i];
+  }
+  return [null, -1];
+};
+
+/**
  * Toggle verif by any competition id
  * @param {ObjectId} compeId
  * @returns {Promise<Olim|GameDev|AppDev|IotDev>}
@@ -179,5 +199,6 @@ module.exports = {
   queryCompetitions,
   getCompeById,
   getCompeByUserId,
+  getCompeByNamaTim,
   downloadCsv,
 };

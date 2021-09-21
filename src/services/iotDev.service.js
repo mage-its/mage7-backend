@@ -57,12 +57,21 @@ const multiUploads = upload.fields([
 ]);
 
 /**
- * Get iotdev by userId
- * @param {ObjectId} userId
+ * Get iotdev by user id
+ * @param {ObjectId} user
  * @returns {Promise<IotDev>}
  */
-const getIotDevByUserId = async (userId) => {
-  return IotDev.findOne({ user: userId });
+const getIotDevByUserId = async (user) => {
+  return IotDev.findOne({ user });
+};
+
+/**
+ * Get iotdev by nama tim
+ * @param {string} namaTim
+ * @returns {Promise<IotDev>}
+ */
+const getIotDevByNamaTim = async (namaTim) => {
+  return IotDev.findOne({ namaTim });
 };
 
 const daftarIotDev = async (iotDevBody, files, user) => {
@@ -156,8 +165,7 @@ const updateIotDevByUserId = async (userId, updateBody, iotObj) => {
   if (iotDev.pathIdentitasAnggota2 === null) {
     iotDev.namaAnggota2 = null;
   }
-  await iotDev.save();
-  return iotDev;
+  return iotDev.save();
 };
 
 const createIotDev = async (iotDevBody, files, userId) => {
@@ -234,8 +242,7 @@ const updateIotDevById = async (iotDevId, updateBody, iotObj) => {
   if (iotDev.pathIdentitasAnggota2 === null) {
     iotDev.namaAnggota2 = null;
   }
-  await iotDev.save();
-  return iotDev;
+  return iotDev.save();
 };
 
 /**
@@ -306,6 +313,7 @@ module.exports = {
   createIotDev,
   getIotDevById,
   getIotDevByUserId,
+  getIotDevByNamaTim,
   updateIotDevById,
   updateIotDevByUserId,
   deleteIotDevById,
