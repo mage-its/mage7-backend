@@ -8,8 +8,7 @@ const ApiError = require('../utils/ApiError');
  * @returns {Promise<KodeBayar>}
  */
 const createKodeBayar = async (kodeBayarBody) => {
-  const kodeBayar = await KodeBayar.create(kodeBayarBody);
-  return kodeBayar;
+  return KodeBayar.create(kodeBayarBody);
 };
 
 /**

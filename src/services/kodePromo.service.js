@@ -9,8 +9,7 @@ const ApiError = require('../utils/ApiError');
  * @returns {Promise<KodePromo>}
  */
 const createKodePromo = async (kodePromoBody) => {
-  const kodePromo = await KodePromo.create(kodePromoBody);
-  return kodePromo;
+  return KodePromo.create(kodePromoBody);
 };
 
 /**
