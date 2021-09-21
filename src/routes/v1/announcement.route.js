@@ -11,7 +11,12 @@ router
   .post(auth('manageUsers'), validate(announcementValidation.createAnnouncement), announcementController.createAnnouncement)
   .get(auth('getUsers'), validate(announcementValidation.getAnnouncements), announcementController.getAnnouncements);
 
-router.get('/peserta', auth(), announcementController.getAnnouncementsPeserta);
+router.get(
+  '/peserta',
+  auth(),
+  validate(announcementValidation.getAnnouncementsPeserta),
+  announcementController.getAnnouncementsPeserta
+);
 
 router.delete(
   '/:announcementId',
