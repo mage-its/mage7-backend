@@ -16,12 +16,19 @@ const getAnnouncements = catchAsync(async (req, res) => {
 });
 
 const getAnnouncementsPeserta = catchAsync(async (req, res) => {
-  const announcements = await announcementService.getAnnouncementsPeserta(req.user.registeredComp);
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const announcements = await announcementService.getAnnouncementsPeserta(req.user.registeredComp, options);
   res.send(announcements);
+});
+
+const deleteAnnouncement = catchAsync(async (req, res) => {
+  await announcementService.deleteAnnouncement(req.params.announcementId);
+  res.status(httpStatus.NO_CONTENT).send();
 });
 
 module.exports = {
   createAnnouncement,
   getAnnouncements,
   getAnnouncementsPeserta,
+  deleteAnnouncement,
 };

@@ -13,4 +13,11 @@ router
 
 router.get('/peserta', auth(), announcementController.getAnnouncementsPeserta);
 
+router.delete(
+  '/:announcementId',
+  auth('manageUsers'),
+  validate(announcementValidation.deleteAnnouncement),
+  announcementController.deleteAnnouncement
+);
+
 module.exports = router;
