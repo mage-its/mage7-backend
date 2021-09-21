@@ -1,4 +1,5 @@
 const httpStatus = require('http-status');
+const { trusted } = require('mongoose');
 const { KodePromo } = require('../models');
 const ApiError = require('../utils/ApiError');
 
@@ -93,7 +94,7 @@ const applyPromo = async (kode, user, compe) => {
   if (!user.registeredComp) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User belum mendaftar');
   }
-  const kodePromo = await getKodePromoByKode(kode, kodePromoType[user.registeredComp]);
+  const kodePromo = await getKodePromoByKode(kode, trusted(kodePromoType[user.registeredComp]));
   if (!kodePromo) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Kode promo tidak ditemukan!');
   }

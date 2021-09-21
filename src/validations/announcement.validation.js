@@ -1,9 +1,10 @@
 const Joi = require('joi');
+const { objectId } = require('./custom.validation');
 
 const createAnnouncement = {
   body: Joi.object().keys({
     title: Joi.string().min(3).max(100).required(),
-    content: Joi.string().min(3).max(500).required(),
+    content: Joi.string().min(3).max(1000).required(),
     type: Joi.string().required().valid('olim', 'devcom', 'gamedev', 'appdev', 'iotdev', 'all', 'guest'),
   }),
 };
@@ -17,7 +18,23 @@ const getAnnouncements = {
   }),
 };
 
+const getAnnouncementsPeserta = {
+  query: Joi.object().keys({
+    sortBy: Joi.string(),
+    limit: Joi.number().integer(),
+    page: Joi.number().integer(),
+  }),
+};
+
+const deleteAnnouncement = {
+  params: Joi.object().keys({
+    announcementId: Joi.string().custom(objectId),
+  }),
+};
+
 module.exports = {
   createAnnouncement,
   getAnnouncements,
+  getAnnouncementsPeserta,
+  deleteAnnouncement,
 };
