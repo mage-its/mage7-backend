@@ -1,4 +1,5 @@
 const httpStatus = require('http-status');
+const { trusted } = require('mongoose');
 const { Announcement } = require('../models');
 const ApiError = require('../utils/ApiError');
 
@@ -51,8 +52,8 @@ const announcementType = {
  * @param {string} cabang
  * @returns {Promise<QueryResult>}
  */
-const getAnnouncementsPeserta = async (cabang) => {
-  return queryAnnouncements({ type: announcementType[cabang] }, { limit: 69 });
+const getAnnouncementsPeserta = async (cabang, options) => {
+  return queryAnnouncements({ type: trusted(announcementType[cabang]) }, options);
 };
 
 /**
@@ -63,7 +64,7 @@ const getAnnouncementsPeserta = async (cabang) => {
 const deleteAnnouncement = async (announcementId) => {
   const announcement = await Announcement.findById(announcementId);
   if (!announcement) {
-    return;
+    throw new ApiError(httpStatus.NOT_FOUND, 'Announcement not found');
   }
   return announcement.remove();
 };
