@@ -16,7 +16,7 @@ const createAnnouncement = async (body) => {
   }
 
   if (body.namaTim) {
-    const [compe, index] = compeService.getCompeByNamaTim(body.namaTim);
+    const [compe, index] = await compeService.getCompeByNamaTim(body.namaTim);
     if (!compe || index === -1) {
       throw new ApiError(httpStatus.NOT_FOUND, `Tim dengan nama ${body.namaTim} tidak ditemukan`);
     }
@@ -42,7 +42,7 @@ const queryAnnouncements = async (filter, options) => {
 /**
  * Getting announcement by type
  * @param {string} type
- * @returns {User}
+ * @returns {Promise<Announcement>}
  */
 const getAnnouncementByType = async (type) => {
   const announcement = await Announcement.findOne({ type });
@@ -53,10 +53,11 @@ const getAnnouncementByType = async (type) => {
 };
 
 const announcementType = {
-  olim: { $in: ['olim', 'all'] },
-  appdev: { $in: ['appdev', 'devcom', 'all'] },
-  gamedev: { $in: ['gamedev', 'devcom', 'all'] },
-  iotdev: { $in: ['iotdev', 'devcom', 'all'] },
+  olim: { $in: ['olim', 'all', 'namatim'] },
+  appdev: { $in: ['appdev', 'devcom', 'all', 'namatim'] },
+  gamedev: { $in: ['gamedev', 'devcom', 'all', 'namatim'] },
+  iotdev: { $in: ['iotdev', 'devcom', 'all', 'namatim'] },
+  all: { $in: ['all'] },
 };
 
 /**
@@ -70,9 +71,12 @@ const announcementType = {
  * @returns {Promise<QueryResult>}
  */
 const getAnnouncementsPeserta = async (userId, cabang, options) => {
-  const { namaTim } = await compeService.getCompeByUserId(userId);
+  const [compe] = await compeService.getCompeByUserId(userId);
   return queryAnnouncements(
-    { type: trusted(announcementType[cabang]), namaTim: trusted({ $in: [null, namaTim] }) },
+    {
+      type: trusted(announcementType[cabang in announcementType ? cabang : 'all']),
+      namaTim: trusted({ $in: [null, ...(compe?.namaTim ? [compe.namaTim] : [])] }),
+    },
     options
   );
 };

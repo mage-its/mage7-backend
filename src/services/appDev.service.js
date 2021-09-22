@@ -79,7 +79,7 @@ const getAppDevByNamaTim = async (namaTim) => {
  * @param {Object} appDevBody
  * @param {Object} files
  * @param {User} user
- * @returns {Array<Promise<AppDev>, Promise<User>, Promise<KodeBayar>>}
+ * @returns {Promise<Array<Promise<AppDev>, Promise<User>, Promise<KodeBayar>>>}
  */
 const daftarAppDev = async (appDevBody, files, user) => {
   const appDev = new AppDev(appDevBody);
@@ -186,7 +186,7 @@ const updateAppDevByUserId = async (userId, updateBody, appObj) => {
  * @param {Object} appDevBody
  * @param {Object} files
  * @param {ObjectId} userId
- * @returns {Array<Promise<AppDev>, Promise<User>, Promise<KodeBayar>>}
+ * @returns {Promise<Array<Promise<AppDev>, Promise<User>, Promise<KodeBayar>>>}
  */
 const createAppDev = async (appDevBody, files, userId) => {
   const appDev = new AppDev(appDevBody);
