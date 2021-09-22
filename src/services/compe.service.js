@@ -105,7 +105,7 @@ const queryCompetitions = async (filter, options) => {
 /**
  * Get competition by id
  * @param {ObjectId} id
- * @returns {Array<Olim|GameDev|AppDev|IotDev|null, number>}
+ * @returns {Promise<Array<Olim|GameDev|AppDev|IotDev|null, number>>}
  */
 const getCompeById = async (id) => {
   const compe = await Promise.all([
@@ -125,7 +125,7 @@ const getCompeById = async (id) => {
 /**
  * Get competition by userId
  * @param {ObjectId} id - User Id
- * @returns {Array<Olim|GameDev|AppDev|IotDev|null, number>}
+ * @returns {Promise<Array<Olim|GameDev|AppDev|IotDev|null, number>>}
  */
 const getCompeByUserId = async (id) => {
   const compe = await Promise.all([
@@ -145,7 +145,7 @@ const getCompeByUserId = async (id) => {
 /**
  * Get competition by nama tim
  * @param {string} namaTim - Nama Tim
- * @returns {Array<Olim|GameDev|AppDev|IotDev|null, number>}
+ * @returns {Promise<Array<Olim|GameDev|AppDev|IotDev|null, number>>}
  */
 const getCompeByNamaTim = async (namaTim) => {
   const compe = await Promise.all([

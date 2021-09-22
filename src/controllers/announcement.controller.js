@@ -17,7 +17,8 @@ const getAnnouncements = catchAsync(async (req, res) => {
 
 const getAnnouncementsPeserta = catchAsync(async (req, res) => {
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const announcements = await announcementService.getAnnouncementsPeserta(req.user.registeredComp, options);
+  const { id, registeredComp } = req.user;
+  const announcements = await announcementService.getAnnouncementsPeserta(id, registeredComp, options);
   res.send(announcements);
 });
 
