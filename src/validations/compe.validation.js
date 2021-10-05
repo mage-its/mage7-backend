@@ -31,10 +31,17 @@ const downloadCsv = {
   }),
 };
 
+const submitKarya = {
+  body: Joi.object().keys({
+    linkKarya: Joi.string(),
+  }),
+};
+
 module.exports = {
   pay,
   toggleVerif,
   getCompetition,
   getCompetitionByUser,
   downloadCsv,
+  submitKarya,
 };

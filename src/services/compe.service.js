@@ -192,6 +192,25 @@ const downloadCsv = async (compe) => {
   return parseAsync(cleanResults);
 };
 
+const compeUpdate = {
+  gamedev: gameDevService.updateGameDevByUserId,
+  appdev: appDevService.updateAppDevByUserId,
+  iotdev: iotDevService.updateIotDevByUserId,
+};
+
+/**
+ * Submit karya
+ * @param {Object} user
+ * @param {string} linkKaryaDanVideo
+ * @returns {Promise<GameDev|AppDev|IotDev>}
+ */
+const submitKarya = async (user, linkKaryaDanVideo) => {
+  if (!user.registeredComp || user.registeredComp === 'olim') {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User tidak terdaftar di Development Competition!');
+  }
+  return compeUpdate[user.registeredComp](user.id, { linkKaryaDanVideo });
+};
+
 module.exports = {
   multiUploads,
   pay,
@@ -201,4 +220,5 @@ module.exports = {
   getCompeByUserId,
   getCompeByNamaTim,
   downloadCsv,
+  submitKarya,
 };
