@@ -39,4 +39,6 @@ router.post(
 
 router.get('/download-csv/:compe', auth('getUsers'), validate(compeValidation.downloadCsv), compeController.downloadCsv);
 
+router.post('/submit-karya', auth(), validate(compeValidation.submitKarya), compeController.submitKarya);
+
 module.exports = router;
