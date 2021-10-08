@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const { objectId } = require('./custom.validation');
+const { objectId, urlWithProtocol } = require('./custom.validation');
 
 const pay = {
   body: Joi.object().keys({
@@ -31,10 +31,17 @@ const downloadCsv = {
   }),
 };
 
+const submitKarya = {
+  body: Joi.object().keys({
+    linkKarya: Joi.string().custom(urlWithProtocol),
+  }),
+};
+
 module.exports = {
   pay,
   toggleVerif,
   getCompetition,
   getCompetitionByUser,
   downloadCsv,
+  submitKarya,
 };

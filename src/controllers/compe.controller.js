@@ -44,6 +44,11 @@ const downloadCsv = catchAsync(async (req, res) => {
   res.send(csv);
 });
 
+const submitKarya = catchAsync(async (req, res) => {
+  const compe = await compeService.submitKarya(req.user, req.body.linkKarya);
+  res.send(compe);
+});
+
 module.exports = {
   pay,
   toggleVerif,
@@ -51,4 +56,5 @@ module.exports = {
   getCompetition,
   getCompetitionByUser,
   downloadCsv,
+  submitKarya,
 };
