@@ -25,6 +25,11 @@ const queryKodeBayars = async (filter, options) => {
   return kodeBayars;
 };
 
+/**
+ * get a kodeBayar by cabang
+ * @param {string} cabang
+ * @returns {Promise<KodeBayar>}
+ */
 const getKodeBayarByCabang = async (cabang) => {
   const kodeBayar = await KodeBayar.findOne({ name: cabang });
   if (!kodeBayar) {
@@ -33,6 +38,12 @@ const getKodeBayarByCabang = async (cabang) => {
   return kodeBayar;
 };
 
+/**
+ * update kodeBayar by cabang
+ * @param {string} cabang
+ * @param {Object} updateBody
+ * @returns {Promise<KodeBayar>}
+ */
 const updateKodeBayar = async (cabang, updateBody) => {
   const kodeBayar = await getKodeBayarByCabang(cabang);
   if (!kodeBayar) {
@@ -43,11 +54,22 @@ const updateKodeBayar = async (cabang, updateBody) => {
   return kodeBayar;
 };
 
+/**
+ * get no urut
+ * @param {string} cabang
+ * @returns {Promise<number>}
+ */
 const getNoUrut = async (cabang) => {
   const kodeBayar = await getKodeBayarByCabang(cabang);
   return kodeBayar.no;
 };
 
+/**
+ * increment no urut
+ * @param {string} cabang
+ * @param {KodeBayar} kodeBayarObj
+ * @returns {Promise<KodeBayar>}
+ */
 const incNoUrut = async (cabang, kodeBayarObj) => {
   const kodeBayar = kodeBayarObj || (await getKodeBayarByCabang(cabang));
   if (!kodeBayar) {

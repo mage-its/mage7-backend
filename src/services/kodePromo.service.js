@@ -13,7 +13,7 @@ const createKodePromo = async (kodePromoBody) => {
 };
 
 /**
- * Query for kodebayars
+ * Query for kodepromos
  * @param {Object} filter - Mongo filter
  * @param {Object} options - Query options
  * @param {string} [options.sortBy] - Sort option in the format: sortField:(desc|asc)
@@ -26,10 +26,21 @@ const queryKodePromos = async (filter, options) => {
   return kodePromos;
 };
 
+/**
+ * Get a kodePromo
+ * @param {ObjectId} id
+ * @returns {Promise<KodePromo>}
+ */
 const getKodePromoById = async (id) => {
   return KodePromo.findById(id);
 };
 
+/**
+ * Get a kodePromo by kode
+ * @param {string} kode
+ * @param {string} category
+ * @returns {Promise<KodePromo>}
+ */
 const getKodePromoByKode = async (kode, category) => {
   const kodePromo = await KodePromo.findOne({ kode, category });
   if (!kodePromo) {
@@ -38,6 +49,12 @@ const getKodePromoByKode = async (kode, category) => {
   return kodePromo;
 };
 
+/**
+ * Update a kodePromo by kode
+ * @param {string} kode
+ * @param {Object} updateBody
+ * @returns {Promise<KodePromo>}
+ */
 const updateKodePromoByKode = async (kode, updateBody) => {
   const kodePromo = await getKodePromoByKode(kode);
   if (!kodePromo) {
@@ -48,6 +65,12 @@ const updateKodePromoByKode = async (kode, updateBody) => {
   return kodePromo;
 };
 
+/**
+ * Update a kodePromo by id
+ * @param {ObjectId} id
+ * @param {Object} updateBody
+ * @returns {Promise<KodePromo>}
+ */
 const updateKodePromoById = async (id, updateBody) => {
   const kodePromo = await getKodePromoById(id);
   if (!kodePromo) {
@@ -58,6 +81,11 @@ const updateKodePromoById = async (id, updateBody) => {
   return kodePromo;
 };
 
+/**
+ * Delete a kodePromo by kode
+ * @param {string} kode
+ * @returns {Promise<KodePromo>}
+ */
 const deleteKodePromoByKode = async (kode) => {
   const kodePromo = await getKodePromoByKode(kode);
   if (!kodePromo) {
@@ -67,6 +95,11 @@ const deleteKodePromoByKode = async (kode) => {
   return kodePromo;
 };
 
+/**
+ * Delete a kodePromo by id
+ * @param {ObjectId} id
+ * @returns {Promise<KodePromo>}
+ */
 const deleteKodePromoById = async (id) => {
   const kodePromo = await getKodePromoById(id);
   if (!kodePromo) {
@@ -76,6 +109,11 @@ const deleteKodePromoById = async (id) => {
   return kodePromo;
 };
 
+/**
+ * Toggle a kodePromo by id
+ * @param {string} id
+ * @returns {Promise<KodePromo>}
+ */
 const toggleActive = async (id) => {
   const kodePromo = await getKodePromoById(id);
   kodePromo.active = !kodePromo.active;
@@ -89,6 +127,13 @@ const kodePromoType = {
   iotdev: { $in: ['devcom', 'all'] },
 };
 
+/**
+ * Apply a kodePromo
+ * @param {string} kode
+ * @param {User} user
+ * @param {Object} compe
+ * @returns {Promise<Olim|GameDev|AppDev|IotDev>}
+ */
 const applyPromo = async (kode, user, compe) => {
   if (!user.registeredComp) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User belum mendaftar');

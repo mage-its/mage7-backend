@@ -303,7 +303,7 @@ const deleteAppDevById = async (appDevId, appDevObj = null, userObj = null) => {
 
 /**
  * Toggle verification
- * @param {ObjectId} appdevId
+ * @param {ObjectId} appDevId
  * @param {AppDev} [appDevObj=null]
  * @returns {Promise<AppDev>}
  */
@@ -318,7 +318,7 @@ const toggleVerif = async (appDevId, appDevObj = null) => {
 
 /**
  * Increment tahap
- * @param {ObjectId} appdevId
+ * @param {ObjectId} appDevId
  * @returns {Promise<AppDev>}
  */
 const incTahap = async (appDevId) => {
@@ -335,7 +335,7 @@ const incTahap = async (appDevId) => {
 
 /**
  * Decrement tahap
- * @param {ObjectId} appdevId
+ * @param {ObjectId} appDevId
  * @returns {Promise<AppDev>}
  */
 const decTahap = async (appDevId) => {

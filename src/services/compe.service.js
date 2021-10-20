@@ -183,6 +183,11 @@ const compeQuery = {
   iotdev: iotDevService.queryIotDevs,
 };
 
+/**
+ * Download CSV
+ * @param {string} compe
+ * @returns {Promise<string>}
+ */
 const downloadCsv = async (compe) => {
   const { results } = await compeQuery?.[compe]({}, { limit: 69420 });
   const cleanResults = results.map((result) => {
