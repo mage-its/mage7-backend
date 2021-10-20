@@ -1,3 +1,5 @@
+const { isURL } = require('validator');
+
 const passRegex = /^[0-9a-fA-F]{24}$/;
 const numRegex = /\d/;
 const letterRegex = /[a-zA-Z]/;
@@ -19,7 +21,15 @@ const password = (value, helpers) => {
   return value;
 };
 
+const urlWithProtocol = (value, helpers) => {
+  if (!isURL(value, { require_protocol: true })) {
+    return helpers.message('must be a valid http url!');
+  }
+  return value;
+};
+
 module.exports = {
   objectId,
   password,
+  urlWithProtocol,
 };
