@@ -74,6 +74,13 @@ const getIotDevByNamaTim = async (namaTim) => {
   return IotDev.findOne({ namaTim });
 };
 
+/**
+ * Register iotdev service
+ * @param {Object} iotDevBody
+ * @param {Object} files
+ * @param {User} user
+ * @returns {Promise<Array<Promise<IotDev>, Promise<User>, Promise<KodeBayar>>>}
+ */
 const daftarIotDev = async (iotDevBody, files, user) => {
   const iotDev = new IotDev(iotDevBody);
 
@@ -127,6 +134,12 @@ const daftarIotDev = async (iotDevBody, files, user) => {
   return Promise.all([iotDev.save(), user.save(), kodeBayarService.incNoUrut(cabang, kode)]);
 };
 
+/**
+ * Upload proposal
+ * @param {ObjectId} userId
+ * @param {Object} files
+ * @returns {Promise<IotDev>}
+ */
 const uploadProposal = async (userId, files) => {
   const iotDev = await getIotDevByUserId(userId);
   if (!iotDev) {
@@ -168,6 +181,13 @@ const updateIotDevByUserId = async (userId, updateBody, iotObj) => {
   return iotDev.save();
 };
 
+/**
+ * Create iotdev
+ * @param {Object} iotDevBody
+ * @param {Object} files
+ * @param {ObjectId} userId
+ * @returns {Promise<Array<Promise<IotDev>, Promise<User>, Promise<KodeBayar>>>}
+ */
 const createIotDev = async (iotDevBody, files, userId) => {
   const iotDev = new IotDev(iotDevBody);
   const user = await User.findById(userId);
@@ -209,6 +229,15 @@ const createIotDev = async (iotDevBody, files, userId) => {
   return Promise.all([iotDev.save(), user.save(), kodeBayarService.incNoUrut(cabang, kode)]);
 };
 
+/**
+ * Query for iotdevs
+ * @param {Object} filter - Mongo filter
+ * @param {Object} options - Query options
+ * @param {string} [options.sortBy] - Sort option in the format: sortField:(desc|asc)
+ * @param {number} [options.limit] - Maximum number of results per page (default = 10)
+ * @param {number} [options.page] - Current page (default = 1)
+ * @returns {Promise<QueryResult>}
+ */
 const queryIotDevs = async (filter, options) => {
   const iotDevs = await IotDev.paginate(filter, options);
   return iotDevs;
@@ -273,7 +302,13 @@ const deleteIotDevById = async (iotDevId, iotDevObj = null, userObj = null) => {
   return iotDev;
 };
 
-const toggleVerif = async (iotDevId, iotDevObj) => {
+/**
+ * Toggle verification
+ * @param {ObjectId} iotDevId
+ * @param {IotDev} [iotDevObj=null]
+ * @returns {Promise<IotDev>}
+ */
+const toggleVerif = async (iotDevId, iotDevObj = null) => {
   const iotDev = iotDevObj || (await getIotDevById(iotDevId));
   if (!iotDev) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
@@ -282,6 +317,11 @@ const toggleVerif = async (iotDevId, iotDevObj) => {
   return updateIotDevById(iotDev.id, { isVerified: !iotDev.isVerified }, iotDev);
 };
 
+/**
+ * Increment tahap
+ * @param {ObjectId} iotDevId
+ * @returns {Promise<IotDev>}
+ */
 const incTahap = async (iotDevId) => {
   const iotDev = await getIotDevById(iotDevId);
   if (!iotDev) {
@@ -293,6 +333,11 @@ const incTahap = async (iotDevId) => {
   }
 };
 
+/**
+ * Decrement tahap
+ * @param {ObjectId} iotDevId
+ * @returns {Promise<IotDev>}
+ */
 const decTahap = async (iotDevId) => {
   const iotDev = await getIotDevById(iotDevId);
   if (!iotDev) {

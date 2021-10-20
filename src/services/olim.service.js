@@ -51,6 +51,13 @@ const getOlimByNamaTim = async (namaTim) => {
   return Olim.findOne({ namaTim });
 };
 
+/**
+ * Register olim service
+ * @param {Object} olimBody
+ * @param {Object} files
+ * @param {User} user
+ * @returns {Promise<Array<Promise<Olim>, Promise<User>, Promise<KodeBayar>>>}
+ */
 const daftarOlim = async (olimBody, files, user) => {
   const olim = new Olim(olimBody);
 
@@ -114,6 +121,13 @@ const updateOlimByUserId = async (userId, updateBody, olimObj) => {
   return olim.save();
 };
 
+/**
+ * Create olim
+ * @param {Object} olimBody
+ * @param {Object} files
+ * @param {ObjectId} userId
+ * @returns {Promise<Array<Promise<Olim>, Promise<User>, Promise<KodeBayar>>>}
+ */
 const createOlim = async (olimBody, files, userId) => {
   const olim = new Olim(olimBody);
   const user = await User.findById(userId);
@@ -143,6 +157,15 @@ const createOlim = async (olimBody, files, userId) => {
   return Promise.all([olim.save(), user.save(), kodeBayarService.incNoUrut('olim', kode)]);
 };
 
+/**
+ * Query for olims
+ * @param {Object} filter - Mongo filter
+ * @param {Object} options - Query options
+ * @param {string} [options.sortBy] - Sort option in the format: sortField:(desc|asc)
+ * @param {number} [options.limit] - Maximum number of results per page (default = 10)
+ * @param {number} [options.page] - Current page (default = 1)
+ * @returns {Promise<QueryResult>}
+ */
 const queryOlims = async (filter, options) => {
   const olims = await Olim.paginate(filter, options);
   return olims;
@@ -203,7 +226,13 @@ const deleteOlimById = async (olimId, olimObj = null, userObj = null) => {
   return olim;
 };
 
-const toggleVerif = async (olimId, olimObj) => {
+/**
+ * Toggle verification
+ * @param {ObjectId} olimId
+ * @param {Olim} [olimObj=null]
+ * @returns {Promise<Olim>}
+ */
+const toggleVerif = async (olimId, olimObj = null) => {
   const olim = olimObj || (await getOlimById(olimId));
   if (!olim) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
