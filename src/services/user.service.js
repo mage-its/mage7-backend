@@ -64,6 +64,11 @@ const getUserByEmail = async (email) => {
   return User.findOne({ email });
 };
 
+/**
+ * Is email verified
+ * @param {ObjectId} userId
+ * @returns {Promise}
+ */
 const checkEmailVerification = async (userId) => {
   const verifiedUser = await User.findOne({ _id: userId, isEmailVerified: true });
   if (!verifiedUser) {
@@ -71,6 +76,11 @@ const checkEmailVerification = async (userId) => {
   }
 };
 
+/**
+ * Is user registered
+ * @param {ObjectId} userId
+ * @returns {Promise}
+ */
 const isRegistered = async (userId) => {
   if (!(await User.findOne({ _id: userId, registeredComp: '' }))) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User sudah terdaftar di salah satu cabang');
@@ -190,6 +200,10 @@ const deleteUserById = async (userId) => {
   return user;
 };
 
+/**
+ * Download CSV
+ * @returns {Promise<string>}
+ */
 const downloadCsv = async () => {
   const { results } = await queryUsers({}, { limit: 69420 });
   const cleanResults = results.map((result) => {

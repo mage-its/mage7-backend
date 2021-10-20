@@ -74,6 +74,13 @@ const getGameDevByNamaTim = async (namaTim) => {
   return GameDev.findOne({ namaTim });
 };
 
+/**
+ * Register gamedev service
+ * @param {Object} gameDevBody
+ * @param {Object} files
+ * @param {User} user
+ * @returns {Promise<Array<Promise<GameDev>, Promise<User>, Promise<KodeBayar>>>}
+ */
 const daftarGameDev = async (gameDevBody, files, user) => {
   const gameDev = new GameDev(gameDevBody);
 
@@ -127,6 +134,12 @@ const daftarGameDev = async (gameDevBody, files, user) => {
   return Promise.all([gameDev.save(), user.save(), kodeBayarService.incNoUrut(cabang, kode)]);
 };
 
+/**
+ * Upload proposal
+ * @param {ObjectId} userId
+ * @param {Object} files
+ * @returns {Promise<GameDev>}
+ */
 const uploadProposal = async (userId, files) => {
   const gameDev = await getGameDevByUserId(userId);
   if (!gameDev) {
@@ -171,6 +184,13 @@ const updateGameDevByUserId = async (userId, updateBody, gameObj) => {
   return gameDev.save();
 };
 
+/**
+ * Create gamedev
+ * @param {Object} gameDevBody
+ * @param {Object} files
+ * @param {ObjectId} userId
+ * @returns {Promise<Array<Promise<GameDev>, Promise<User>, Promise<KodeBayar>>>}
+ */
 const createGameDev = async (gameDevBody, files, userId) => {
   const gameDev = new GameDev(gameDevBody);
   const user = await User.findById(userId);
@@ -212,6 +232,15 @@ const createGameDev = async (gameDevBody, files, userId) => {
   return Promise.all([gameDev.save(), user.save(), kodeBayarService.incNoUrut(cabang, kode)]);
 };
 
+/**
+ * Query for gamedevs
+ * @param {Object} filter - Mongo filter
+ * @param {Object} options - Query options
+ * @param {string} [options.sortBy] - Sort option in the format: sortField:(desc|asc)
+ * @param {number} [options.limit] - Maximum number of results per page (default = 10)
+ * @param {number} [options.page] - Current page (default = 1)
+ * @returns {Promise<QueryResult>}
+ */
 const queryGameDevs = async (filter, options) => {
   const gameDevs = await GameDev.paginate(filter, options);
   return gameDevs;
@@ -276,6 +305,12 @@ const deleteGameDevById = async (gameDevId, gameDevObj = null, userObj = null) =
   return gameDev;
 };
 
+/**
+ * Toggle verification
+ * @param {ObjectId} gameDevId
+ * @param {GameDev} [gameDevObj=null]
+ * @returns {Promise<GameDev>}
+ */
 const toggleVerif = async (gameDevId, gameDevObj = null) => {
   const gameDev = gameDevObj || (await getGameDevById(gameDevId));
   if (!gameDev) {
@@ -285,6 +320,11 @@ const toggleVerif = async (gameDevId, gameDevObj = null) => {
   return updateGameDevById(gameDev.id, { isVerified: !gameDev.isVerified }, gameDev);
 };
 
+/**
+ * Increment tahap
+ * @param {ObjectId} gameDevId
+ * @returns {Promise<GameDev>}
+ */
 const incTahap = async (gameDevId) => {
   const gameDev = await getGameDevById(gameDevId);
   if (!gameDev) {
@@ -296,6 +336,11 @@ const incTahap = async (gameDevId) => {
   }
 };
 
+/**
+ * Decrement tahap
+ * @param {ObjectId} gameDevId
+ * @returns {Promise<GameDev>}
+ */
 const decTahap = async (gameDevId) => {
   const gameDev = await getGameDevById(gameDevId);
   if (!gameDev) {
