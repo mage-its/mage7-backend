@@ -166,8 +166,8 @@ const uploadProposal = async (userId, files) => {
  * @param {AppDev} appObj
  * @returns {Promise<AppDev>}
  */
-const updateAppDevByUserId = async (userId, updateBody, appObj) => {
-  const appDev = appObj || (await getAppDevByUserId(userId));
+const updateAppDevByUserId = async (userId, updateBody, appObj = null) => {
+  const appDev = appObj ?? (await getAppDevByUserId(userId));
   if (!appDev) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
   }
@@ -258,8 +258,8 @@ const getAppDevById = async (id) => {
  * @param {AppDev} appObj
  * @returns {Promise<AppDev>}
  */
-const updateAppDevById = async (appDevId, updateBody, appObj) => {
-  const appDev = appObj || (await getAppDevById(appDevId));
+const updateAppDevById = async (appDevId, updateBody, appObj = null) => {
+  const appDev = appObj ?? (await getAppDevById(appDevId));
   if (!appDev) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
   }
@@ -279,11 +279,11 @@ const updateAppDevById = async (appDevId, updateBody, appObj) => {
  * @returns {Promise<AppDev>}
  */
 const deleteAppDevById = async (appDevId, appDevObj = null, userObj = null) => {
-  const appDev = appDevObj || (await getAppDevById(appDevId));
+  const appDev = appDevObj ?? (await getAppDevById(appDevId));
   if (!appDev) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
   }
-  const user = userObj || (await User.findById(appDev.user));
+  const user = userObj ?? (await User.findById(appDev.user));
   if (user) {
     user.registeredComp = '';
   }
@@ -308,7 +308,7 @@ const deleteAppDevById = async (appDevId, appDevObj = null, userObj = null) => {
  * @returns {Promise<AppDev>}
  */
 const toggleVerif = async (appDevId, appDevObj = null) => {
-  const appDev = appDevObj || (await getAppDevById(appDevId));
+  const appDev = appDevObj ?? (await getAppDevById(appDevId));
   if (!appDev) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
   }
