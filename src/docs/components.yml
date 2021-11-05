@@ -13,11 +13,30 @@ components:
         role:
           type: string
           enum: [user, admin]
+        registeredComp:
+          type: string
+          enum: [olim, appdev, gamedev, iotdev, '']
+        isEmailVerified:
+          type: boolean
+        method:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
       example:
         id: 5ebac534954b54139806c112
         email: fake@example.com
         name: fake name
         role: user
+        registeredComp: appdev
+        isEmailVerified: true
+        method: null
+        createdAt: 2021-11-01T16:08:05.615Z
+        updatedAt: 2021-11-01T16:08:05.615Z
 
     Token:
       type: object

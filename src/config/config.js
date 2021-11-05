@@ -37,12 +37,14 @@ const envVarsSchema = Joi.object()
     FIREBASE_PW: Joi.string(),
     FRONTEND_PATH: Joi.string().custom(validPath),
     CORS_ORIGIN: Joi.string().default('https://mage-its.com'),
+    USE_RECAPTCHA: Joi.string().default('false').lowercase(),
     RECAPTCHA_SECRET: Joi.string(),
-    LOGGING: Joi.string().default(''),
-    CLOSE_DEVCOM: Joi.string().default(''),
-    CLOSE_PROPOSAL: Joi.string().default(''),
-    CLOSE_OLIM: Joi.string().default(''),
-    CLOSE_PAYMENT_OLIM: Joi.string().default(''),
+    LOGGING: Joi.string().default('').lowercase(),
+    CLOSE_DEVCOM: Joi.string().default('').lowercase(),
+    CLOSE_PROPOSAL: Joi.string().default('').lowercase(),
+    CLOSE_OLIM: Joi.string().default('').lowercase(),
+    CLOSE_PAYMENT_OLIM: Joi.string().default('').lowercase(),
+    CLOSE_SUBMIT_KARYA: Joi.string().default('').lowercase(),
   })
   .unknown();
 
@@ -82,6 +84,7 @@ module.exports = {
   firepw: envVars.FIREBASE_PW,
   frontend: envVars.FRONTEND_PATH,
   cors: envVars.CORS_ORIGIN,
+  useRecaptcha: envVars.USE_RECAPTCHA === 'true',
   recaptchaSecret: envVars.RECAPTCHA_SECRET,
   maintenance: envVars.MAINTENANCE,
   logging: envVars.LOGGING === 'true',
@@ -90,5 +93,6 @@ module.exports = {
     devcom: envVars.CLOSE_DEVCOM === 'true',
     proposal: envVars.CLOSE_PROPOSAL === 'true',
     paymentOlim: envVars.CLOSE_PAYMENT_OLIM === 'true',
+    submitKarya: envVars.CLOSE_SUBMIT_KARYA === 'true',
   },
 };
