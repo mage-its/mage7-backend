@@ -169,8 +169,8 @@ const uploadProposal = async (userId, files) => {
  * @param {GameDev} gameObj
  * @returns {Promise<GameDev>}
  */
-const updateGameDevByUserId = async (userId, updateBody, gameObj) => {
-  const gameDev = gameObj || (await getGameDevByUserId(userId));
+const updateGameDevByUserId = async (userId, updateBody, gameObj = null) => {
+  const gameDev = gameObj ?? (await getGameDevByUserId(userId));
   if (!gameDev) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
   }
@@ -262,8 +262,8 @@ const getGameDevById = async (id) => {
  * @param {GameDev} gameObj
  * @returns {Promise<GameDev>}
  */
-const updateGameDevById = async (gameDevId, updateBody, gameObj) => {
-  const gameDev = gameObj || (await getGameDevById(gameDevId));
+const updateGameDevById = async (gameDevId, updateBody, gameObj = null) => {
+  const gameDev = gameObj ?? (await getGameDevById(gameDevId));
   if (!gameDev) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
   }
@@ -283,11 +283,11 @@ const updateGameDevById = async (gameDevId, updateBody, gameObj) => {
  * @returns {Promise<GameDev>}
  */
 const deleteGameDevById = async (gameDevId, gameDevObj = null, userObj = null) => {
-  const gameDev = gameDevObj || (await getGameDevById(gameDevId));
+  const gameDev = gameDevObj ?? (await getGameDevById(gameDevId));
   if (!gameDev) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
   }
-  const user = userObj || (await User.findById(gameDev.user));
+  const user = userObj ?? (await User.findById(gameDev.user));
   if (user) {
     user.registeredComp = '';
   }
@@ -312,7 +312,7 @@ const deleteGameDevById = async (gameDevId, gameDevObj = null, userObj = null) =
  * @returns {Promise<GameDev>}
  */
 const toggleVerif = async (gameDevId, gameDevObj = null) => {
-  const gameDev = gameDevObj || (await getGameDevById(gameDevId));
+  const gameDev = gameDevObj ?? (await getGameDevById(gameDevId));
   if (!gameDev) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
   }

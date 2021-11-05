@@ -106,8 +106,8 @@ const daftarOlim = async (olimBody, files, user) => {
  * @param {Olim} olimObj
  * @returns {Promise<Olim>}
  */
-const updateOlimByUserId = async (userId, updateBody, olimObj) => {
-  const olim = olimObj || (await getOlimByUserId(userId));
+const updateOlimByUserId = async (userId, updateBody, olimObj = null) => {
+  const olim = olimObj ?? (await getOlimByUserId(userId));
   if (!olim) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
   }
@@ -187,8 +187,8 @@ const getOlimById = async (id) => {
  * @param {Olim} olimObj
  * @returns {Promise<Olim>}
  */
-const updateOlimById = async (olimId, updateBody, olimObj) => {
-  const olim = olimObj || (await getOlimById(olimId));
+const updateOlimById = async (olimId, updateBody, olimObj = null) => {
+  const olim = olimObj ?? (await getOlimById(olimId));
   if (!olim) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
   }
@@ -208,11 +208,11 @@ const updateOlimById = async (olimId, updateBody, olimObj) => {
  * @returns {Promise<User>}
  */
 const deleteOlimById = async (olimId, olimObj = null, userObj = null) => {
-  const olim = olimObj || (await getOlimById(olimId));
+  const olim = olimObj ?? (await getOlimById(olimId));
   if (!olim) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
   }
-  const user = userObj || (await User.findById(olim.user));
+  const user = userObj ?? (await User.findById(olim.user));
   if (user) {
     user.registeredComp = '';
   }
@@ -233,7 +233,7 @@ const deleteOlimById = async (olimId, olimObj = null, userObj = null) => {
  * @returns {Promise<Olim>}
  */
 const toggleVerif = async (olimId, olimObj = null) => {
-  const olim = olimObj || (await getOlimById(olimId));
+  const olim = olimObj ?? (await getOlimById(olimId));
   if (!olim) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
   }

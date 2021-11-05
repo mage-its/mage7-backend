@@ -166,8 +166,8 @@ const uploadProposal = async (userId, files) => {
  * @param {IotDev} iotObj
  * @returns {Promise<IotDev>}
  */
-const updateIotDevByUserId = async (userId, updateBody, iotObj) => {
-  const iotDev = iotObj || (await getIotDevByUserId(userId));
+const updateIotDevByUserId = async (userId, updateBody, iotObj = null) => {
+  const iotDev = iotObj ?? (await getIotDevByUserId(userId));
   if (!iotDev) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
   }
@@ -259,8 +259,8 @@ const getIotDevById = async (id) => {
  * @param {IotDev} iotObj
  * @returns {Promise<IotDev>}
  */
-const updateIotDevById = async (iotDevId, updateBody, iotObj) => {
-  const iotDev = iotObj || (await getIotDevById(iotDevId));
+const updateIotDevById = async (iotDevId, updateBody, iotObj = null) => {
+  const iotDev = iotObj ?? (await getIotDevById(iotDevId));
   if (!iotDev) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
   }
@@ -280,11 +280,11 @@ const updateIotDevById = async (iotDevId, updateBody, iotObj) => {
  * @returns {Promise<IotDev>}
  */
 const deleteIotDevById = async (iotDevId, iotDevObj = null, userObj = null) => {
-  const iotDev = iotDevObj || (await getIotDevById(iotDevId));
+  const iotDev = iotDevObj ?? (await getIotDevById(iotDevId));
   if (!iotDev) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Peserta tidak ditemukan');
   }
-  const user = userObj || (await User.findById(iotDev.user));
+  const user = userObj ?? (await User.findById(iotDev.user));
   if (user) {
     user.registeredComp = '';
   }
@@ -309,7 +309,7 @@ const deleteIotDevById = async (iotDevId, iotDevObj = null, userObj = null) => {
  * @returns {Promise<IotDev>}
  */
 const toggleVerif = async (iotDevId, iotDevObj = null) => {
-  const iotDev = iotDevObj || (await getIotDevById(iotDevId));
+  const iotDev = iotDevObj ?? (await getIotDevById(iotDevId));
   if (!iotDev) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
   }
