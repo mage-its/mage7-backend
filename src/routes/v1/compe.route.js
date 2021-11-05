@@ -6,6 +6,7 @@ const compeValidation = require('../../validations/compe.validation');
 const compeController = require('../../controllers/compe.controller');
 const cancelFileUpload = require('../../middlewares/cancelFileUpload');
 const paymentBarrier = require('../../middlewares/paymentBarrier');
+const submitKaryaBarrier = require('../../middlewares/submitKaryaBarrier');
 
 const router = express.Router();
 
@@ -39,6 +40,12 @@ router.post(
 
 router.get('/download-csv/:compe', auth('getUsers'), validate(compeValidation.downloadCsv), compeController.downloadCsv);
 
-router.post('/submit-karya', auth(), validate(compeValidation.submitKarya), compeController.submitKarya);
+router.post(
+  '/submit-karya',
+  submitKaryaBarrier(),
+  auth(),
+  validate(compeValidation.submitKarya),
+  compeController.submitKarya
+);
 
 module.exports = router;

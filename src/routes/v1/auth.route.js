@@ -47,6 +47,7 @@ module.exports = router;
  *               - name
  *               - email
  *               - password
+ *               - recaptchaResponse
  *             properties:
  *               name:
  *                 type: string
@@ -59,10 +60,14 @@ module.exports = router;
  *                 format: password
  *                 minLength: 8
  *                 description: At least one number and one letter
+ *               recaptchaResponse:
+ *                 type: string
+ *                 description: Recaptcha token returned by google
  *             example:
  *               name: fake name
  *               email: fake@example.com
  *               password: password1
+ *               recaptchaResponse: jsa0dj01nd2u03ud0da
  *     responses:
  *       "201":
  *         description: Created

@@ -1,9 +1,13 @@
 const fetch = require('node-fetch');
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
-const { recaptchaSecret } = require('../config/config');
+const { recaptchaSecret, useRecaptcha } = require('../config/config');
 
 const verifyCaptcha = async (req, res, next) => {
+  if (!useRecaptcha) {
+    delete req.body.recaptchaResponse;
+    return next();
+  }
   try {
     const { recaptchaResponse } = req.body;
     delete req.body.recaptchaResponse;
