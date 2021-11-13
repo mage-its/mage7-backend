@@ -68,3 +68,96 @@ router.post('/inc-tahap/:appDevId', auth('manageUsers'), validate(appDevValidati
 router.post('/dec-tahap/:appDevId', auth('manageUsers'), validate(appDevValidation.decTahap), appDevController.decTahap);
 
 module.exports = router;
+
+/**
+ * @swagger
+ * tags:
+ *   name: Auth
+ *   description: Authentication
+ */
+
+/**
+ * @swagger
+ * /appdev/daftar-appdev:
+ *   post:
+ *     summary: Daftar Application Development
+ *     tags: [AppDev]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - kategori
+ *               - namaTim
+ *               - namaKetua
+ *               - waKetua
+ *               - lineKetua
+ *               - hpKetua
+ *               - asalInstansi
+ *               - alamatInstansi
+ *               - asalInfo
+ *               - asalKota
+ *               - identitasKetua
+ *               - buktiUploadTwibbon
+ *               - buktiFollowMage
+ *               - buktiRepostStory
+ *             properties:
+ *               kategori:
+ *                 type: string
+ *                 description: Siswa atau Mahasiswa
+ *               namaTim:
+ *                 type: string
+ *               namaKetua:
+ *                 type: string
+ *               waKetua:
+ *                 type: string
+ *                 description: valid indonesian phone number
+ *               lineKetua:
+ *                 type: string
+ *                 description: id line
+ *               hpKetua:
+ *                 type: string
+ *                 description: valid indonesian phone number
+ *               namaAnggota1:
+ *                 type: string
+ *               namaAnggota2:
+ *                 type: string
+ *               namaPembimbing:
+ *                 type: string
+ *               waPembimbing:
+ *                 type: string
+ *                 description: valid indonesian phone number
+ *               hpPembimbing:
+ *                 type: string
+ *                 description: valid indonesian phone number
+ *               asalInstansi:
+ *                 type: string
+ *               alamatInstansi:
+ *                 type: string
+ *               asalInfo:
+ *                 type: string
+ *               asalKota:
+ *                 type: string
+ *               identitasKetua:
+ *                 type: file
+ *               identitasAnggota1:
+ *                 type: file
+ *               identitasAnggota2:
+ *                 type: file
+ *     responses:
+ *       "201":
+ *         description: Created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 appDev:
+ *                   $ref: '#/components/schemas/AppDev'
+ *       "400":
+ *         $ref: '#/components/responses/DuplicateEmail'
+ */
