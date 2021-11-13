@@ -70,6 +70,8 @@ module.exports = router;
  *   post:
  *     summary: Daftar olimpiade
  *     tags: [Olim]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -82,14 +84,11 @@ module.exports = router;
  *               - waKetua
  *               - lineKetua
  *               - hpKetua
- *               - namaAnggota1
- *               - namaAnggota2
  *               - asalInstansi
+ *               - alamatInstansi
  *               - asalInfo
+ *               - asalKota
  *               - identitasKetua
- *               - identitasAnggota1
- *               - identitasAnggota2
- *               - suratKeteranganSiswa
  *             properties:
  *               namaTim:
  *                 type: string
@@ -110,15 +109,17 @@ module.exports = router;
  *                 type: string
  *               asalInstansi:
  *                 type: string
+ *               alamatInstansi:
+ *                 type: string
  *               asalInfo:
+ *                 type: string
+ *               asalKota:
  *                 type: string
  *               identitasKetua:
  *                 type: file
  *               identitasAnggota1:
  *                 type: file
  *               identitasAnggota2:
- *                 type: file
- *               suratKeteranganSiswa:
  *                 type: file
  *     responses:
  *       "201":
