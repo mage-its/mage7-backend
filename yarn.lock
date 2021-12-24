@@ -2983,10 +2983,10 @@ express-mongo-sanitize@^2.0.0:
   resolved "https://registry.yarnpkg.com/express-mongo-sanitize/-/express-mongo-sanitize-2.1.0.tgz#a8c647787c25ded6e97b5e864d113e7687c5d471"
   integrity sha512-ELGeH/Tx+kJGn3klCzSmOewfN1ezJQrkqzq83dl/K3xhd5PUbvLtiD5CiuYRmQfoZPL4rUEVjANf/YjE2BpTWQ==
 
-express-rate-limit@^5.0.0:
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/express-rate-limit/-/express-rate-limit-5.3.0.tgz#e7b9d3c2e09ece6e0406a869b2ce00d03fe48aea"
-  integrity sha512-qJhfEgCnmteSeZAeuOKQ2WEIFTX5ajrzE0xS6gCOBCoRQcU+xEzQmgYQQTpzCcqUAAzTEtu4YEih4pnLfvNtew==
+express-rate-limit@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/express-rate-limit/-/express-rate-limit-6.0.0.tgz#6afdb010d07d5e0ec2639fde25f742a4c77c7a0a"
+  integrity sha512-QlBnH0mWYYA6H5voSdpsKWNKtG4LTYOn9PPFkI/p56Xynns4ouGXFa2N6JhkWSfEov8pHUJhDuQFVid2o2T7Rw==
 
 express@^4.17.1:
   version "4.17.1"
