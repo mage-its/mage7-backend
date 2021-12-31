@@ -59,7 +59,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-mongo-sanitize": "^2.0.0",
-    "express-rate-limit": "^5.0.0",
+    "express-rate-limit": "^6.0.3",
     "firebase-admin": "^10.0.0",
     "helmet": "^4.1.0",
     "hpp": "^0.2.3",
@@ -101,7 +101,7 @@
     "jest": "^26.0.1",
     "lint-staged": "^11.1.2",
     "node-mocks-http": "^1.8.0",
-    "nodemon": "^2.0.12",
+    "nodemon": "^2.0.15",
     "prettier": "^2.4.1",
     "supertest": "^6.0.1"
   }
