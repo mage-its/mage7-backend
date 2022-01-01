@@ -189,7 +189,7 @@ const compeQuery = {
  * @returns {Promise<string>}
  */
 const downloadCsv = async (compe) => {
-  const { results } = await compeQuery?.[compe]({}, { limit: 69420 });
+  const { results } = await compeQuery[compe]({}, { limit: 69420 });
   const cleanResults = results.map((result) => {
     const { __v, _id, ...cleanResult } = result.toObject();
     return cleanResult;
