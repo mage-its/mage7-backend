@@ -270,6 +270,125 @@ components:
         user: 69bac534954b54139806c112
         id: 5ebac534954b54139806c112
 
+    GameDev:
+      type: object
+      properties:
+        kategori:
+          type: string
+        noPeserta:
+          type: string
+        namaPembimbing:
+          type: string
+          nullable: true
+        hpPembimbing:
+          type: string
+          nullable: true
+        waPembimbing:
+          type: string
+          nullable: true
+        namaTim:
+          type: string
+        namaKetua:
+          type: string
+        waKetua:
+          type: string
+        lineKetua:
+          type: string
+        hpKetua:
+          type: string
+        pathIdentitasKetua:
+          type: string
+          nullable: true
+        namaAnggota1:
+          type: string
+          nullable: true
+        namaAnggota2:
+          type: string
+          nullable: true
+        pathIdentitasAnggota1:
+          type: string
+          nullable: true
+        pathIdentitasAnggota2:
+          type: string
+          nullable: true
+        asalInstansi:
+          type: string
+        alamatInstansi:
+          type: string
+        pathBuktiUploadTwibbon:
+          type: string
+        pathBuktiFollowMage:
+          type: string
+        pathBuktiRepostStory:
+          type: string
+        asalKota:
+          type: string
+        asalInfo:
+          type: string
+        price:
+          type: string
+        sudahUploadBuktiBayar:
+          type: string
+        namaBayar:
+          type: string
+          nullable: true
+        pathBuktiBayar:
+          type: string
+          nullable: true
+        isVerified:
+          type: boolean
+        usedPromo:
+          type: boolean
+        kodePromo:
+          type: string
+          nullable: true
+        pathProposal:
+          type: string
+          nullable: true
+        linkKaryaDanVideo:
+          type: string
+          nullable: true
+        tahap:
+          type: number
+        user:
+          type: string
+        id:
+          type: string
+      example:
+        kategori: Siswa
+        noPeserta: ADEV6969
+        namaPembimbing: Gawr gura
+        hpPembimbing: 08169696969
+        waPembimbing: 08169696969
+        namaTim: Tim Auto Win
+        namaKetua: Thor
+        waKetua: "08169696969"
+        lineKetua: xxnoobslayer69
+        hpKetua: "08169696969"
+        pathIdentitasKetua: ../mage69/dist/upl/bruh69
+        namaAnggota1: Ironman
+        namaAnggota2: Peter Parker
+        pathIdentitasAnggota1: ../mage69/dist/upl/bruh70
+        pathIdentitasAnggota2: ../mage69/dist/upl/bruh71
+        asalInstansi: Avengers
+        alamatInstansi: Earth
+        pathBuktiUploadTwibbon: ../mage69/dist/upl/bruh71
+        pathBuktiFollowMage: ../mage69/dist/upl/bruh71
+        pathBuktiRepostStory: ../mage69/dist/upl/bruh71
+        asalKota: Asgard
+        asalInfo: IG
+        price: "69.420"
+        sudahUploadBuktiBayar: true
+        namaBayar: Agung
+        pathBuktiBayar: ../mage69/dist/upl/bruh72
+        isVerified: true
+        usedPromo: true
+        kodePromo: urmomgae69
+        pathProposal: ../mage69/dist/upl/bruh72
+        linkKaryaDanVideo: https://nhentai.net/g/177013
+        tahap: 69
+        user: 69bac534954b54139806c112
+        id: 5ebac534954b54139806c112
 
   responses:
     DuplicateEmail:
