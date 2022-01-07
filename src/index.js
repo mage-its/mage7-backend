@@ -6,6 +6,12 @@ const logger = require('./config/logger');
 let server;
 
 mongoose.set('sanitizeFilter', true);
+
+if (config.env === 'ci') {
+  logger.info('NICE ! CI Successfull, Now exiting...');
+  process.exit(0);
+}
+
 mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
   logger.info('Connected to MongoDB');
   server = app.listen(config.port, () => {

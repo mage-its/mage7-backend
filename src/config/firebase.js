@@ -1,9 +1,12 @@
 const admin = require('firebase-admin');
+const config = require('./config');
 // eslint-disable-next-line import/no-unresolved
-const serviceAccount = require('../../serviceAccountKey.json');
+const serviceAccount = config.env !== 'ci' ? require('../../serviceAccountKey.json') : '';
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
+if (config.env !== 'ci') {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+  });
+}
 
 module.exports = admin;
