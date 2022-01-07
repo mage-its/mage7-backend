@@ -15,6 +15,7 @@
     "start:daemon": "pm2 start ecosystem.config.json",
     "start:maintenance": "pm2 start ecosystem.m.config.json",
     "dev": "cross-env NODE_ENV=development nodemon src/index.js",
+    "ci": "cross-env NODE_ENV=ci node src/index.js",
     "test": "jest -i --colors --verbose --detectOpenHandles",
     "test:watch": "jest -i --watchAll",
     "coverage": "jest -i --coverage",

@@ -2,8 +2,16 @@ const dotenv = require('dotenv');
 const path = require('path');
 const Joi = require('joi');
 const isInvalidPath = require('is-invalid-path');
+const { existsSync } = require('fs');
+const logger = require('./logger');
 
-dotenv.config({ path: path.join(__dirname, '../../.env') });
+const p = path.join(__dirname, '../../.env');
+if (existsSync(p)) {
+  dotenv.config({ path: p });
+} else {
+  logger.warn('Warning: Using .env.example, use this for development only!');
+  dotenv.config({ path: path.join(__dirname, '../../.env.example') });
+}
 
 const validPath = (value, helpers) => {
   if (isInvalidPath(value, { windows: true })) {
@@ -14,7 +22,7 @@ const validPath = (value, helpers) => {
 
 const envVarsSchema = Joi.object()
   .keys({
-    NODE_ENV: Joi.string().valid('production', 'development', 'test').required(),
+    NODE_ENV: Joi.string().valid('production', 'development', 'test', 'ci').required(),
     MAINTENANCE: Joi.string().default(''),
     PORT: Joi.number().default(3000),
     MONGODB_URL: Joi.string().required().description('Mongo DB url'),
