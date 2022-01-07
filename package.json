@@ -65,7 +65,7 @@
     "hpp": "^0.2.3",
     "http-status": "^1.4.0",
     "is-invalid-path": "^1.0.2",
-    "joi": "^17.4.2",
+    "joi": "^17.5.0",
     "joi-phone-number": "^5.0.1",
     "json2csv": "^5.0.6",
     "jsonwebtoken": "^8.5.1",
