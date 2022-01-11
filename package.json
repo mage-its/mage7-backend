@@ -74,7 +74,7 @@
     "mongoose": "^6.1.6",
     "morgan": "^1.9.1",
     "multer": "^1.4.4",
-    "nanoid": "^3.1.30",
+    "nanoid": "^3.1.31",
     "node-fetch": "2.6.1",
     "nodemailer": "^6.7.2",
     "passport": "^0.5.2",
