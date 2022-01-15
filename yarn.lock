@@ -3521,10 +3521,10 @@ google-gax@^2.17.0:
     protobufjs "^6.10.2"
     retry-request "^4.0.0"
 
-google-libphonenumber@3.2.17:
-  version "3.2.17"
-  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.17.tgz#6146ca39da98f9ddd20851b1ced2fb7b5b3f543d"
-  integrity sha512-T1fBQ3ujlpo4VUe0palZVHxBkY1zsfCShkS3l1rNq/d5C6C1SIijo8aXzgpJeGQFB8Bk+C36o6jhLl05NtfQ3w==
+google-libphonenumber@3.2.26:
+  version "3.2.26"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.26.tgz#c5fcaf793892cd079edb5a3df191fdc955fb9587"
+  integrity sha512-qyjAKef1oC2vG81RNy1f5Mk9lYE/H3HC885DCOlFs9ca3QfsqEUnXWOTPXTgEtHnTq1x3vpQgtDbX3Vba/o2ow==
 
 google-p12-pem@^3.0.3:
   version "3.1.0"
@@ -4482,12 +4482,12 @@ jest@^27.4.7:
     import-local "^3.0.2"
     jest-cli "^27.4.7"
 
-joi-phone-number@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/joi-phone-number/-/joi-phone-number-5.0.1.tgz#96aaeb9b1e890c41a8ce876daa1d20b9d586c92d"
-  integrity sha512-gVzKD2WETDxAONmdt79tF9LHEfr2M6AtSyZ8/FnkQkF9qln6PF5wuzjrr9555uB7R+LbAQdFNgYN2UETzPn5ew==
+joi-phone-number@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/joi-phone-number/-/joi-phone-number-5.1.0.tgz#2db5b532c4598eb56121a9b91e96dd06a4219a98"
+  integrity sha512-8jjObw+WnuSJ4BDbEwPWWM7aowJszu8w1sALQVbdipd+e6KzETzP7hdioVqVr6z3IVRWahiOw5Kn27Y7kekzjQ==
   dependencies:
-    google-libphonenumber "3.2.17"
+    google-libphonenumber "3.2.26"
 
 joi@^17.5.0:
   version "17.5.0"
