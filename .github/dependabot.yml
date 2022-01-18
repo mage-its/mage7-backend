@@ -15,3 +15,6 @@ updates:
       prefix: 'chore(deps): '
     labels:
       - 'dependencies'
+    ignore:
+      - dependency-name: 'node-fetch'
+        update-types: ['version-update:semver-major']
