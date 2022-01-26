@@ -60,7 +60,7 @@
     "dotenv": "^14.3.0",
     "express": "^4.17.2",
     "express-mongo-sanitize": "^2.2.0",
-    "express-rate-limit": "^6.1.0",
+    "express-rate-limit": "^6.2.0",
     "firebase-admin": "^10.0.1",
     "helmet": "^5.0.1",
     "hpp": "^0.2.3",
