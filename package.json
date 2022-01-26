@@ -62,7 +62,7 @@
     "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^6.2.0",
     "firebase-admin": "^10.0.2",
-    "helmet": "^5.0.1",
+    "helmet": "^5.0.2",
     "hpp": "^0.2.3",
     "http-status": "^1.4.0",
     "is-invalid-path": "^1.0.2",
