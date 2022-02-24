@@ -68,7 +68,7 @@
     "is-invalid-path": "^1.0.2",
     "joi": "^17.6.0",
     "joi-phone-number": "^5.1.0",
-    "json2csv": "^5.0.6",
+    "json2csv": "^5.0.7",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
     "mongoose": "^6.2.3",
