@@ -85,7 +85,7 @@
     "swagger-jsdoc": "^6.2.0",
     "swagger-ui-express": "^4.3.0",
     "validator": "^13.7.0",
-    "winston": "^3.6.0",
+    "winston": "^3.7.2",
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
@@ -103,7 +103,7 @@
     "lint-staged": "^12.3.7",
     "node-mocks-http": "^1.11.0",
     "nodemon": "^2.0.15",
-    "prettier": "^2.6.1",
+    "prettier": "^2.6.2",
     "supertest": "^6.2.2"
   }
 }
