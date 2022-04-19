@@ -70,7 +70,7 @@
     "joi-phone-number": "^5.1.1",
     "json2csv": "^5.0.7",
     "jsonwebtoken": "^8.5.1",
-    "moment": "^2.29.2",
+    "moment": "^2.29.3",
     "mongoose": "^6.3.0",
     "morgan": "^1.9.1",
     "multer": "^1.4.4",
