@@ -64,7 +64,7 @@
     "firebase-admin": "^10.1.0",
     "helmet": "^5.0.2",
     "hpp": "^0.2.3",
-    "http-status": "^1.5.1",
+    "http-status": "^1.5.2",
     "is-invalid-path": "^1.0.2",
     "joi": "^17.6.0",
     "joi-phone-number": "^5.1.1",
@@ -90,7 +90,7 @@
   },
   "devDependencies": {
     "coveralls": "^3.0.7",
-    "eslint": "^8.14.0",
+    "eslint": "^8.15.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
