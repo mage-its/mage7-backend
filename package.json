@@ -83,7 +83,7 @@
     "pm2": "^5.2.0",
     "sanitize-filename": "^1.6.3",
     "swagger-jsdoc": "^6.2.1",
-    "swagger-ui-express": "^4.3.0",
+    "swagger-ui-express": "^4.4.0",
     "validator": "^13.7.0",
     "winston": "^3.7.2",
     "xss-clean": "^0.1.1"
